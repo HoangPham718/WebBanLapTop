@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"] - Client</title>
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,200,300,700,600' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/owl.carousel.css">
+    <link rel="stylesheet" href="~/style.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+</head>
+<body>
+
+    <div class="mainmenu-area">
+            <div class="container">
+                <div class="row">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li ><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="ListProduct">Loại sản phẩm</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Laptop gaming</a></li>
+                                    <li><a href="#">Laptop văn phòng</a></li>
+                                    <li><a href="#">Laptop mới nhất</a></li>
+                                </ul>
+                            </li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Cart">Giỏ hàng - <span class="cart-amunt">Đ</span> <i class="fa fa-shopping-cart"></i></a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
+                            <li>
+                              <input type="text" name="search" style="padding:20px" placeholder="Tìm sản phẩm..." />
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-search"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!--<div class="site-branding-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">-->
+                    @*<div class="logo">
+                            <h1><a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo.png"></a>Trang chủ</h1>
+                        </div>*@
+                <!--</div>
+
+                <div class="col-sm-6">-->
+                    @*<div class="shopping-item">
+                            <a asp-area="" asp-controller="Home" asp-action="Cart">Giỏ hàng - <span class="cart-amunt">$10000</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">5</span></a>
+                        </div>*@
+                <!--</div>
+            </div>
+        </div>
+    </div>--> <!-- End site branding area -->
+
+    @*<div class="container">*@
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    @*</div>*@
+
+    @*<footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2021 - Client - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>*@
+    <div class="promo-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-promo promo1">
+                        <i class="fa fa-refresh"></i>
+                        <p>30 ngày đổi trả</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-promo promo2">
+                        <i class="fa fa-truck"></i>
+                        <p>Miễn phí giao hàng</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-promo promo3">
+                        <i class="fa fa-lock"></i>
+                        <p>Bảo mật thông tin tốt</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="single-promo promo4">
+                        <i class="fa fa-gift"></i>
+                        <p>Sản phẩm mới</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End promo area -->
+    <div class="footer-top-area">
+        <div class="zigzag-bottom"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-about-us">
+                        <h2>Shop<span>Laptop</span></h2>
+                        <p>Theo dõi và ủng hộ chúng tôi qua các phương tiện sau.</p>
+                        <div class="footer-social">
+                            <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="#" target="_blank"><i class="fa fa-youtube"></i></a>
+                            <a href="#" target="_blank"><i class="fa fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-menu">
+                        <h2 class="footer-wid-title">Tên khách hàng</h2>
+                        <ul>
+                            <li><a href="#">Tài khoản</a></li>
+                            <li><a href="#">Lịch sử mua</a></li>
+                            <li><a href="#">Giỏ hàng</a></li>
+                            <li><a href="#">Liên hệ</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-menu">
+                        <h2 class="footer-wid-title">Loại laptop</h2>
+                        <ul>
+                            <li><a href="#">Laptop văn phòng</a></li>
+                            <li><a href="#">Laptop Gaming</a></li>
+                            <li><a href="#">Mỏng & nhẹ</a></li>
+                            <li><a href="#">Rẻ</a></li>
+                            <li><a href="#">Hiệu năng cao</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-newsletter">
+                        <h2 class="footer-wid-title">Bản tin</h2>
+                        <p>Đăng kí để nhận thông báo về các sản phẩm của shop!</p>
+                        <div class="newsletter-form">
+                            <form action="#">
+                                <input type="email" placeholder="Điền vào email của bạn">
+                                <input type="submit" value="Đăng kí">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End footer top area -->
+
+    <div class="footer-bottom-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="copyright">
+                        <p>&copy; 2015 uCommerce. All Rights Reserved. <a href="" target="_blank">shoplaptop.com</a></p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="footer-card-icon">
+                        <i class="fa fa-cc-discover"></i>
+                        <i class="fa fa-cc-mastercard"></i>
+                        <i class="fa fa-cc-paypal"></i>
+                        <i class="fa fa-cc-visa"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End footer bottom area -->
+    <!-- Latest jQuery form server -->
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+
+    <!-- Bootstrap JS form CDN -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <!-- jQuery sticky menu -->
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.sticky.js"></script>
+
+    <!-- jQuery easing -->
+    <script src="~/js/jquery.easing.1.3.min.js"></script>
+
+    <!-- Main Script -->
+    <script src="~/js/main.js"></script>
+
+    <!-- Slider -->
+    <script type="text/javascript" src="~/js/bxslider.min.js"></script>
+    <script type="text/javascript" src="~/js/script.slider.js"></script>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/main.js"></script>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
