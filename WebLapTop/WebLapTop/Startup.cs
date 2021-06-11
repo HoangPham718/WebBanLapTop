@@ -8,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebLapTop.Models;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebLapTop
 {
@@ -24,6 +27,9 @@ namespace WebLapTop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            var connectionString = Configuration.GetConnectionString("WebLapTopContext");
+            services.AddDbContext<WebLapTopContext>(item => item.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

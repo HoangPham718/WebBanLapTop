@@ -210,7 +210,7 @@ z-index: 999;}
 	transition: all 0.45s ease;
 }
 .block-slider img{
-	width: 60%;
+	width: 50%;
     height: 350px;
 }
 .block-slider .bx-prev{
