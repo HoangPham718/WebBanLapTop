@@ -1,5 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home";
+    var lstNew = ViewData["DSnew"] as List<Anh>;
+    var lstPrice = ViewData["DSprice"] as List<Anh>;
 }
 @model WebLapTop.Models.Anh
 
@@ -53,95 +55,23 @@
                     <div class="section-title-1"></div>
 
                     <div class="product-carousel">
-                        <div class="single-product">
+                        @foreach (var item in lstPrice)
+                        {
+                         <div class="single-product">
                             <div class="product-f-image">
-                                <img src="~/img/product-thumb-1.jpg" alt="">
+                                <img src="@item.MaAnh" alt="">
                                 <div class="product-hover">
                                     <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
                                     <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
                                 </div>
                             </div>
 
-                            <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Acer Nitro 5</a></h2>
-
+                            <h2><a asp-area="" asp-controller="Home" asp-action="Detail"> @item.MaSpNavigation.ThuongHieu @item.MaSpNavigation.TenSp</a></h2>
                             <div class="product-carousel-price">
-                                <ins>$999.00</ins> <del>$1000.00</del>
+                                <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia.Value*1.05)))</del>
                             </div>
                         </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-thumb-2.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">Asus G703</a></h2>
-                            <div class="product-carousel-price">
-                                <ins>$4900.00</ins> <del>$5000.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-thumb-3.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">Asus Vivobook X515MA</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$800.00</ins> <del>$900.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-thumb-4.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">Dell alienware 14</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$2000.00</ins> <del>$2250.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-thumb-2.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">MSI GL75 Leopard</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$900.00</ins> <del>$1155.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-thumb-4.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">MSI GT83</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$800.00</ins>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -156,95 +86,24 @@
                 <div class="latest-product">
                     <div class="section-title-2"></div>
                     <div class="product-carousel">
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-1.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
+                        @foreach (var item in lstNew)
+                        {
+                            <div class="single-product">
+                                <div class="product-f-image">
+                                    <img src="@item.MaAnh" alt="">
+                                    <div class="product-hover">
+                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
+                                        <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
+                                    </div>
+                                </div>
+
+                                <h2><a asp-area="" asp-controller="Home" asp-action="Detail"> @item.MaSpNavigation.ThuongHieu @item.MaSpNavigation.TenSp</a></h2>
+
+                                <div class="product-carousel-price">
+                                    <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia.Value*1.05)))</del>
                                 </div>
                             </div>
-
-                            <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Acer Nitro 5</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$999.00</ins> <del>$1000.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-2.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">Asus G703</a></h2>
-                            <div class="product-carousel-price">
-                                <ins>$4900.00</ins> <del>$5000.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-3.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">Asus Vivobook X515MA</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$800.00</ins> <del>$900.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-4.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">Dell alienware 14</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$2000.00</ins> <del>$2250.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-5.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">MSI GL75 Leopard</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$900.00</ins> <del>$1155.00</del>
-                            </div>
-                        </div>
-                        <div class="single-product">
-                            <div class="product-f-image">
-                                <img src="~/img/product-6.jpg" alt="">
-                                <div class="product-hover">
-                                    <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                    <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                </div>
-                            </div>
-
-                            <h2><a href="">MSI GT83</a></h2>
-
-                            <div class="product-carousel-price">
-                                <ins>$800.00</ins>
-                            </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
