@@ -22,7 +22,7 @@ namespace WebLapTop.Controllers
         {
             try
             {
-                var product = from anh in _context.Anhs
+                var slide = from anh in _context.Anhs
                               join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
                               where anh.TenAnh.Contains("slider")
                               select new Anh
@@ -31,7 +31,28 @@ namespace WebLapTop.Controllers
                                   MaSp=sp.MaSp,
                                   MaSpNavigation=sp,
                               };
-                ViewBag.Anh = product.Take(4).ToList();
+                ViewBag.Anh = slide.Take(4).ToList();
+
+                var dsproduct = from anh in _context.Anhs
+                              join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                              where anh.TenAnh.Contains("ảnh sp")
+                              select new Anh
+                              {
+                                  MaAnh = "/img/" + anh.MaAnh + ".png",
+                                  MaSp = sp.MaSp,
+                                  MaSpNavigation = sp,
+                              };
+                ViewData["DSnew"] = dsproduct.Take(10).OrderByDescending(u=>u.MaSpNavigation.NgayTao).ToList();
+                var dsproduct2 = from anh in _context.Anhs
+                              join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                              where anh.TenAnh.Contains("ảnh sp")
+                              select new Anh
+                              {
+                                  MaAnh = "/img/" + anh.MaAnh + ".png",
+                                  MaSp = sp.MaSp,
+                                  MaSpNavigation = sp,
+                              };
+                ViewData["DSprice"] = dsproduct2.Take(10).OrderByDescending(u => u.MaSpNavigation.DonGia).ToList();
             }
             catch(Exception)
             {
