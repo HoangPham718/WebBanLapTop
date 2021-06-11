@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
+@model WebLapTop.Models.Anh
 
 <div class="site-branding-area">
     <div class="container">
@@ -19,81 +20,25 @@
         </div>
     </div>
 </div> <!-- End site branding area -->
-@*<div class="mainmenu-area">
-        <div class="container">
-            <div class="row">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Detail">Chi tiết sản phẩm</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Cart">Giỏ hàng</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
-                        <li>
-                          <input type="text" name="search" style="padding:20px" placeholder="Tỉm sản phẩm..." />
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-search"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>*@ <!-- End mainmenu area -->
+
 
 <div class="slider-area">
     <!-- Slider -->
     <div class="block-slider block-slider4">
         <ul class="" id="bxslider-home4">
-            <li>
-                <img src="~/img/h4-slide.png" alt="Slide">
+            @foreach (var item in ViewBag.Anh)
+            {
+                <li>
+                <img src="@item.MaAnh" alt="Slide">
                 <div class="caption-group">
                     <h2 class="caption title">
-                        Acer <span class="primary">Nitro <strong>5</strong></span>
+                        @item.MaSpNavigation.ThuongHieu <span class="primary">@item.MaSpNavigation.TenSp </span>
                     </h2>
-                    <h4 class="caption subtitle">Intel® Core™ i7-8750H</h4>
+                    <h4 class="caption subtitle">@item.MaSpNavigation.LoaiSp</h4>
                     <a class="caption button-radius" asp-area="" asp-controller="Home" asp-action="Detail"><span class="icon"></span>Mua ngay</a>
                 </div>
-            </li>
-            <li>
-                <img src="~/img/h4-slide2.png" alt="Slide">
-                <div class="caption-group">
-                    <h2 class="caption title">
-                        MSI GE66 <span class="primary">RTX 2080S<strong> 300Hz </strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">Core i7 10875H</h4>
-                    <a class="caption button-radius" asp-area="" asp-controller="Home" asp-action="Detail"><span class="icon"></span>Mua ngay</a>
-                </div>
-            </li>
-            <li>
-                <img src="~/img/h4-slide3.png" alt="Slide">
-                <div class="caption-group">
-                    <h2 class="caption title">
-                        Macbook <span class="primary">Air <strong>M1</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">Mỏng & nhẹ</h4>
-                    <a class="caption button-radius" asp-area="" asp-controller="Home" asp-action="Detail"><span class="icon"></span>Mua ngay</a>
-                </div>
-            </li>
-            <li>
-                <img src="~/img/h4-slide4.png" alt="Slide">
-                <div class="caption-group">
-                    <h2 class="caption title">
-                        DELL <span class="primary">VOSTRO <strong>5481</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">Core i5 8265U</h4>
-                    <a class="caption button-radius" asp-area="" asp-controller="Home" asp-action="Detail"><span class="icon"></span>Mua ngay</a>
-                </div>
-            </li>
+                </li>
+            }
         </ul>
     </div>
     <!-- ./Slider -->

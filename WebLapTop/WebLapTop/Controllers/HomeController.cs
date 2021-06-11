@@ -5,21 +5,38 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-
-namespace Client.Controllers
+namespace WebLapTop.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly WebLapTopContext _context;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, WebLapTopContext context)
         {
             _logger = logger;
+            this._context = context;
         }
 
         public IActionResult Index()
         {
+            try
+            {
+                var product = from anh in _context.Anhs
+                              join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                              where anh.TenAnh.Contains("slider")
+                              select new Anh
+                              {
+                                  MaAnh = "/img/"+anh.MaAnh+".png",
+                                  MaSp=sp.MaSp,
+                                  MaSpNavigation=sp,
+                              };
+                ViewBag.Anh = product.Take(4).ToList();
+            }
+            catch(Exception)
+            {
+                throw ;
+            }
             return View();
         }
 
