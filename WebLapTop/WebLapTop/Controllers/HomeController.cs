@@ -84,47 +84,74 @@ namespace WebLapTop.Controllers
         [HttpGet]
         public IActionResult Detail(String MaSp)
         {
-            var products = from anh in _context.Anhs
-                        join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                        where anh.MaSp.Equals(MaSp)
-                        select new Anh
-                        {
-                            MaAnh = "/img/" + anh.MaAnh + ".png",
-                            MaSp = sp.MaSp,
-                            MaSpNavigation = sp,
-                        };
-            var product = products.FirstOrDefault();
-            ViewBag.Anh = product;
+            try
+            {
+                var products = from anh in _context.Anhs
+                               join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                               where anh.MaSp.Equals(MaSp)
+                               select new Anh
+                               {
+                                   MaAnh = "/img/" + anh.MaAnh + ".png",
+                                   MaSp = sp.MaSp,
+                                   MaSpNavigation = sp,
+                               };
+                var product = products.FirstOrDefault();
+                ViewBag.Anh = product;
 
-            var BrandPros = from anh in _context.Anhs
-                                   join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                                   where anh.MaSpNavigation.ThuongHieu.Equals(product.MaSpNavigation.ThuongHieu)
-                                   select new Anh
-                                   {
-                                       MaAnh = "/img/" + anh.MaAnh + ".png",
-                                       MaSp = sp.MaSp,
-                                       MaSpNavigation = sp,
-                                   };
-            ViewData["BrandPros"] = BrandPros.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+                var BrandPros = from anh in _context.Anhs
+                                join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                                where anh.MaSpNavigation.ThuongHieu.Equals(product.MaSpNavigation.ThuongHieu)
+                                select new Anh
+                                {
+                                    MaAnh = "/img/" + anh.MaAnh + ".png",
+                                    MaSp = sp.MaSp,
+                                    MaSpNavigation = sp,
+                                };
+                ViewData["BrandPros"] = BrandPros.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
 
-            var RelativeProducts = from anh in _context.Anhs
-                            join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                            where anh.MaSpNavigation.ThuongHieu.Equals(product.MaSpNavigation.ThuongHieu) || anh.MaSpNavigation.LoaiSp.Contains(anh.MaSpNavigation.LoaiSp)
-                            select new Anh
-                            {
-                                MaAnh = "/img/" + anh.MaAnh + ".png",
-                                MaSp = sp.MaSp,
-                                MaSpNavigation = sp,
-                            };
-            ViewData["RelativePros"] = RelativeProducts.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+                var RelativeProducts = from anh in _context.Anhs
+                                       join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                                       where anh.MaSpNavigation.ThuongHieu.Equals(product.MaSpNavigation.ThuongHieu) || anh.MaSpNavigation.LoaiSp.Contains(anh.MaSpNavigation.LoaiSp)
+                                       select new Anh
+                                       {
+                                           MaAnh = "/img/" + anh.MaAnh + ".png",
+                                           MaSp = sp.MaSp,
+                                           MaSpNavigation = sp,
+                                       };
+                ViewData["RelativePros"] = RelativeProducts.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             return View();
         }
         public IActionResult Contact()
         {
             return View();
         }
-        public IActionResult ListProduct()
+        public IActionResult ListProduct(String keyword)
         {
+            string keyquery = keyword.Trim().ToLower();
+            try
+            {
+                var products = from anh in _context.Anhs
+                               join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                               where anh.MaSp.ToLower().Contains(keyquery) ||  anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(""+keyquery) || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) 
+                               select new Anh
+                               {
+                                   MaAnh = "/img/" + anh.MaAnh + ".png",
+                                   MaSp = sp.MaSp,
+                                   MaSpNavigation = sp,
+                               };
+                ViewData["key"] = keyword;
+                ViewBag.Anh = products.ToList();
+            }
+            catch(Exception)
+            {
+                throw;
+            }
+
             return View();
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
