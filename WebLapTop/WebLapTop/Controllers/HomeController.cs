@@ -23,40 +23,40 @@ namespace WebLapTop.Controllers
             try
             {
                 var slide = from anh in _context.Anhs
-                              join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                              where anh.TenAnh.Contains("slider")
-                              select new Anh
-                              {
-                                  MaAnh = "/img/"+anh.MaAnh+".png",
-                                  MaSp=sp.MaSp,
-                                  MaSpNavigation=sp,
-                              };
+                            join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                            where anh.TenAnh.Contains("slider")
+                            select new Anh
+                            {
+                                MaAnh = "/img/" + anh.MaAnh + ".png",
+                                MaSp = sp.MaSp,
+                                MaSpNavigation = sp,
+                            };
                 ViewBag.Anh = slide.Take(4).ToList();
 
                 var dsproduct = from anh in _context.Anhs
-                              join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                              where anh.TenAnh.Contains("ảnh sp")
-                              select new Anh
-                              {
-                                  MaAnh = "/img/" + anh.MaAnh + ".png",
-                                  MaSp = sp.MaSp,
-                                  MaSpNavigation = sp,
-                              };
-                ViewData["DSnew"] = dsproduct.Take(10).OrderByDescending(u=>u.MaSpNavigation.NgayTao).ToList();
+                                join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                                where anh.TenAnh.Contains("ảnh sp")
+                                select new Anh
+                                {
+                                    MaAnh = "/img/" + anh.MaAnh + ".png",
+                                    MaSp = sp.MaSp,
+                                    MaSpNavigation = sp,
+                                };
+                ViewData["DSnew"] = dsproduct.Take(10).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
                 var dsproduct2 = from anh in _context.Anhs
-                              join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                              where anh.TenAnh.Contains("ảnh sp")
-                              select new Anh
-                              {
-                                  MaAnh = "/img/" + anh.MaAnh + ".png",
-                                  MaSp = sp.MaSp,
-                                  MaSpNavigation = sp,
-                              };
+                                 join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                                 where anh.TenAnh.Contains("ảnh sp")
+                                 select new Anh
+                                 {
+                                     MaAnh = "/img/" + anh.MaAnh + ".png",
+                                     MaSp = sp.MaSp,
+                                     MaSpNavigation = sp,
+                                 };
                 ViewData["DSprice"] = dsproduct2.Take(10).OrderByDescending(u => u.MaSpNavigation.DonGia).ToList();
             }
-            catch(Exception)
+            catch (Exception)
             {
-                throw ;
+                throw;
             }
             return View();
         }
@@ -81,8 +81,42 @@ namespace WebLapTop.Controllers
         {
             return View();
         }
-        public IActionResult Detail()
+        [HttpGet]
+        public IActionResult Detail(String MaSp)
         {
+            var products = from anh in _context.Anhs
+                        join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                        where anh.MaSp.Equals(MaSp)
+                        select new Anh
+                        {
+                            MaAnh = "/img/" + anh.MaAnh + ".png",
+                            MaSp = sp.MaSp,
+                            MaSpNavigation = sp,
+                        };
+            var product = products.FirstOrDefault();
+            ViewBag.Anh = product;
+
+            var BrandPros = from anh in _context.Anhs
+                                   join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                                   where anh.MaSpNavigation.ThuongHieu.Equals(product.MaSpNavigation.ThuongHieu)
+                                   select new Anh
+                                   {
+                                       MaAnh = "/img/" + anh.MaAnh + ".png",
+                                       MaSp = sp.MaSp,
+                                       MaSpNavigation = sp,
+                                   };
+            ViewData["BrandPros"] = BrandPros.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+
+            var RelativeProducts = from anh in _context.Anhs
+                            join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                            where anh.MaSpNavigation.ThuongHieu.Equals(product.MaSpNavigation.ThuongHieu) || anh.MaSpNavigation.LoaiSp.Contains(anh.MaSpNavigation.LoaiSp)
+                            select new Anh
+                            {
+                                MaAnh = "/img/" + anh.MaAnh + ".png",
+                                MaSp = sp.MaSp,
+                                MaSpNavigation = sp,
+                            };
+            ViewData["RelativePros"] = RelativeProducts.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
             return View();
         }
         public IActionResult Contact()

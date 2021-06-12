@@ -1,52 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Detail";
+    var RelativePros = ViewData["RelativePros"] as List<Anh>;
+    var BrandPros = ViewData["BrandPros"] as List<Anh>;
 }
-@*<div class="mainmenu-area">
-    <div class="container">
-        <div class="row">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-                    <li class="active">
-                        <a asp-area="" asp-controller="Home" asp-action="Detail">Chi tiết sản phẩm</a>
-                    </li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Cart">Giỏ hàng</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
-                    <li>
-                        <input type="text" name="search" style="padding:20px" placeholder="Tỉm sản phẩm..." />
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-search"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>*@ <!-- End mainmenu area -->
-
-@*<div class="product-big-title-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-bit-title text-center">
-                    <h2>Chi tiết sản phẩm</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
-
-
+@model WebLapTop.Models.Anh
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
     <div class="container">
@@ -61,62 +18,43 @@
                 </div>
 
                 <div class="single-sidebar">
-                    <h2 class="sidebar-title">Sản phẩm tương tự</h2>
-                    <div class="thubmnail-recent">
-                        <img src="~/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$800.00</del>
+                    <h2 class="sidebar-title">Sản phẩm cùng hãng</h2>
+                    @foreach (var item in BrandPros)
+                    {
+                        <div class="thubmnail-recent">
+                            <img src="@item.MaAnh" class="recent-thumb" alt="">
+                            <h2><a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.MaSpNavigation.TenSp</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)))</del>
+                            </div>
                         </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="~/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="~/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="~/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-
-                    <div class="single-sidebar">
-                        <h2 class="sidebar-title">Từ khóa tương tự</h2>
-                        <ul>
-                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                        </ul>
-                    </div>
+                    }
+                    @*<div class="single-sidebar">
+                            <h2 class="sidebar-title">Từ khóa tương tự</h2>
+                            <ul>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                            </ul>
+                        </div>*@
                 </div>
             </div>
 
             <div class="col-md-8">
                 <div class="product-content-right">
                     <div class="product-breadcroumb">
-                        <a href="">Trang chủ</a>
+                        <a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
                         <a href="">Chi tiết sản phẩm</a>
-                        <a href="">Dell Vostro</a>
+                        <a href="">@ViewBag.Anh.MaSpNavigation.TenSp</a>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="product-images">
                                 <div class="product-main-img">
-                                    <img src="~/img/product-2.jpg" alt="">
+                                    <img src="@ViewBag.Anh.MaAnh" alt="">
                                 </div>
 
                                 <div class="product-gallery">
@@ -129,20 +67,20 @@
 
                         <div class="col-sm-6">
                             <div class="product-inner">
-                                <h2 class="product-name">Asus G703</h2>
+                                <h2 class="product-name">@ViewBag.Anh.MaSpNavigation.ThuongHieu @ViewBag.Anh.MaSpNavigation.TenSp</h2>
                                 <div class="product-inner-price">
-                                    <ins>$4900.00</ins> <del>$5000.00</del>
+                                    <ins>@(String.Format("{0:0,0}", ViewBag.Anh.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (ViewBag.Anh.MaSpNavigation.DonGia * 1.05)))</del>
                                 </div>
 
                                 <form action="" class="cart">
                                     <div class="quantity">
-                                        <input type="text" size="4" class="input-text qty text" title="Qty" value="1" name="quantity" >
+                                        <input type="text" size="4" class="input-text qty text" title="Qty" value="1" name="quantity">
                                     </div>
                                     <button class="add_to_cart_button" type="submit"><i class="fa fa-shopping-cart"></i></button>
                                 </form>
 
                                 <div class="product-inner-category">
-                                    <p>Thể loại: <a href="">Laptop Gaming</a>. Tags: <a href="">Hiệu năng cao</a>, <a href="">Pin bền</a>, <a href="">Đồ họa cao</a>. </p>
+                                    <p>Thể loại: <a href="">@ViewBag.Anh.MaSpNavigation.LoaiSp</a>
                                 </div>
 
                                 <div role="tabpanel">
@@ -153,28 +91,28 @@
                                     <div class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade in active" id="home">
                                             <h2>Thông tin sản phẩm</h2>
-                                            <p>.....</p>
+                                            <p>(ViewBag.Anh.MaSpNavigation.ChiTietSp</p>
                                         </div>
                                         @*<div role="tabpanel" class="tab-pane fade" id="profile">
-                                            <h2>Đánh giá</h2>
-                                            <div class="submit-review">
-                                                <p><label for="name">Tên</label> <input name="name" type="text"></p>
-                                                <p><label for="email">Email</label> <input name="email" type="email"></p>
-                                                <div class="rating-chooser">
-                                                    <p>Đánh giá</p>
+                                                <h2>Đánh giá</h2>
+                                                <div class="submit-review">
+                                                    <p><label for="name">Tên</label> <input name="name" type="text"></p>
+                                                    <p><label for="email">Email</label> <input name="email" type="email"></p>
+                                                    <div class="rating-chooser">
+                                                        <p>Đánh giá</p>
 
-                                                    <div class="rating-wrap-post">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
+                                                        <div class="rating-wrap-post">
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        </div>
                                                     </div>
+                                                    <p><label for="review">Bình luận</label> <textarea name="review" id="" cols="30" rows="10"></textarea></p>
+                                                    <p><input type="submit" value="Gửi"></p>
                                                 </div>
-                                                <p><label for="review">Bình luận</label> <textarea name="review" id="" cols="30" rows="10"></textarea></p>
-                                                <p><input type="submit" value="Gửi"></p>
-                                            </div>
-                                        </div>*@
+                                            </div>*@
                                     </div>
                                 </div>
 
@@ -184,97 +122,26 @@
 
 
                     <div class="related-products-wrapper">
-                        <h2 class="related-products-title">Sản phẩm gợi ý</h2>
+                        <h2 class="related-products-title">Bạn có thể thích</h2>
                         <div class="related-products-carousel">
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="~/img/product-1.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                        <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
+                            @foreach (var item in RelativePros)
+                            {
+                                <div class="single-product">
+                                    <div class="product-f-image">
+                                        <img src="@item.MaAnh" alt="">
+                                        <div class="product-hover">
+                                            <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
+                                            <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
+                                        </div>
+                                    </div>
+
+                                    <h2><a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.MaSpNavigation.ThuongHieu @item.MaSpNavigation.TenSp</a></h2>
+
+                                    <div class="product-carousel-price">
+                                        <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)))</del>
                                     </div>
                                 </div>
-
-                                <h2><a href="">Acer Nitro 5</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$999.00</ins> <del>$1000.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="~/img/product-2.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                        <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Asus G703</a></h2>
-                                <div class="product-carousel-price">
-                                    <ins>$4900.00</ins> <del>$5000.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="~/img/product-3.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                        <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Asus Vivobook X515MA</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$800.00</ins> <del>$900.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="~/img/product-4.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                        <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">Dell alienware 14</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$2000.00</ins> <del>$2250.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="~/img/product-5.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                        <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">MSI GL75 Leopard</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$900.00</ins> <del>$1155.00</del>
-                                </div>
-                            </div>
-                            <div class="single-product">
-                                <div class="product-f-image">
-                                    <img src="~/img/product-6.jpg" alt="">
-                                    <div class="product-hover">
-                                        <a href="" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                        <a asp-area="" asp-controller="Home" asp-action="Detail" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                    </div>
-                                </div>
-
-                                <h2><a href="">MSI GT83</a></h2>
-
-                                <div class="product-carousel-price">
-                                    <ins>$800.00</ins>
-                                </div>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>
