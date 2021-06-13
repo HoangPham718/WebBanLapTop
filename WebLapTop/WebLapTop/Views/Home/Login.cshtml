@@ -2,7 +2,7 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
-
+@model  WebLapTop.Models.AccountLogin
 <div class="main" >
     <!-- Sing in  Form -->
     <section class="sign-in">
@@ -15,23 +15,35 @@
 
                 <div class="signin-form">
                     <h2 class="form-title">Đăng nhập</h2>
-                    <form method="POST" class="register-form" id="login-form">
-                        <div class="form-group">
-                            <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                            <input type="text" name="your_name" id="your_name" placeholder="Tên tài khoản" />
-                        </div>
-                        <div class="form-group">
-                            <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                            <input type="password" name="your_pass" id="your_pass" placeholder="Mật khẩu" />
-                        </div>
-                        <div class="form-group">
-                            <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-                            <label for="remember-me" class="label-agree-term"><span><span></span></span>Lưu tài khoản</label>
-                        </div>
-                        <div class="form-group form-button">
-                            <input type="submit" name="signin" id="signin" class="form-submit" value="Đăng nhập" />
-                        </div>
-                    </form>
+                    @if(!String.IsNullOrEmpty(ViewData["Message"].ToString()))
+                    { 
+                        <p style="font-size:18px; font-weight: bold !important; color: #ff0000 !important;">@ViewData["Message"]</p>
+                    }
+                    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary()
+                        <form method="POST" class="register-form" id="login-form">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                @Html.TextBoxFor(a=>a.Email,"",new {@name= "your_name" ,@id= "your_name", @placeholder = "Email" })
+                                @*<input type="text" name="your_name" id="your_name" placeholder="Tên tài khoản" />*@
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                @Html.PasswordFor(a => a.MatKhau, new { @name = "your_pass", @id = "your_pass", @placeholder = "Mật khẩu" })
+                                @*<input type="password" name="your_pass" id="your_pass" placeholder="Mật khẩu" />*@
+                            </div>
+                            <div class="form-group">
+                                @Html.CheckBoxFor(a => a.Remember, new { @name = "remember-me", @id = "remember-me"})
+                                @*<input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />*@
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Lưu tài khoản</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Đăng nhập" />
+                            </div>
+                     </form>
+                    }
                     <div class="social-login">
                         <span class="social-label">Hoặc đăng nhập với</span>
                         <ul class="socials">
