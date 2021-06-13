@@ -132,12 +132,23 @@ namespace WebLapTop.Controllers
         }
         public IActionResult ListProduct(String keyword)
         {
-            string keyquery = keyword.Trim().ToLower();
+            string keyquery="";
+            if (String.IsNullOrEmpty(keyword))
+            {
+                keyquery = "";
+            }
+            else
+            {
+                keyquery= keyword.Trim().ToLower()+"";
+            }
             try
             {
+                
                 var products = from anh in _context.Anhs
                                join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                               where anh.MaSp.ToLower().Contains(keyquery) ||  anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(""+keyquery) || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) 
+                               where anh.MaSp.ToLower().Contains(keyquery) ||  anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(keyquery) 
+                               || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) ||keyquery.Contains(anh.MaSpNavigation.ThuongHieu.Trim().ToLower())
+                               || keyquery.Contains(anh.MaSpNavigation.LoaiSp.Trim().ToLower())
                                select new Anh
                                {
                                    MaAnh = "/img/" + anh.MaAnh + ".png",

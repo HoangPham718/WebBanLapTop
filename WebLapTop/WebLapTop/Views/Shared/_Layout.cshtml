@@ -50,10 +50,10 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
                         <li>
-                            <input type="text" name="search" style="padding:20px" placeholder="Tìm sản phẩm..." />
-                        </li>
-                        <li>
-                            <a href=""><i class="fa fa-search"></i></a>
+                            @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get))
+                             {  <input type="text" name="keyword" style="padding:20px" placeholder="Từ khóa tìm..." />
+                                <input type="submit" style="padding:20px" value="Tìm kiếm" />
+                             }
                         </li>
                     </ul>
                 </div>
