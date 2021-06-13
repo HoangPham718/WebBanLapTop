@@ -75,7 +75,48 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Login()
         {
+            ViewData["Message"] = "";
             return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Login(AccountLogin log)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    var userExist = _context.Khachhangs.Where(u => u.Email.Equals(log.Email)).Count();
+                    if (userExist > 0)
+                    {
+                        var PassCheck = _context.Khachhangs.Where(u => u.Email.Equals(log.Email) && u.MatKhau.Equals(log.MatKhau));
+                        if (PassCheck.Count() > 0)
+                        {
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            ViewData["Message"] = "Sai mật khẩu";
+                            return View();
+                        }
+                    }
+                    else
+                    {
+                        ViewData["Message"] = "Không tìm thấy tài khoản";
+                        return View();
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            else
+            {
+                ViewData["Message"] = "";
+                return View();
+            }
         }
         public IActionResult Signup()
         {
