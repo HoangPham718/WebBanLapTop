@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 namespace WebLapTop.Controllers
 {
     public class HomeController : Controller
@@ -20,6 +21,15 @@ namespace WebLapTop.Controllers
 
         public IActionResult Index()
         {
+            string logcheck = HttpContext.Session.GetString("EmailUser");
+            if (String.IsNullOrEmpty(logcheck))
+            {
+                ViewData["Log"] = "";
+            }
+            else
+            {
+                ViewData["Log"] = logcheck;
+            }
             try
             {
                 var slide = from anh in _context.Anhs
@@ -75,13 +85,32 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Login()
         {
+            ViewData["Log"] = "";
             ViewData["Message"] = "";
+            AccountLogin account = new AccountLogin();
+            if (!String.IsNullOrEmpty(Request.Cookies["userName"]))
+            {
+                account.Email = Request.Cookies["userName"].ToString();
+                account.MatKhau = Request.Cookies["userPass"].ToString()!=null ? Request.Cookies["userPass"].ToString():null;
+                account.Remember = Request.Cookies["remember"].ToString()!=null? true:false ;
+            }              
+            ViewData["Account"] = account;
             return View();
+        }
+        public IActionResult Logout()
+        {
+            ViewData["Message"] = "";
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(AccountLogin log)
         {
+            AccountLogin account = new AccountLogin();
+            ViewData["Account"] = account;
+            ViewData["Log"] = "";
+            ViewData["Message"] = "";
             if (ModelState.IsValid)
             {
                 try
@@ -93,6 +122,14 @@ namespace WebLapTop.Controllers
                         var PassCheck = _context.Khachhangs.Where(u => u.Email.Equals(log.Email) && u.MatKhau.Equals(log.MatKhau));
                         if (PassCheck.Count() > 0)
                         {
+                            if(log.Remember)
+                            {
+                                Response.Cookies.Append("userPass", log.MatKhau);
+                                Response.Cookies.Append("remember", "y");
+                            }
+                            Response.Cookies.Append("userName", log.Email);
+                            HttpContext.Session.SetString("EmailUser", log.Email);
+                            HttpContext.Session.SetString("PassWord", log.MatKhau);
                             return RedirectToAction("Index");
                         }
                         else
@@ -103,6 +140,7 @@ namespace WebLapTop.Controllers
                     }
                     else
                     {
+
                         ViewData["Message"] = "Không tìm thấy tài khoản";
                         return View();
                     }
@@ -114,7 +152,6 @@ namespace WebLapTop.Controllers
             }
             else
             {
-                ViewData["Message"] = "";
                 return View();
             }
         }
@@ -173,6 +210,8 @@ namespace WebLapTop.Controllers
         }
         public IActionResult ListProduct(String keyword)
         {
+            ViewData["Log"] = "";
+            ViewData["Message"] = "";
             string keyquery="";
             if (String.IsNullOrEmpty(keyword))
             {

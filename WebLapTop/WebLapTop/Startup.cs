@@ -23,6 +23,7 @@ namespace WebLapTop
 
         public IConfiguration Configuration { get; }
 
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -30,6 +31,9 @@ namespace WebLapTop
 
             var connectionString = Configuration.GetConnectionString("WebLapTopContext");
             services.AddDbContext<WebLapTopContext>(item => item.UseSqlServer(connectionString));
+
+            services.AddDistributedMemoryCache();
+            services.AddSession((options) => { options.IdleTimeout = TimeSpan.FromMinutes(45); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +52,8 @@ namespace WebLapTop
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
+            
             app.UseRouting();
 
             app.UseAuthorization();
