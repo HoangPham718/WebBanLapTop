@@ -86,7 +86,6 @@ namespace WebLapTop.Controllers
         public IActionResult Login()
         {
             ViewData["Log"] = "";
-            ViewData["Message"] = "";
             AccountLogin account = new AccountLogin();
             if (!String.IsNullOrEmpty(Request.Cookies["userName"]))
             {
@@ -99,7 +98,6 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Logout()
         {
-            ViewData["Message"] = "";
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
@@ -110,7 +108,6 @@ namespace WebLapTop.Controllers
             AccountLogin account = new AccountLogin();
             ViewData["Account"] = account;
             ViewData["Log"] = "";
-            ViewData["Message"] = "";
             if (ModelState.IsValid)
             {
                 try
@@ -134,15 +131,13 @@ namespace WebLapTop.Controllers
                         }
                         else
                         {
-                            ViewData["Message"] = "Sai mật khẩu";
-                            return View();
+                            ModelState.AddModelError("Matkhau", "Sai mật khẩu");
                         }
                     }
                     else
                     {
 
-                        ViewData["Message"] = "Không tìm thấy tài khoản";
-                        return View();
+                        ModelState.AddModelError("Email", "Không tìm thấy tài khoản");
                     }
                 }
                 catch (Exception)
@@ -150,14 +145,47 @@ namespace WebLapTop.Controllers
                     throw;
                 }
             }
-            else
-            {
                 return View();
-            }
+
         }
         public IActionResult Signup()
         {
+            ViewData["Log"] = "";
             return View();
+        }
+        [HttpPost]
+        public IActionResult Signup(KhachHangValid kh)
+        {
+            ViewData["Log"] = "";
+            if (ModelState.IsValid)
+            {
+                var emailExist = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(kh.Email));
+                if (emailExist == null)
+                {
+                    int lastId =Convert.ToInt32(_context.Khachhangs.OrderBy(u=>u.MaKh).LastOrDefault().MaKh.Substring(2));
+                    var insert = _context.Khachhangs.Add( new Khachhang { 
+                        MaKh="KH"+(lastId+1),
+                        MaKm=1,
+                        TenKh=kh.TenKh,
+                        Email=kh.Email,
+                        MatKhau=kh.MatKhau,
+                        Sdt=kh.Sdt,
+                        DiaChi=kh.DiaChi,
+                        Diem=0,
+                        LoaiKh="New",
+                        TrangThai=true
+                    });
+                    _context.SaveChanges();
+                    HttpContext.Session.SetString("EmailUser", kh.Email);
+                    HttpContext.Session.SetString("PassWord", kh.MatKhau);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("Email", "Email đã tồn tại");
+                }
+            }
+          return View();
         }
         [HttpGet]
         public IActionResult Detail(String MaSp)
