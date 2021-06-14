@@ -1,6 +1,5 @@
 ﻿<!DOCTYPE html>
 
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -39,19 +38,33 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Detail">Chi tiết sản phẩm</a></li>
-
+                        <li>
+                            <a href="">Loại sản phẩm</a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop gaming">Laptop gaming</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop văn phòng">Laptop văn phòng</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Macbook">Macbook</a></li>
+                            </ul>
+                        </li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Cart">Giỏ hàng - <span class="cart-amunt">Đ</span> <i class="fa fa-shopping-cart"></i></a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
                         <li>
-                            <input type="text" name="search" style="padding:20px" placeholder="Tìm sản phẩm..." />
+                            @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get,new {@style="display:flex" }))
+                            {
+                                <input type="text" name="keyword" style="padding:20px" placeholder="Từ khóa tìm..." />
+                                <input type="submit" style="padding:20px" value="Tìm kiếm" />
+                            }
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-search"></i></a>
-                        </li>
-                    </ul>
+                            @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
+                            {
+                                <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
+                            }
+                            else
+                            {
+                                <li><a asp-area="" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
+                            }
+                        </ul>
                 </div>
             </div>
         </div>
