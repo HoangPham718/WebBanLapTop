@@ -16,10 +16,6 @@
 
                 <div class="signin-form">
                     <h2 class="form-title">Đăng nhập</h2>
-                    @if(!String.IsNullOrEmpty(ViewData["Message"].ToString()))
-                    { 
-                        <p style="font-size:18px; font-weight: bold !important; color: #ff0000 !important;">@ViewData["Message"]</p>
-                    }
                     @using (Html.BeginForm("Login", "Home", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
