@@ -21,15 +21,9 @@ namespace WebLapTop.Controllers
 
         public IActionResult Index()
         {
-            string logcheck = HttpContext.Session.GetString("EmailUser");
-            if (String.IsNullOrEmpty(logcheck))
-            {
-                ViewData["Log"] = "";
-            }
-            else
-            {
-                ViewData["Log"] = logcheck;
-            }
+
+                ViewData["Log"] = LogCheck();
+
             try
             {
                 var slide = from anh in _context.Anhs
@@ -77,10 +71,12 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Cart()
         {
+            ViewData["Log"] = LogCheck();
             return View();
         }
         public IActionResult Checkout()
         {
+            ViewData["Log"] = LogCheck();
             return View();
         }
         public IActionResult Login()
@@ -90,8 +86,8 @@ namespace WebLapTop.Controllers
             if (!String.IsNullOrEmpty(Request.Cookies["userName"]))
             {
                 account.Email = Request.Cookies["userName"].ToString();
-                account.MatKhau = Request.Cookies["userPass"].ToString()!=null ? Request.Cookies["userPass"].ToString():null;
-                account.Remember = Request.Cookies["remember"].ToString()!=null? true:false ;
+                account.MatKhau = !String.IsNullOrEmpty(Request.Cookies["userPass"].ToString()) ? Request.Cookies["userPass"].ToString():null;
+                account.Remember = !String.IsNullOrEmpty(Request.Cookies["remember"].ToString())? true:false ;
             }              
             ViewData["Account"] = account;
             return View();
@@ -123,6 +119,11 @@ namespace WebLapTop.Controllers
                             {
                                 Response.Cookies.Append("userPass", log.MatKhau);
                                 Response.Cookies.Append("remember", "y");
+                            }
+                            else
+                            {
+                                Response.Cookies.Append("userPass", "");
+                                Response.Cookies.Append("remember", "");
                             }
                             Response.Cookies.Append("userName", log.Email);
                             HttpContext.Session.SetString("EmailUser", log.Email);
@@ -190,6 +191,7 @@ namespace WebLapTop.Controllers
         [HttpGet]
         public IActionResult Detail(String MaSp)
         {
+            ViewData["Log"] = LogCheck();
             try
             {
                 var products = from anh in _context.Anhs
@@ -234,11 +236,12 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Contact()
         {
+            ViewData["Log"] = LogCheck();
             return View();
         }
         public IActionResult ListProduct(String keyword)
         {
-            ViewData["Log"] = "";
+            ViewData["Log"] = LogCheck();
             ViewData["Message"] = "";
             string keyquery="";
             if (String.IsNullOrEmpty(keyword))
@@ -277,6 +280,20 @@ namespace WebLapTop.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public String LogCheck ()
+        {
+            string logcheck = HttpContext.Session.GetString("EmailUser");
+            string log;
+            if (String.IsNullOrEmpty(logcheck))
+            {
+               log = "";
+            }
+            else
+            {
+               log = logcheck;
+            }
+            return log;
         }
     }
 }
