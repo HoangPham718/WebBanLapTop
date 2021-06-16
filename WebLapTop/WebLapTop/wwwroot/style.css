@@ -1099,6 +1099,9 @@ div.cart-collaterals ul.products li.product .price ins {
 .showlogin:hover, .showcoupon:hover {
     color: red;
 }
+ .showlogin:focus, .showcoupon:focus {
+        color: blue;
+ }
 .col2-set {
     margin-left: -30px;
     overflow: hidden;
