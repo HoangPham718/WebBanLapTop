@@ -18,6 +18,7 @@ namespace WebLapTop.Models
         }
 
         public virtual DbSet<Anh> Anhs { get; set; }
+        public virtual DbSet<OrderCart> OrderCarts  { get; set; }
         public virtual DbSet<Binhluan> Binhluans { get; set; }
         public virtual DbSet<Chinhanh> Chinhanhs { get; set; }
         public virtual DbSet<Chitiethoadon> Chitiethoadons { get; set; }

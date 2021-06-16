@@ -72,6 +72,46 @@ namespace WebLapTop.Controllers
         public IActionResult Cart()
         {
             ViewData["Log"] = LogCheck();
+            try
+            {
+                var cart = _context.OrderCarts.ToList();
+
+                String Masp = cart.FirstOrDefault().MaSp;
+
+                var product = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(Masp));
+
+                var BrandPros = from anh in _context.Anhs
+                                join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                                where anh.MaSpNavigation.ThuongHieu.Equals(product.ThuongHieu)
+                                select new Anh
+                                {
+                                    MaAnh = "/img/" + anh.MaAnh + ".png",
+                                    MaSp = sp.MaSp,
+                                    MaSpNavigation = sp,
+                                };
+                ViewData["BrandPros"] = BrandPros.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+
+                var RelativeProducts = from anh in _context.Anhs
+                                       join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                                       where anh.MaSpNavigation.ThuongHieu.Equals(product.ThuongHieu) || anh.MaSpNavigation.LoaiSp.Contains(product.LoaiSp)
+                                       select new Anh
+                                       {
+                                           MaAnh = "/img/" + anh.MaAnh + ".png",
+                                           MaSp = sp.MaSp,
+                                           MaSpNavigation = sp,
+                                       };
+                ViewData["RelativePros"] = RelativeProducts.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+
+                var totalOrder = _context.OrderCarts.Sum(u => u.DonGia * u.SL);
+
+                ViewData["Total"] = totalOrder;
+
+                ViewBag.OrderCart = cart;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             return View();
         }
         public IActionResult Checkout()
@@ -188,10 +228,17 @@ namespace WebLapTop.Controllers
             }
           return View();
         }
+
         [HttpGet]
         public IActionResult Detail(String MaSp)
         {
             ViewData["Log"] = LogCheck();
+            ViewData["Order"] = "";
+            if (TempData["RouteDetail"] != null)
+            {
+                MaSp = TempData["RouteDetail"].ToString();
+                ViewData["Order"] = "Sucess";
+            }
             try
             {
                 var products = from anh in _context.Anhs
@@ -219,7 +266,7 @@ namespace WebLapTop.Controllers
 
                 var RelativeProducts = from anh in _context.Anhs
                                        join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                                       where anh.MaSpNavigation.ThuongHieu.Equals(product.MaSpNavigation.ThuongHieu) || anh.MaSpNavigation.LoaiSp.Contains(anh.MaSpNavigation.LoaiSp)
+                                       where anh.MaSpNavigation.ThuongHieu.Equals(product.MaSpNavigation.ThuongHieu) || anh.MaSpNavigation.LoaiSp.Contains(product.MaSpNavigation.LoaiSp)
                                        select new Anh
                                        {
                                            MaAnh = "/img/" + anh.MaAnh + ".png",
@@ -294,6 +341,22 @@ namespace WebLapTop.Controllers
                log = logcheck;
             }
             return log;
+        }
+        public IActionResult AddToCart(OrderCart order)
+        {
+            var checkOrder = _context.OrderCarts.FirstOrDefault(u=>u.MaSp.Equals(order.MaSp));
+            if (checkOrder == null)
+            {
+                var insert = _context.OrderCarts.Add(order);
+            }
+            else
+            {
+                int update = order.SL + checkOrder.SL;
+                checkOrder.SL = update;
+            }
+            _context.SaveChanges();
+            TempData["RouteDetail"] = order.MaSp;
+            return RedirectToAction("Detail","Home");
         }
     }
 }
