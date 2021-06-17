@@ -91,7 +91,7 @@ namespace WebLapTop.Controllers
                 var checkKM = _context.OrderCarts.FirstOrDefault();
                 
 
-                if(checkKM.MaKm!=0)
+                if(checkKM.MaKm!=0 && !String.IsNullOrEmpty(LogCheck()))
                 {
                     var khuyenmai = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == checkKM.MaKm);
                     ViewData["Coupon"] = khuyenmai;
