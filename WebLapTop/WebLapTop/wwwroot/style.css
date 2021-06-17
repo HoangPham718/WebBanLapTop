@@ -4,9 +4,23 @@
     float: left;
     margin-right: 15px;
 }
-.pagebtn{
-    background-color:white;
-    color:black;
+.updatecart-btn  {
+    background: none repeat scroll 0 0 #5a88ca;
+    border: medium none;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 11px 15px;
+}
+.checkout-btn {
+    background: none repeat scroll 0 0 #5a88ca;
+    border: medium none;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 11px 15px;
+}
+.pagebtn {
+    background-color: white;
+    color: black;
 }
 .pagebtn a{
     color:black;
