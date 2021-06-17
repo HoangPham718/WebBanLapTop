@@ -74,10 +74,32 @@ namespace WebLapTop.Controllers
             ViewData["Log"] = LogCheck();
             try
             {
+                
                 var cart = _context.OrderCarts.ToList();
 
-                String Masp = cart.FirstOrDefault().MaSp;
+                String Masp;
 
+                if (cart == null)
+                {
+                    Masp = "SP01";
+                }
+                else
+                {
+                    Masp = cart.FirstOrDefault().MaSp;
+                }
+
+                var checkKM = _context.OrderCarts.FirstOrDefault();
+                
+
+                if(checkKM.MaKm!=0)
+                {
+                    var khuyenmai = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == checkKM.MaKm);
+                    ViewData["Coupon"] = khuyenmai;
+                }
+                else
+                {
+                    ViewData["Coupon"] = TempData["Coupon"];
+                }
                 var product = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(Masp));
 
                 var BrandPros = from anh in _context.Anhs
@@ -103,10 +125,14 @@ namespace WebLapTop.Controllers
                 ViewData["RelativePros"] = RelativeProducts.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
 
                 var totalOrder = _context.OrderCarts.Sum(u => u.DonGia * u.SL);
+                
 
                 ViewData["Total"] = totalOrder;
 
                 ViewBag.OrderCart = cart;
+
+
+
             }
             catch (Exception)
             {
@@ -297,15 +323,15 @@ namespace WebLapTop.Controllers
             }
             else
             {
-                keyquery= keyword.Trim().ToLower()+"";
+                keyquery= keyword.Trim().ToLower();
             }
             try
             {
                 
                 var products = from anh in _context.Anhs
                                join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                               where anh.MaSp.ToLower().Contains(keyquery) ||  anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(keyquery) 
-                               || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) ||keyquery.Contains(anh.MaSpNavigation.ThuongHieu.Trim().ToLower())
+                               where anh.MaSp.ToLower().Contains(keyquery) ||  anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(keyquery+"") 
+                               || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) ||keyquery.Contains(anh.MaSpNavigation.ThuongHieu.Trim().ToLower()+"")
                                || keyquery.Contains(anh.MaSpNavigation.LoaiSp.Trim().ToLower())
                                select new Anh
                                {
@@ -342,6 +368,7 @@ namespace WebLapTop.Controllers
             }
             return log;
         }
+        [HttpPost]
         public IActionResult AddToCart(OrderCart order)
         {
             var checkOrder = _context.OrderCarts.FirstOrDefault(u=>u.MaSp.Equals(order.MaSp));
@@ -357,6 +384,43 @@ namespace WebLapTop.Controllers
             _context.SaveChanges();
             TempData["RouteDetail"] = order.MaSp;
             return RedirectToAction("Detail","Home");
+        }
+        [HttpPost]
+        public IActionResult AddCoupon(String code)
+        {
+            int MaKm = 0;
+            String email = LogCheck();
+            if(String.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Login");
+            }
+            try
+            {
+                 MaKm = Convert.ToInt32(code);
+            }
+            catch(Exception)
+            { throw; }
+            if(MaKm !=0)
+            {
+                var checkCoupon = _context.Khachhangs.FirstOrDefault(u => u.MaKm == MaKm && u.Email.Equals(email));
+                if(checkCoupon!=null)
+                {
+                    var order = _context.OrderCarts.FirstOrDefault();
+                    order.MaKm = MaKm;
+                    _context.SaveChanges();
+                    
+                    TempData["Coupon"] = "Sucess";
+                }
+                else
+                {
+                    TempData["Coupon"] = "ErrorCoupon";
+                }
+            }
+            else
+            {
+                TempData["Coupon"] = "ErrorCoupon";
+            }
+            return RedirectToAction("Cart");
         }
     }
 }
