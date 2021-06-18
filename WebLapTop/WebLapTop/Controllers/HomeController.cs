@@ -548,5 +548,13 @@ namespace WebLapTop.Controllers
             }
             return RedirectToAction("Cart");
         }
+        [HttpGet]
+        public IActionResult RemovefromCart(String MaSp)
+        {
+            var itemRemove = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(MaSp));
+            _context.OrderCarts.Remove(itemRemove);
+            _context.SaveChanges();
+            return RedirectToAction("Cart");
+        }
     }
 }
