@@ -16,10 +16,13 @@
             <div class="col-md-4">
                 <div class="single-sidebar">
                     <h2 class="sidebar-title">Tìm kiếm sản phẩm</h2>
-                    <form action="#">
-                        <input type="text" placeholder="Tìm sản phẩm...">
-                        <input type="submit" value="Tìm">
-                    </form>
+                    @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get))
+                    {
+                        <form action="#">
+                            <input type="text" name="keyword" placeholder="Tìm sản phẩm...">
+                            <input type="submit" value="Tìm">
+                        </form>
+                    }
                 </div>
 
                 <div class="single-sidebar">

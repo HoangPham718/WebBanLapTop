@@ -22,7 +22,7 @@ namespace WebLapTop.Controllers
         public IActionResult Index()
         {
 
-                ViewData["Log"] = LogCheck();
+            ViewData["Log"] = LogCheck();
 
             try
             {
@@ -71,15 +71,17 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Cart()
         {
-            ViewData["Log"] = LogCheck();
+
+            String email = LogCheck();
+            ViewData["Log"] = email;
             try
             {
-                
+
                 var cart = _context.OrderCarts.ToList();
 
                 String Masp;
-
-                if (cart == null)
+                //check order
+                if (cart.Count==0)
                 {
                     Masp = "SP01";
                 }
@@ -88,18 +90,29 @@ namespace WebLapTop.Controllers
                     Masp = cart.FirstOrDefault().MaSp;
                 }
 
+                //check km, get data khuyenmai
                 var checkKM = _context.OrderCarts.FirstOrDefault();
-                
-
-                if(checkKM.MaKm!=0 && !String.IsNullOrEmpty(LogCheck()))
+                if (checkKM != null)
                 {
-                    var khuyenmai = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == checkKM.MaKm);
-                    ViewData["Coupon"] = khuyenmai;
+                    if (checkKM.MaKm != 0 && !String.IsNullOrEmpty(email))
+                    {
+                        var khuyenmai = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == checkKM.MaKm);
+                        ViewData["Coupon"] = khuyenmai;
+                    }
+                    else
+                    {
+                        checkKM.MaKm = 0;
+                        _context.SaveChanges();
+                        ViewData["Coupon"] = TempData["Coupon"];
+                    }
                 }
                 else
                 {
                     ViewData["Coupon"] = TempData["Coupon"];
                 }
+
+                //get data
+
                 var product = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(Masp));
 
                 var BrandPros = from anh in _context.Anhs
@@ -124,8 +137,9 @@ namespace WebLapTop.Controllers
                                        };
                 ViewData["RelativePros"] = RelativeProducts.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
 
+                //get total order
                 var totalOrder = _context.OrderCarts.Sum(u => u.DonGia * u.SL);
-                
+
 
                 ViewData["Total"] = totalOrder;
 
@@ -142,8 +156,113 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Checkout()
         {
-            ViewData["Log"] = LogCheck();
+            String email = LogCheck();
+            ViewData["Log"] = email;
+
+            if (String.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Login");
+            }
+
+            //coupon check
+            var checkCoupon = _context.OrderCarts.FirstOrDefault();
+
+            if (checkCoupon != null)
+            {
+                ViewData["CouponCode"] = checkCoupon.MaKm;
+                var coupon = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == checkCoupon.MaKm);
+                ViewData["CouponDetail"] = coupon;
+            }
+            else
+            {
+                ViewData["CouponDetail"] = null;
+                return RedirectToAction("Cart");
+            }
+
+            //get info account
+
+            var info = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
+            ViewData["InfoCustomer"] = info;
+
+            //get cart,total ; check cart before
+
+            var cart = _context.OrderCarts.ToList();
+
+
+            ViewBag.OrderCart = cart;
+            ViewData["Total"] = _context.OrderCarts.Sum(u => u.DonGia * u.SL);
+
+            //get data sidebar
+            var product = _context.Sanphams.FirstOrDefault(u=>u.MaSp.Equals(checkCoupon.MaSp));
+            var RelativeProducts = from anh in _context.Anhs
+                                   join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                                   where anh.MaSpNavigation.ThuongHieu.Equals(product.ThuongHieu) || anh.MaSpNavigation.LoaiSp.Contains(product.LoaiSp)
+                                   select new Anh
+                                   {
+                                       MaAnh = "/img/" + anh.MaAnh + ".png",
+                                       MaSp = sp.MaSp,
+                                       MaSpNavigation = sp,
+                                   };
+            ViewData["RelativePros"] = RelativeProducts.Take(6).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+
+
             return View();
+        }
+        [HttpPost]
+        public IActionResult AddBill(Hoadon order)
+        {
+            //get data bill
+            string email = LogCheck();
+            var findKH = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
+            var lastMa = _context.Hoadons.OrderBy(u=>u.MaHd).LastOrDefault().MaHd;
+            int lstid = Convert.ToInt32(lastMa.Substring(2));
+
+            Hoadon bill = new Hoadon()
+            {
+                MaHd= lstid>9? "HD"+(lstid+1): "HD0" + (lstid + 1),
+                MaKh =findKH.MaKh,
+                NgayLap=DateTime.Now,
+                shipping=order.shipping,
+                TenNn=order.TenNn,
+                DiaChi=order.DiaChi,
+                Sdtnn=order.Sdtnn,
+                shippingNote=order.shippingNote,
+                TrangThai=0
+            };
+            //tao bill
+             _context.Hoadons.Add(bill);
+
+            //get data order
+            var listOrder = _context.OrderCarts.ToList();
+            int checkKm = listOrder.FirstOrDefault().MaKm;
+            int LoaiKm;
+            if (checkKm == 0)
+            {
+                LoaiKm = 0;
+            }
+            else
+            { 
+                LoaiKm = _context.Khuyenmais.FirstOrDefault(u => u.MaKm ==checkKm).LoaiKm.Value; 
+            }
+            
+
+            // add billdetail
+            foreach (var item in listOrder)
+            {
+                Chitiethoadon chitiethoadon = new Chitiethoadon() { 
+                    MaHd=bill.MaHd,
+                    MaSp=item.MaSp,
+                    DonGia=item.DonGia,
+                    SoLuong=item.SL,
+                    TienKm=LoaiKm*item.DonGia*item.SL/100,
+                    ThanhTien= (100-LoaiKm) * item.DonGia * item.SL / 100
+                };
+
+                _context.Chitiethoadons.Add(chitiethoadon);
+            }
+            _context.OrderCarts.RemoveRange(listOrder);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
         public IActionResult Login()
         {
@@ -231,7 +350,7 @@ namespace WebLapTop.Controllers
                 {
                     int lastId =Convert.ToInt32(_context.Khachhangs.OrderBy(u=>u.MaKh).LastOrDefault().MaKh.Substring(2));
                     var insert = _context.Khachhangs.Add( new Khachhang { 
-                        MaKh="KH"+(lastId+1),
+                        MaKh= lastId>9? "KH"+(lastId+1) : "KH0" + (lastId + 1),
                         MaKm=1,
                         TenKh=kh.TenKh,
                         Email=kh.Email,
@@ -330,7 +449,7 @@ namespace WebLapTop.Controllers
                 
                 var products = from anh in _context.Anhs
                                join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                               where anh.MaSp.ToLower().Contains(keyquery) ||  anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(keyquery+"") 
+                               where   anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(keyquery+"") 
                                || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) ||keyquery.Contains(anh.MaSpNavigation.ThuongHieu.Trim().ToLower()+"")
                                || keyquery.Contains(anh.MaSpNavigation.LoaiSp.Trim().ToLower())
                                select new Anh
@@ -400,12 +519,19 @@ namespace WebLapTop.Controllers
             }
             catch(Exception)
             { throw; }
-            if(MaKm !=0)
+
+            var order = _context.OrderCarts.FirstOrDefault();
+            if(order==null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            if (MaKm !=0)
             {
                 var checkCoupon = _context.Khachhangs.FirstOrDefault(u => u.MaKm == MaKm && u.Email.Equals(email));
                 if(checkCoupon!=null)
                 {
-                    var order = _context.OrderCarts.FirstOrDefault();
+                    
                     order.MaKm = MaKm;
                     _context.SaveChanges();
                     

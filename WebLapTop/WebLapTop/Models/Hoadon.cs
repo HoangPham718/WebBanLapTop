@@ -21,6 +21,8 @@ namespace WebLapTop.Models
         public string Sdtnn { get; set; }
         public string DiaChi { get; set; }
         public int? TrangThai { get; set; }
+        public String shippingNote { get; set; }
+        public int? shipping { get; set; }
 
         public virtual Khachhang MaKhNavigation { get; set; }
         public virtual Nhanvien MaNvNavigation { get; set; }
