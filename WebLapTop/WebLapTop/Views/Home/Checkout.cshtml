@@ -1,50 +1,28 @@
 ﻿@{
     ViewData["Title"] = "Checkout";
+    double makm = -1;
+    if (!String.IsNullOrEmpty(ViewData["CouponCode"].ToString()))
+    {
+        makm = Convert.ToDouble(ViewData["CouponCode"].ToString());
+    }
+    Khuyenmai khuyenmai = new Khuyenmai();
+    if (ViewData["CouponDetail"] != null)
+    {
+        khuyenmai = ViewData["CouponDetail"] as Khuyenmai;
+    }
+
+    Khachhang khachhang = ViewData["InfoCustomer"] as Khachhang;
+
+    double total = Convert.ToDouble(ViewData["Total"].ToString());
+
+    double finalTotal = 0;
+    if (makm != -1)
+    { finalTotal = total * (100 - makm) / 100; }
+
+    var RelativePros = ViewData["RelativePros"] as List<Anh>;
+
 }
-
-@*<div class="mainmenu-area">
-    <div class="container">
-        <div class="row">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Detail">Chi tiết sản phẩm</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Cart">Giỏ hàng</a></li>
-                    <li class="active"><a asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
-                    <li>
-                        <input type="text" name="search" style="padding:20px" placeholder="Tỉm sản phẩm..." />
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-search"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>*@ <!-- End mainmenu area -->
-
-@*<div class="product-big-title-area">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="product-bit-title text-center">
-                    <h2>Thanh toán</h2>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>*@
-
+@model WebLapTop.Models.OrderCart
 
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
@@ -53,352 +31,207 @@
             <div class="col-md-4">
                 <div class="single-sidebar">
                     <h2 class="sidebar-title">Tìm kiếm sản phẩm</h2>
-                    <form action="#">
-                        <input type="text" placeholder="Tìm sản phẩm...">
-                        <input type="submit" value="Tìm">
-                    </form>
-                </div>
+                    @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get))
+                    {
+                        <form action="#">
+                            <input type="text" name="keyword" placeholder="Tìm sản phẩm...">
+                            <input type="submit" value="Tìm">
+                        </form>
+                    }
+                    </div>
 
                 <div class="single-sidebar">
-                    <h2 class="sidebar-title">Sản phẩm tương tự</h2>
-                    <div class="thubmnail-recent">
-                        <img src="~/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$800.00</del>
+                    <h2 class="sidebar-title">Sản phẩm cùng hãng</h2>
+                    @foreach (var item in RelativePros)
+                    {
+                        <div class="thubmnail-recent">
+                            <img src="@item.MaAnh" class="recent-thumb" alt="">
+                            <h2><a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.MaSpNavigation.TenSp</a></h2>
+                            <div class="product-sidebar-price">
+                                <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)))</del>
+                            </div>
                         </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="~/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="~/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
-                    <div class="thubmnail-recent">
-                        <img src="~/img/product-thumb-1.jpg" class="recent-thumb" alt="">
-                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></h2>
-                        <div class="product-sidebar-price">
-                            <ins>$700.00</ins> <del>$800.00</del>
-                        </div>
-                    </div>
+                    }
                 </div>
 
-                <div class="single-sidebar">
-                    <h2 class="sidebar-title">Từ khóa tương tự</h2>
-                    <ul>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                        <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                    </ul>
-                </div>
             </div>
 
             <div class="col-md-8">
                 <div class="product-content-right">
                     <div class="woocommerce">
-                        <div class="woocommerce-info">
-                           Bạn phải đăng nhập <a class="showlogin" data-toggle="collapse" href="#login-form-wrap" aria-expanded="false" aria-controls="login-form-wrap">Bấm vào đây để đăng nhập</a>
-                        </div>
+                        @if (makm == 0 && makm != -1)
+                        {
+                            <p style="font-size:18px" id="billing_first_name_field" class="form-row form-row-first validate-required">
+                                Có mã khuyến mãi? Nhập vào bên dưới
+                                </p>
+                                @using (Html.BeginForm("AddCoupon", "Home", FormMethod.Post))
+                                {
+                                    <form id="coupon-collapse-wrap" method="post" class="checkout_coupon collapse">
 
-                        <form id="login-form-wrap" class="login collapse" method="post">
-                            <p>Nếu bạn đăng nhập thông tin tài khoản bên dưới sẽ tự điền nếu có sai sót vui lòng kiểm tra lại</p>
-                            <p class="form-row form-row-first">
-                                <label for="username">
-                                    Tên tài khoản hoặc email <span class="required">*</span>
-                                </label>
-                                <input type="text" id="username" name="username" class="input-text">
-                            </p>
-                            <p class="form-row form-row-last">
-                                <label for="password">
-                                    Mật khẩu <span class="required">*</span>
-                                </label>
-                                <input type="password" id="password" name="password" class="input-text">
-                            </p>
-                            <div class="clear"></div>
-
-
-                            <p class="form-row">
-                                <input type="submit" value="Đăng nhập" name="login" class="button">
-                                <label class="inline" for="rememberme"><input type="checkbox" value="forever" id="rememberme" name="rememberme"> Lưu tài khoản </label>
-                            </p>
-                            <p class="lost_password">
-                                <a href="#">Quên mật khẩu?</a>
-                            </p>
-
-                            <div class="clear"></div>
-                        </form>
-
-                        <div class="woocommerce-info">
-                            Có mã khuyến mãi? <a class="showcoupon" data-toggle="collapse" href="#coupon-collapse-wrap" aria-expanded="false" aria-controls="coupon-collapse-wrap">Bấm vào đây để nhập</a>
-                        </div>
-
-                        <form id="coupon-collapse-wrap" method="post" class="checkout_coupon collapse">
-
-                            <p class="form-row form-row-first">
-                                <input type="text" value="" id="coupon_code" placeholder="Mã khuyến mãi" class="input-text" name="coupon_code">
-                            </p>
-
-                            <p class="form-row form-row-last">
-                                <input type="submit" value="Xác nhận mã" name="apply_coupon" class="button">
-                            </p>
-
-                            <div class="clear"></div>
-                        </form>
-
-                        <form enctype="multipart/form-data" action="#" class="checkout" method="post" name="checkout">
-
-                            <div id="customer_details" class="col2-set">
-                                <div class="col-1">
-                                    <div class="woocommerce-billing-fields">
-                                        <h3>Thông tin hóa đơn</h3>
-                                        <p id="billing_shiper_fun" class="form-row form-row-first validate-required">
-                                            <label class="" for="billing_country">
-                                                Chọn cách thức giao hàng <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <select class="country_to_state country_select" id="billing_ship_fun" name="billing_ship_fun">
-                                                <option selected="selected" value="free">Giao hàng miễn phí</option>
-                                                <option  value="saving">Giao hàng tiết kiệm</option>
-                                                <option  value="fast">Giao hàng nhanh</option>
-                                            </select>
-                                        </p>
-                                        <p id="billing_country_field" class="form-row form-row-wide address-field update_totals_on_change validate-required woocommerce-validated">
-                                            <label class="" for="billing_country">
-                                                Chọn tỉnh thành <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <select class="country_to_state country_select" id="billing_country" name="billing_country">
-                                                <option value="AG">An Giang</option>
-                                                <option value="BR">Bà Rịa – Vũng Tàu</option>
-                                                <option value="BG">Bắc Giang</option>
-                                                <option value="BK">Bắc Kạn</option>
-                                                <option value="BL">Bạc Liêu</option>
-                                                <option value="BN">Bắc NinH</option>
-                                                <option value="BT">Bến Tre</option>
-                                                <option value="BĐ">Bình Định</option>
-                                                <option value="BD">Bình Dương</option>
-                                                <option value="BP">Bình Phước</option>
-                                                <option value="BTh">Bình Thuận</option>
-                                                <option value="CM">Cà Mau</option>
-                                                <option value="CT">Cần Thơ</option>
-                                                <option value="CB">Cao Bằng</option>
-                                                <option value="ĐN">Đà Nẵng</option>
-                                                <option value="ĐL">Đắk Lắk</option>
-                                                <option value="ĐN">Đắk Nông</option>
-                                                <option value="ĐB">Điện Biên</option>
-                                                <option value="ĐNa">Đồng Nai</option>
-                                                <option value="ĐT">Đồng Tháp</option>
-                                                <option value="GL">Gia Lai</option>
-                                                <option value="HG">Hà Giang</option>
-                                                <option value="HNa">Hà Nam</option>
-                                                <option value="HN">Hà Nội</option>
-                                                <option value="HT">Hà Tĩnh</option>
-                                                <option value="HD">Hải Dương</option>
-                                                <option value="HP">Hải Phòng</option>
-                                                <option value="HG">Hậu Giang</option>
-                                                <option value="HB">Hòa Bình</option>
-                                                <option value="HY">Hưng Yên</option>
-                                                <option value="KH">Khánh Hòa</option>
-                                                <option value="KG">Kiên Giang</option>
-                                                <option value="KT">Kon Tum</option>
-                                                <option value="LC">Lai Châu</option>
-                                                <option value="LĐ">Lâm Đồng</option>
-                                                <option value="LS">Lạng Sơn</option>
-                                                <option value="LC">Lào Cai</option>
-                                                <option value="LA">Long An</option>
-                                                <option value="NĐ">Nam Định</option>
-                                                <option value="NA">Nghệ An</option>
-                                                <option value="NB">Ninh Bình</option>
-                                                <option value="NT">Ninh Thuận</option>
-                                                <option value="PT">Phú Thọ</option>
-                                                <option value="PY">Phú Yên</option>
-                                                <option value="QB">Quảng Bình</option>
-                                                <option value="QN">Quảng Nam</option>
-                                                <option value="QNg">Quảng Ngãi</option>
-                                                <option value="QN">Quảng Ninh</option>
-                                                <option value="QT">Quảng Trị</option>
-                                                <option value="ST">Sóc Trăng</option>
-                                                <option value="SL">Sơn La</option>
-                                                <option value="TN">Tây Ninh</option>
-                                                <option value="TB">Thái Bình</option>
-                                                <option value="TNg">Thái Nguyên</option>
-                                                <option value="TH">Thanh Hóa</option>
-                                                <option value="TTH">Thừa Thiên Huế</option>
-                                                <option value="TG">Tiền Giang</option>
-                                                <option selected="selected" value="HCM">TP Hồ Chí Minh</option>
-                                                <option value="TV">Trà Vinh</option>
-                                                <option value="TQ">Tuyên Quang</option>
-                                                <option value="VL">Vĩnh Long</option>
-                                                <option value="VP">Vĩnh Phúc</option>
-                                                <option value="YB">Yên bái</option>
-                                            </select>
+                                        <p class="form-row form-row-first">
+                                            <input type="text" placeholder="Mã khuyến mãi" value="" id="coupon_code" class="input-text" name="code">
                                         </p>
 
-                                        <p id="billing_first_name_field" class="form-row form-row-first validate-required">
-                                            <label class="" for="billing_first_name">
-                                                Họ và tên đệm <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <input type="text" value="" placeholder="" id="billing_first_name" name="billing_first_name" class="input-text ">
+                                        <p class="form-row form-row-last">
+                                            <input type="submit" value="Xác nhận mã" name="apply_coupon" class="button">
                                         </p>
 
-                                        <p id="billing_last_name_field" class="form-row form-row-last validate-required">
-                                            <label class="" for="billing_last_name">
-                                                Tên <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <input type="text" value="" placeholder="" id="billing_last_name" name="billing_last_name" class="input-text ">
-                                        </p>
                                         <div class="clear"></div>
+                                    </form>
+                                }
+                                }
+                                @using (Html.BeginForm("AddBill", "Home", FormMethod.Post))
+                                {<form enctype="multipart/form-data" action="#" class="checkout" method="post" name="checkout">
 
-                                        <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
-                                            <label class="" for="billing_address_1">
-                                                Địa chỉ <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <input type="text" value="" placeholder="Tên đường" id="billing_address_1" name="billing_address_1" class="input-text ">
-                                        </p>
+                                        <div id="customer_details" class="col2-set">
+                                            <div class="col-1">
+                                                <div class="woocommerce-billing-fields">
+                                                    <h3>Thông tin hóa đơn</h3>
+                                                    <p id="billing_shiper_fun" class="form-row form-row-first validate-required">
+                                                        <label class="" for="billing_country">
+                                                            Chọn cách thức giao hàng(phí giao hàng bạn sẽ trả khi gặp shipper) <abbr title="required" class="required">*</abbr>
+                                                        </label>
+                                                        <select class="country_to_state country_select" id="shipping" name="shipping">
+                                                            <option selected="selected" value="1">Giao hàng tiết kiệm</option>
+                                                            <option value="2">Giao hàng nhanh</option>
+                                                        </select>
+                                                    </p>
+                                                    <p id="billing_first_name_field" class="form-row form-row-first validate-required">
+                                                        <label class="" for="billing_first_name">
+                                                            Họ và tên người nhận<abbr title="required" class="required">*</abbr>
+                                                        </label>
+                                                        <input  type="text" value="@khachhang.TenKh" placeholder="" id="TenNn" name="TenNn" class="input-text ">
+                                                    </p>
+                                                    <div class="clear"></div>
 
-                                        <p id="billing_address_2_field" class="form-row form-row-wide address-field">
-                                            <input type="text" value="" placeholder="Số nhà, con hẻm,..." id="billing_address_2" name="billing_address_2" class="input-text ">
-                                        </p>
+                                                    <p id="billing_address_1_field" class="form-row form-row-wide address-field validate-required">
+                                                        <label class="" for="billing_address_1">
+                                                            Địa chỉ  nhận hàng<abbr title="required" class="required">*</abbr>
+                                                        </label>
+                                                        <input type="text" value="@khachhang.DiaChi" placeholder="Tên đường" id="DiaChi" name="DiaChi" class="input-text ">
+                                                    </p>
 
-                                        <div class="create-account">
-                                            <p>Ấn vào đây để quay lại đăng kí tài khoản.</p>
-                                            <p id="account_password_field" class="form-row validate-required">
-                                                <a asp-area="" asp-controller="Home" asp-action="Signup">Đăng kí</a>
-                                            </p>
-                                            <div class="clear"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="woocommerce-shipping-fields">
+
+                                                    <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
+                                                        <label class="" for="billing_phone">
+                                                            Số điện thoại người nhận <abbr title="required" class="required">*</abbr>
+                                                        </label>
+                                                        <input type="text" value="@khachhang.Sdt" placeholder="" id="Sdtnn" name="Sdtnn" class="input-text ">
+                                                    </p>
+                                                    <div class="clear"></div>
+
+                                                    <p id="order_comments_field" class="form-row notes">
+                                                        <label class="" for="order_comments">Ghi chú</label>
+                                                        <textarea cols="5" rows="2" placeholder="Ghi chú cho shipper khi giao hàng" id="shippingNote" class="input-text " name="shippingNote"></textarea>
+                                                    </p>
+                                                </div>
+                                            </div>
+
                                         </div>
 
+                                        <h3 id="order_review_heading">Đơn hàng của bạn</h3>
+
+                                        <div id="order_review" style="position: relative;">
+                                            <table class="shop_table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="product-name">Sản phẩm</th>
+                                                        <th class="product-total">Giá</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (OrderCart item in ViewBag.OrderCart)
+                                                    {
+                                                        <tr class="cart_item">
+                                                            <td class="product-name">
+                                                                @item.TenSP <strong class="product-quantity">X @item.SL cái</strong>
+                                                            </td>
+                                                            <td class="product-total">
+                                                                <span class="amount">@(String.Format("{0:0,0}",(item.SL*item.DonGia))) VNĐ</span>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+
+                                                    <tr class="cart-subtotal">
+                                                        <th>Tổng giá trị giỏ hàng</th>
+                                                        <td>
+                                                            <span class="amount">@total</span>
+                                                        </td>
+                                                    </tr>
+                                                    @if (makm != -1)
+                                                    {
+                                                        <tr class="coupon-check">
+                                                            <th>Mã khuyến mãi</th>
+                                                            <td>
+                                                                <span class="coupon-name">@khuyenmai.TenKm %</span>
+                                                            </td>
+                                                        </tr>
+
+
+                                                        <tr class="order-total">
+                                                            <th>Thành tiền</th>
+                                                            <td><strong><span class="amount">@(String.Format("{0:0,0}",finalTotal)) VNĐ</span></strong> </td>
+                                                        </tr>
+                                                    }
+                                                    else if (makm == 0)
+                                                    {
+                                                        <tr class="coupon-check">
+                                                            <th>Mã khuyến mãi</th>
+                                                            <td>
+                                                                <span class="coupon-name">Chưa nhập</span>
+                                                            </td>
+                                                        </tr>
+
+
+                                                        <tr class="order-total">
+                                                            <th>Thành tiền</th>
+                                                            <td><strong><span class="amount">@(String.Format("{0:0,0}",total)) VNĐ</span></strong> </td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr class="shipping">
+                                                            <th>Nothing here</th>
+                                                        </tr>
+                                                    }
+                                                </tfoot>
+                                            </table>
+
+
+                                            <div id="payment">
+                                                <!--<ul class="payment_methods methods">
+                                <li class="payment_method_cheque">
+                                    <input type="radio" data-order_button_text="" value="cheque" name="payment_method" class="input-radio" id="payment_method_cheque">
+                                    <label for="payment_method_cheque">Thanh toán trực tiếp </label>
+                                </li>-->
+                                                @*<li class="payment_method_paypal">
+                                    <input type="radio" checked="checked" data-order_button_text="Proceed to PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
+                                    <label for="payment_method_paypal">
+                                        PayPal <img alt="PayPal Acceptance Mark" src="https://www.paypalobjects.com/webstatic/mktg/Logo/AM_mc_vs_ms_ae_UK.png"><a title="What is PayPal?" onclick="javascript:window.open('https://www.paypal.com/gb/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" class="about_paypal" href="https://www.paypal.com/gb/webapps/mpp/paypal-popup">What is PayPal?</a>
+                                    </label>
+                                    <div style="display:none;" class="payment_box payment_method_paypal">
+                                        <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
                                     </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="woocommerce-shipping-fields">
-                                        <p id="billing_city_field" class="form-row form-row-wide address-field validate-required" data-o_class="form-row form-row-wide address-field validate-required">
-                                            <label class="" for="billing_city">
-                                                Huyện <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <input type="text" value="" placeholder="Quận / huyện" id="billing_city" name="billing_city" class="input-text ">
-                                        </p>
+                                </li>*@
+                                                <!--</ul>-->
 
-                                        <p id="billing_postcode_field" class="form-row form-row-last address-field validate-required validate-postcode" data-o_class="form-row form-row-last address-field validate-required validate-postcode">
-                                            <label class="" for="billing_postcode">
-                                                Xã <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <input type="text" value="" placeholder="Xã / làng" id="billing_postcode" name="billing_postcode" class="input-text ">
-                                        </p>
+                                                <div class="form-row place-order">                                                   
+                                                    <input type="submit" data-value="Place order" value="Đặt hàng" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
+                                                </div>
 
-                                        <div class="clear"></div>
+                                                <div class="clear"></div>
 
-                                        <p id="billing_email_field" class="form-row form-row-first validate-required validate-email">
-                                            <label class="" for="billing_email">
-                                                Địa chỉ Email <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <input type="text" value="" placeholder="" id="billing_email" name="billing_email" class="input-text ">
-                                        </p>
-
-                                        <p id="billing_phone_field" class="form-row form-row-last validate-required validate-phone">
-                                            <label class="" for="billing_phone">
-                                                Số điện thoại <abbr title="required" class="required">*</abbr>
-                                            </label>
-                                            <input type="text" value="" placeholder="" id="billing_phone" name="billing_phone" class="input-text ">
-                                        </p>
-                                        <div class="clear"></div>
-
-                                        <p id="order_comments_field" class="form-row notes">
-                                            <label class="" for="order_comments">Ghi chú</label>
-                                            <textarea cols="5" rows="2" placeholder="Ghi chú cho shipper khi giao hàng" id="order_comments" class="input-text " name="order_comments"></textarea>
-                                        </p>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <h3 id="order_review_heading">Đơn hàng của bạn</h3>
-
-                            <div id="order_review" style="position: relative;">
-                                <table class="shop_table">
-                                    <thead>
-                                        <tr>
-                                            <th class="product-name">Sản phẩm</th>
-                                            <th class="product-total">Giá</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="cart_item">
-                                            <td class="product-name">
-                                                Acer nitro 5 <strong class="product-quantity">× 1</strong>
-                                            </td>
-                                            <td class="product-total">
-                                                <span class="amount">1500$</span>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-
-                                        <tr class="cart-subtotal">
-                                            <th>Tổng giá trị giỏ hàng</th>
-                                            <td>
-                                                <span class="amount">1500$</span>
-                                            </td>
-                                        </tr>
-
-                                        <tr class="shipping">
-                                            <th>Cách thức vận chuyển</th>
-                                            <td>
-
-                                                Free Shipping
-                                                <input type="hidden" class="shipping_method" value="free ship" id="shipping_method_0" data-index="0" name="shipping_method[0]">
-                                            </td>
-                                        </tr>
-
-
-                                        <tr class="order-total">
-                                            <th>Thành tiền</th>
-                                            <td><strong><span class="amount">1500$</span></strong> </td>
-                                        </tr>
-
-                                    </tfoot>
-                                </table>
-
-
-                                <div id="payment">
-                                    <ul class="payment_methods methods">
-                                        <li class="payment_method_cheque">
-                                            <input type="radio" data-order_button_text="" value="cheque" name="payment_method" class="input-radio" id="payment_method_cheque">
-                                            <label for="payment_method_cheque">Thanh toán trực tiếp </label>
-                                        </li>
-                                        <li class="payment_method_paypal" >
-                                            <input type="radio" checked="checked" data-order_button_text="Proceed to PayPal" value="paypal" name="payment_method" class="input-radio" id="payment_method_paypal">
-                                            <label for="payment_method_paypal">
-                                                PayPal <img alt="PayPal Acceptance Mark" src="https://www.paypalobjects.com/webstatic/mktg/Logo/AM_mc_vs_ms_ae_UK.png"><a title="What is PayPal?" onclick="javascript:window.open('https://www.paypal.com/gb/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;" class="about_paypal" href="https://www.paypal.com/gb/webapps/mpp/paypal-popup">What is PayPal?</a>
-                                            </label>
-                                            <div style="display:none;" class="payment_box payment_method_paypal">
-                                                <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal account.</p>
                                             </div>
-                                        </li>
-                                    </ul>
-
-                                    <div class="form-row place-order">
-
-                                        <input type="submit" data-value="Place order" value="Đặt hàng" id="place_order" name="woocommerce_checkout_place_order" class="button alt">
-
-
-                                    </div>
-
-                                    <div class="clear"></div>
-
-                                </div>
-                            </div>
-                        </form>
-
-                    </div>
+                                        </div>
+                                    </form>
+                                }
+                        </div>
                 </div>
             </div>
         </div>

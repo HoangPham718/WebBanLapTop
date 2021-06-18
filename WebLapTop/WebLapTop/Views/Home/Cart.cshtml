@@ -11,7 +11,7 @@
 
     double finaltotal = total;
     Khuyenmai khuyenmai=new Khuyenmai();
-    if (ViewData["Coupon"] != null)
+    if (ViewData["Coupon"] != null && !ViewData["Coupon"].ToString().Equals("Sucess"))
     {  coupon= ViewData["Coupon"].ToString();
         khuyenmai = ViewData["Coupon"] as Khuyenmai;
         finaltotal = total * (100 - khuyenmai.LoaiKm.Value) / 100;
@@ -32,10 +32,13 @@
             <div class="col-md-4">
                 <div class="single-sidebar">
                     <h2 class="sidebar-title">Tìm kiếm sản phẩm</h2>
-                    <form action="#">
-                        <input type="text" placeholder="Tìm sản phẩm...">
-                        <input type="submit" value="Tìm">
-                    </form>
+                    @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get))
+                    {
+                        <form action="#">
+                            <input type="text" name="keyword" placeholder="Tìm sản phẩm...">
+                            <input type="submit" value="Tìm">
+                        </form>
+                    }
                 </div>
 
                 <div class="single-sidebar">
@@ -94,10 +97,8 @@
 
                                                         <td class="product-quantity">
                                                             <div class="quantity buttons_added">
-                                                                <input type="button" class="minus" value="-">
-                                                                <input type="number" size="4" class="input-text qty text" title="Qty" value="@item.SL" min="0" step="1">
-                                                                <input type="button" class="plus" value="+">
-                                                            </div>
+                                                                <input readonly="readonly" type="text" size="4" class="input-text qty text" title="Qty" value="@item.SL" min="0" step="1"> 
+                                                           </div>
                                                         </td>
 
                                                         <td class="product-subtotal">
@@ -150,7 +151,7 @@
                                                         }
 
                                                     </div>
-                                                    <button name="update_cart" class="updatecart-btn">Cập nhập giỏ</button>
+                                                    
                                                     <button  name="proceed" class="checkout-btn" asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</button>
                                                 </td>
                                             </tr>
