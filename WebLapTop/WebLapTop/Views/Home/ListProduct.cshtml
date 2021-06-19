@@ -1,13 +1,14 @@
 ﻿@{
     ViewData["Title"] = "ListProduct";
 }
-@model WebLapTop.Models.Anh
+@using PagedList.Mvc
+@model PagedList.IPagedList<WebLapTop.Models.Anh>
     <div class="maincontent-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
             <h2>Kết quả cho @ViewData["key"] </h2>
             <div class="row"  style="background-color:white; display:flex ; flex-wrap:wrap">
-                @foreach (var item in ViewBag.Anh)
+                @foreach (var item in Model)
                 {
                     <div class="col-md-3" >
                     <div class="single-product">
@@ -28,13 +29,18 @@
                 }
             </div>
             <div class="row" style="font-size:18px;text-align:right;padding:20px;margin-top:20px">
-                <button class="pagebtn"><a href="" title="Trang đầu" class="fist"><i class="fa fa-angle-double-left"></i></a></button>
-                <button class="pagebtn"><a href="" title="Trang trước" class="prev"><i class="fa fa-angle-left"></i></a></button>
-                <button class="pagebtn"><a href="" title="Trang 1" class="choose">1</a></button>
-                <button class="pagebtn"><a href="" title="Trang 2">2</a></button>
-                <button class="pagebtn"><a href="" title="Trang 3">3</a></button>
-                <button class="pagebtn"><a href="" title="Trang sau" class="next"><i class="fa fa-angle-right"></i></a></button>
-                <button class="pagebtn"><a href="" title="Trang cuối" class="last"><i class="fa fa-angle-double-right"></i></a></button>
-</div>
+                Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                <div class="PageOptions">
+                        @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = 1 }, new { @class = "fa fa-angle-double-left",Title= "Trang đầu" })
+
+                        @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageNumber-1 }, new { @class = "fa fa-angle-left", Title = "Trang trước" })
+
+                        @Html.ActionLink(Model.PageNumber+"", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageNumber }, new { @class="PageChoose" })
+
+                        @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageNumber+1 }, new { @class = "fa fa-angle-right", Title = "Trang sau" })
+
+                        @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageCount }, new { @class = "fa fa-angle-double-right", Title = "Trang cuối" })
+                </div>
+            </div>
         </div>
     </div> <!-- End main content area -->

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using PagedList;
 namespace WebLapTop.Controllers
 {
     public class HomeController : Controller
@@ -65,9 +66,30 @@ namespace WebLapTop.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult InfoAccount()
         {
-            return View();
+            string email = LogCheck();
+            ViewData["Log"] = email;
+
+            if(TempData["RemoveReadonly"]!=null)
+            {
+                ViewData["RemoveReadonly"] = true;
+                TempData["RemoveReadonly"] = null;
+            }
+            if(TempData["ValidPhone"] !=null)
+            {
+                ViewData["ValidPhone"] = TempData["ValidPhone"];
+                TempData["ValidPhone"] = null;
+            }
+            var info = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
+
+            var mota = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == info.MaKm).MoTa;
+            if(mota!=null)
+                ViewData["mota"] = mota;
+            else
+                ViewData["mota"] = "";
+
+            return View(info);
         }
         public IActionResult Cart()
         {
@@ -431,11 +453,21 @@ namespace WebLapTop.Controllers
             ViewData["Log"] = LogCheck();
             return View();
         }
-        public IActionResult ListProduct(String keyword)
+        public IActionResult ListProduct(String keyword,int? page)
         {
+            //check login 
             ViewData["Log"] = LogCheck();
-            ViewData["Message"] = "";
             string keyquery="";
+
+            //page
+
+            if (page == null||page<1) page = 1;
+
+            int pageSize = 12;
+            int pageNumber = page.Value;
+            IPagedList<Anh> listPro = null;
+
+
             if (String.IsNullOrEmpty(keyword))
             {
                 keyquery = "";
@@ -459,14 +491,17 @@ namespace WebLapTop.Controllers
                                    MaSpNavigation = sp,
                                };
                 ViewData["key"] = keyword;
-                ViewBag.Anh = products.ToList();
+                products = products.OrderByDescending(u => u.MaSpNavigation.NgayTao);
+                listPro=products.ToPagedList(pageNumber,pageSize);
+
+                
             }
             catch(Exception)
             {
                 throw;
             }
 
-            return View();
+            return View(listPro);
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -555,6 +590,77 @@ namespace WebLapTop.Controllers
             _context.OrderCarts.Remove(itemRemove);
             _context.SaveChanges();
             return RedirectToAction("Cart");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateUser(Khachhang khachhang)
+        {
+            String email = LogCheck();
+            if(khachhang.Sdt.Count()<10)
+            {
+                TempData["ValidPhone"] = "Số điện thoại sai";
+                TempData["RemoveReadonly"] = true;
+                return RedirectToAction("InfoAccount");
+            }
+
+            var updateInfo = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
+
+            //thay đổi email session
+            if(!email.Equals(khachhang.Email))
+            {
+                HttpContext.Session.SetString("EmailUser", khachhang.Email);
+                Response.Cookies.Append("userName", khachhang.Email);
+            }
+
+            updateInfo.TenKh = khachhang.TenKh;
+            updateInfo.DiaChi = khachhang.DiaChi;
+            updateInfo.Email = khachhang.Email;
+            updateInfo.Sdt = khachhang.Sdt;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("InfoAccount");
+        }
+        public IActionResult ChangePassword()
+        {
+            string email = LogCheck();
+            ViewData["Log"] = email;
+
+
+            return View();
+        }
+        public IActionResult RemoveReadonly()
+        {
+            TempData["RemoveReadonly"] = true;
+            return RedirectToAction("InfoAccount");
+        }
+        [HttpPost]
+        public IActionResult ChangePassword(KhachHangValid kh)
+        {
+
+            String email = LogCheck();
+            ViewData["Log"] = email;
+            if (kh.MatKhau.Count()<6 || kh.MatKhau.Count()>24)
+            {
+                ViewData["InValidPass"] = "Độ dài mật khẩu sai";
+                 return View();
+            }
+            if(!kh.MatKhau.Equals(kh.reMatKhau))
+            {
+                ViewData["InValidPass"] = "Nhập lại mật khẩu sai";
+                return View();
+            }
+
+
+            var updatePass = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
+            updatePass.MatKhau = kh.MatKhau;
+            if (!String.IsNullOrEmpty(Request.Cookies["remember"].ToString()))
+            {
+                Response.Cookies.Append("userPass", kh.MatKhau);
+            }
+            _context.SaveChanges();
+
+            return RedirectToAction("InfoAccount");
         }
     }
 }

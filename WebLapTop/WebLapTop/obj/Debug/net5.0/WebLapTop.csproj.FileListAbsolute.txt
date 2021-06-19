@@ -63,7 +63,6 @@ E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Det
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\ListProduct.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Login.cshtml.g.cs
-E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Privacy.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Signup.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
@@ -79,4 +78,8 @@ E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\ref\WebLapTop.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.pdb
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.genruntimeconfig.cache
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\PagedList.dll
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\PagedList.Mvc.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.csproj.AssemblyReference.cache
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\ChangePassword.cshtml.g.cs
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\InfoAccount.cshtml.g.cs
