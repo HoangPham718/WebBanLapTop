@@ -12,20 +12,21 @@
     text-transform: uppercase;
     padding: 11px 15px;
 }
-.pagebtn {
-    background-color: white;
+.PageOptions > a {
     color: black;
+    padding: 8px;
+    border-style: solid;
+    border-color: white;
+    background-color: white;
 }
-.pagebtn a{
-    color:black;
+.PageOptions > a:hover{
+    color:blue;
+    text-decoration:underline;
 }
-.pagebtn a:hover {
-        color: red;
-}
-.choose {
+.PageChoose {
     color: red;
     text-decoration: underline;
-}
+ }
 .field-validation-error {
     color: #ff0000;
 }

@@ -49,21 +49,22 @@
                         <li><a asp-area="" asp-controller="Home" asp-action="Cart">Giỏ hàng - <span class="cart-amunt">Đ</span> <i class="fa fa-shopping-cart"></i></a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
                         <li>
-                            @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get,new {@style="display:flex" }))
+                            @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get, new { @style = "display:flex" }))
                             {
                                 <input type="text" name="keyword" style="padding:20px" placeholder="Từ khóa tìm..." />
                                 <input type="submit" style="padding:20px" value="Tìm kiếm" />
                             }
                         </li>
-                            @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
-                            {
-                                <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
-                            }
-                            else
-                            {
-                                <li><a asp-area="" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
-                            }
-                        </ul>
+                        @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
+                        {
+                            <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-area="" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount" >Tài khoản - <i class="fa fa-user"></i></a></li>
+                        }
+                    </ul>
                 </div>
             </div>
         </div>

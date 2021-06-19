@@ -1,0 +1,95 @@
+﻿@{
+    ViewData["Title"] = "InfoAccount";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+@model WebLapTop.Models.Khachhang
+
+<div class="main">
+
+    <!-- Sign up form -->
+    <section class="signup">
+        <div class="container-1">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Thông tin tài khoản</h2>
+                    @using (Html.BeginForm("UpdateUser", "Home", FormMethod.Post))
+                    {
+                    <form method="POST" class="register-form" id="register-form">
+                    @if (ViewData["RemoveReadonly"] != null)
+                    {
+                        @if(ViewData["ValidPhone"] !=null)
+                            {
+                           <p> Sai định dạng số điện thoại</p>
+                            }
+                        <div class="form-group">
+                            Họ vả tên :
+                            <label for="name"><i class="zmdi zmdi-accounts-outline"></i></label>
+                            <input name="TenKh" id="TenKh"  required="required" value="@Model.TenKh"  />
+                        </div>
+                        <div class="form-group">
+                            Email :
+                            <label for="email"><i class="zmdi zmdi-email"></i></label>
+                            <input type="email" name="Email"  required="required"  id="Email" value="@Model.Email"  />
+                        </div>
+                        <div class="form-group">
+                            Địa chỉ :
+                            <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                            <input name="DiaChi" id="DiaChi" required="required" value="@Model.DiaChi"  />
+                        </div>
+                        <div class="form-group">
+                            Số diện thoại :
+                            <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                            <input type="number" name="Sdt" id="Sdt" required="required" value="@Model.Sdt"  />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            Họ vả tên :
+                            <label for="name"><i class="zmdi zmdi-accounts-outline"></i></label>
+                            <input name="TenKh" id="TenKh" value="@Model.TenKh" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            Email :
+                            <label for="email"><i class="zmdi zmdi-email"></i></label>
+                            <input name="Email" id="Email" value="@Model.Email" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            Địa chỉ :
+                            <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                            <input name="DiaChi" id="DiaChi" value="@Model.DiaChi" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            Số diện thoại :
+                            <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                            <input name="Sdt" id="Sdt" value="@Model.Sdt" readonly="readonly" />
+                        </div>
+                    }
+                    <div class="form-group">
+                        Mã khuyến mãi của bạn :
+                        <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                        <input name="MaKm" id="MaKM" value="@Model.MaKm" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        Thông tin mã khuyến mãi :
+                        <br />
+                        @ViewData["mota"]
+                        <input name="MaKm" id="MaKM" value="@Model.MaKm" readonly="readonly" />
+                    </div>
+                    <div class="form-group form-button" >
+                        @if (ViewData["RemoveReadonly"] != null)
+                        {
+                            <input type="submit" name="signup" id="signup" class="form-submit" value="Cập nhật" />
+                        }
+                        </div>
+                </form>
+                    }
+                </div>
+                <div class="signup-image">
+                    <a  asp-area="" asp-controller="Home" asp-action="RemoveReadonly" style=" font-size: 20px; color: white; display: block; text-align: center;" class="change-user-image-link">Sửa thông tin</a>
+                    <a asp-area="" asp-controller="Home" asp-action="ChangePassword" style=" font-size: 20px; color: white; display: block; text-align: center;" class="change-pass-image-link">Đổi mật khẩu</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
