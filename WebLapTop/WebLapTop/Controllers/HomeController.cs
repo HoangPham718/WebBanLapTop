@@ -281,6 +281,25 @@ namespace WebLapTop.Controllers
                 };
 
                 _context.Chitiethoadons.Add(chitiethoadon);
+
+                //remove soluong tu kho
+                var kho= _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).Sum(u => u.SoLuong);
+                kho = kho - chitiethoadon.SoLuong;
+
+                var updateKho = _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).ToList();
+
+                double total = 0;
+                foreach(KhoSanpham sanpham in updateKho)
+                {
+                    total = total + sanpham.SoLuong.Value;
+                    if(total>=chitiethoadon.SoLuong)
+                    {
+                        sanpham.SoLuong = kho;
+                        break;
+                    }
+                    sanpham.SoLuong = 0;
+                }
+
             }
             _context.OrderCarts.RemoveRange(listOrder);
             _context.SaveChanges();
@@ -405,7 +424,18 @@ namespace WebLapTop.Controllers
             {
                 MaSp = TempData["RouteDetail"].ToString();
                 ViewData["Order"] = "Sucess";
+                TempData["RouteDetail"] = null;
             }
+            if(TempData["OutOfStock"] !=null)
+            {
+                ViewData["OutOfStock"] = TempData["OutOfStock"];
+                ViewData["Sl"] = TempData["SL"];
+
+                TempData["SL"] = null;
+                TempData["OutOfStock"] = null;
+            }
+
+
             try
             {
                 var products = from anh in _context.Anhs
@@ -525,7 +555,22 @@ namespace WebLapTop.Controllers
         [HttpPost]
         public IActionResult AddToCart(OrderCart order)
         {
+            //check sp in order ?
             var checkOrder = _context.OrderCarts.FirstOrDefault(u=>u.MaSp.Equals(order.MaSp));
+            //check sl con lai
+            var checkPro = _context.KhoSanphams.Where(u=>u.MaSp==order.MaSp).Sum(u=>u.SoLuong);
+
+            TempData["RouteDetail"] = order.MaSp;
+
+            if (checkPro<order.SL)
+            {
+                TempData["OutOfStock"] = "Out";
+                TempData["SL"] = checkPro;
+                return RedirectToAction("Detail", "Home");
+
+            }
+
+
             if (checkOrder == null)
             {
                 var insert = _context.OrderCarts.Add(order);
@@ -536,7 +581,7 @@ namespace WebLapTop.Controllers
                 checkOrder.SL = update;
             }
             _context.SaveChanges();
-            TempData["RouteDetail"] = order.MaSp;
+
             return RedirectToAction("Detail","Home");
         }
         [HttpPost]

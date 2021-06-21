@@ -6,7 +6,7 @@
 }
 @model WebLapTop.Models.Anh
 <script >
-    if (@ViewData["Order"]!= null ||@ViewData["Order"]!= "")
+    if (@ViewData["Order"]!= null ||!@ViewData["Order"].Equals(""))
         alert("Thêm thành công");
 </script>
 <div class="single-product-area">
@@ -79,7 +79,10 @@
                                 <div class="product-inner-price">
                                     <ins>@(String.Format("{0:0,0}", ViewBag.Anh.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (ViewBag.Anh.MaSpNavigation.DonGia * 1.05)))</del>
                                 </div>
-
+                                @if (ViewData["OutOfStock"] != null)
+                                {
+                                    <span> Số lượng khả dụng còn lại @ViewData["SL"] cái</span>
+                                }
                                 @using (Html.BeginForm("AddToCart", "Home", FormMethod.Post))
                                 {
                                     <form action="" class="cart">
@@ -90,7 +93,7 @@
                                             <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSpNavigation.TenSp" name="TenSP">
                                             <input type="text" size="4" class="input-text qty text" title="Qty" value="1" name="Sl">
                                         </div>
-                                    <button class="add_to_cart_button" type="submit" ><i class="fa fa-shopping-cart"></i></button>
+                                        <button class="add_to_cart_button" type="submit"><i class="fa fa-shopping-cart"></i></button>
                                     </form>
                                 }
                                 <div class="product-inner-category">
@@ -108,25 +111,25 @@
                                             <p>@ViewBag.Anh.MaSpNavigation.ChiTietSp</p>
                                         </div>
                                         @*<div role="tabpanel" class="tab-pane fade" id="profile">
-                                                <h2>Đánh giá</h2>
-                                                <div class="submit-review">
-                                                    <p><label for="name">Tên</label> <input name="name" type="text"></p>
-                                                    <p><label for="email">Email</label> <input name="email" type="email"></p>
-                                                    <div class="rating-chooser">
-                                                        <p>Đánh giá</p>
+                    <h2>Đánh giá</h2>
+                    <div class="submit-review">
+                        <p><label for="name">Tên</label> <input name="name" type="text"></p>
+                        <p><label for="email">Email</label> <input name="email" type="email"></p>
+                        <div class="rating-chooser">
+                            <p>Đánh giá</p>
 
-                                                        <div class="rating-wrap-post">
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
-                                                        </div>
-                                                    </div>
-                                                    <p><label for="review">Bình luận</label> <textarea name="review" id="" cols="30" rows="10"></textarea></p>
-                                                    <p><input type="submit" value="Gửi"></p>
-                                                </div>
-                                            </div>*@
+                            <div class="rating-wrap-post">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                        <p><label for="review">Bình luận</label> <textarea name="review" id="" cols="30" rows="10"></textarea></p>
+                        <p><input type="submit" value="Gửi"></p>
+                    </div>
+                </div>*@
                                     </div>
                                 </div>
 
