@@ -126,10 +126,16 @@
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">Tên khách hàng</h2>
                         <ul>
-                            <li><a href="#">Tài khoản</a></li>
-                            <li><a href="#">Lịch sử mua</a></li>
-                            <li><a href="#">Giỏ hàng</a></li>
-                            <li><a href="#">Liên hệ</a></li>
+                            @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
+                            {
+                                <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
+                            }
+                            else
+                            {
+                                <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount">Tài khoản - <i class="fa fa-user"></i></a></li>
+                            }
+                            <li><a asp-area="" asp-controller="Home" asp-action="Cart">Giỏ hàng</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
                         </ul>
                     </div>
                 </div>
@@ -138,25 +144,25 @@
                     <div class="footer-menu">
                         <h2 class="footer-wid-title">Loại laptop</h2>
                         <ul>
-                            <li><a href="#">Laptop văn phòng</a></li>
-                            <li><a href="#">Laptop Gaming</a></li>
-                            <li><a href="#">Macbook Mỏng & nhẹ</a></li>
-                            <li><a href="#">Giá cả hợp lí</a></li>
-                            <li><a href="#">Hiệu năng cao</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop văn phòng">Laptop văn phòng</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop gaming">Laptop Gaming</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop văn phòng">Macbook</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop văn phòng">Giá cả hợp lí</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop gaming">Hiệu năng cao</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-newsletter">
-                        <h2 class="footer-wid-title">Bản tin</h2>
-                        <p>Đăng kí để nhận thông báo về các sản phẩm của shop!</p>
-                        <div class="newsletter-form">
+                        <h2 class="footer-wid-title" >Tìm kiếm sản phẩm</h2>
+                        @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get))
+                        {
                             <form action="#">
-                                <input type="email" placeholder="Điền vào email của bạn">
-                                <input type="submit" value="Đăng kí">
+                                <input type="text" name="keyword" placeholder="Tìm sản phẩm...">
+                                <input type="submit" value="Tìm">
                             </form>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -168,7 +174,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="copyright">
-                        <p>&copy; 2015 uCommerce. All Rights Reserved. <a href="" target="_blank">shoplaptop.com</a></p>
+                        <p>&copy; 2015 uCommerce. All Rights Reserved. <a asp-area="" asp-action="Index" asp-controller="Home" target="_blank">shoplaptop.com</a></p>
                     </div>
                 </div>
 

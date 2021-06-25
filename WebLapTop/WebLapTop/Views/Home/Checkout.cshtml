@@ -41,7 +41,7 @@
                     </div>
 
                 <div class="single-sidebar">
-                    <h2 class="sidebar-title">Sản phẩm cùng hãng</h2>
+                    <h2 class="sidebar-title">Sản phẩm gợi í</h2>
                     @foreach (var item in RelativePros)
                     {
                         <div class="thubmnail-recent">
@@ -161,7 +161,7 @@
                                                     <tr class="cart-subtotal">
                                                         <th>Tổng giá trị giỏ hàng</th>
                                                         <td>
-                                                            <span class="amount">@total</span>
+                                                            <span class="amount">@(String.Format("{0:0,0}",total))</span>
                                                         </td>
                                                     </tr>
                                                     @if (makm != -1)

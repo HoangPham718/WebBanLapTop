@@ -5,10 +5,6 @@
 
 }
 @model WebLapTop.Models.Anh
-<script >
-    if (@ViewData["Order"]!= null ||!@ViewData["Order"].Equals(""))
-        alert("Thêm thành công");
-</script>
 <div class="single-product-area">
     <div class="zigzag-bottom"></div>
     <div class="container">
@@ -79,22 +75,29 @@
                                 <div class="product-inner-price">
                                     <ins>@(String.Format("{0:0,0}", ViewBag.Anh.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (ViewBag.Anh.MaSpNavigation.DonGia * 1.05)))</del>
                                 </div>
-                                @if (ViewData["OutOfStock"] != null)
+                                @if (Convert.ToInt32(ViewData["InStock"].ToString()) != 0)
                                 {
-                                    <span> Số lượng khả dụng còn lại @ViewData["SL"] cái</span>
+                                    if (ViewData["OutOfStock"] != null)
+                                    {
+                                        <span> Số lượng khả dụng còn lại: @ViewData["SL"] cái</span>
+                                    }
+                                    @using (Html.BeginForm("AddToCart", "Home", FormMethod.Post))
+                                    {
+                                        <form action="" class="cart">
+                                            <div class="quantity">
+                                                <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaAnh" name="MaAnh">
+                                                <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSp" name="MaSp">
+                                                <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSpNavigation.DonGia" name="DonGia">
+                                                <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSpNavigation.TenSp" name="TenSP">
+                                                <input type="text" size="4" class="input-text qty text" title="Qty" value="1" name="Sl">
+                                            </div>
+                                            <button class="add_to_cart_button" type="submit"><i class="fa fa-shopping-cart"></i></button>
+                                        </form>
+                                    }
                                 }
-                                @using (Html.BeginForm("AddToCart", "Home", FormMethod.Post))
+                                else
                                 {
-                                    <form action="" class="cart">
-                                        <div class="quantity">
-                                            <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaAnh" name="MaAnh">
-                                            <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSp" name="MaSp">
-                                            <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSpNavigation.DonGia" name="DonGia">
-                                            <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSpNavigation.TenSp" name="TenSP">
-                                            <input type="text" size="4" class="input-text qty text" title="Qty" value="1" name="Sl">
-                                        </div>
-                                        <button class="add_to_cart_button" type="submit"><i class="fa fa-shopping-cart"></i></button>
-                                    </form>
+                                    <span> HẾT HÀNG</span>
                                 }
                                 <div class="product-inner-category">
                                     <p>Thể loại: <a href="">@ViewBag.Anh.MaSpNavigation.LoaiSp</a>
