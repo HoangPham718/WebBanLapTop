@@ -22,6 +22,7 @@ namespace WebLapTop.Controllers
 
         public IActionResult Index()
         {
+            TempData["Route"] = "Index";
 
             ViewData["Log"] = LogCheck();
 
@@ -87,13 +88,13 @@ namespace WebLapTop.Controllers
             if(mota!=null)
                 ViewData["mota"] = mota;
             else
-                ViewData["mota"] = "";
+                ViewData["mota"] = "Không có khuyến mãi nào!";
 
             return View(info);
         }
         public IActionResult Cart()
         {
-
+            TempData["Route"] = "Cart";
             String email = LogCheck();
             ViewData["Log"] = email;
             try
@@ -178,6 +179,7 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Checkout()
         {
+
             String email = LogCheck();
             ViewData["Log"] = email;
 
@@ -354,7 +356,7 @@ namespace WebLapTop.Controllers
                             Response.Cookies.Append("userName", log.Email);
                             HttpContext.Session.SetString("EmailUser", log.Email);
                             HttpContext.Session.SetString("PassWord", log.MatKhau);
-                            return RedirectToAction("Index");
+                            return RedirectToAction(TempData["Route"].ToString());          
                         }
                         else
                         {
@@ -419,11 +421,9 @@ namespace WebLapTop.Controllers
         public IActionResult Detail(String MaSp)
         {
             ViewData["Log"] = LogCheck();
-            ViewData["Order"] = "";
             if (TempData["RouteDetail"] != null)
             {
                 MaSp = TempData["RouteDetail"].ToString();
-                ViewData["Order"] = "Sucess";
                 TempData["RouteDetail"] = null;
             }
             if(TempData["OutOfStock"] !=null)
@@ -435,6 +435,8 @@ namespace WebLapTop.Controllers
                 TempData["OutOfStock"] = null;
             }
 
+            var checkPro = _context.KhoSanphams.Where(u => u.MaSp == MaSp).Sum(u => u.SoLuong);
+            ViewData["InStock"] = checkPro;
 
             try
             {
@@ -480,6 +482,7 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Contact()
         {
+            TempData["Route"] = "Cart";
             ViewData["Log"] = LogCheck();
             return View();
         }
@@ -581,7 +584,6 @@ namespace WebLapTop.Controllers
                 checkOrder.SL = update;
             }
             _context.SaveChanges();
-
             return RedirectToAction("Detail","Home");
         }
         [HttpPost]
