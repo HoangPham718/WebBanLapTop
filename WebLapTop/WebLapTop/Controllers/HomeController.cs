@@ -24,6 +24,12 @@ namespace WebLapTop.Controllers
         {
             TempData["Route"] = "Index";
 
+            ViewData["AlertBill"] = "";
+            if (TempData["AlertBill"] != null)
+            {
+                ViewData["AlertBill"] = TempData["AlertBill"];
+                TempData["AlertBill"] = null;
+            }
             ViewData["Log"] = LogCheck();
 
             try
@@ -179,7 +185,7 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Checkout()
         {
-
+            TempData["Route"] = "Checkout";
             String email = LogCheck();
             ViewData["Log"] = email;
 
@@ -305,6 +311,7 @@ namespace WebLapTop.Controllers
             }
             _context.OrderCarts.RemoveRange(listOrder);
             _context.SaveChanges();
+            TempData["AlertBill"] = "Sucess";
             return RedirectToAction("Index");
         }
         public IActionResult Login()
@@ -421,11 +428,17 @@ namespace WebLapTop.Controllers
         public IActionResult Detail(String MaSp)
         {
             ViewData["Log"] = LogCheck();
+            ViewData["Order"] = "";
+            //order
             if (TempData["RouteDetail"] != null)
             {
                 MaSp = TempData["RouteDetail"].ToString();
                 TempData["RouteDetail"] = null;
+                ViewData["Order"] = TempData["Order"];
+                TempData["Order"] = null;
             }
+
+            //check sl
             if(TempData["OutOfStock"] !=null)
             {
                 ViewData["OutOfStock"] = TempData["OutOfStock"];
@@ -583,6 +596,7 @@ namespace WebLapTop.Controllers
                 int update = order.SL + checkOrder.SL;
                 checkOrder.SL = update;
             }
+            TempData["Order"] = "sucess";
             _context.SaveChanges();
             return RedirectToAction("Detail","Home");
         }
@@ -628,7 +642,7 @@ namespace WebLapTop.Controllers
             {
                 TempData["Coupon"] = "ErrorCoupon";
             }
-            return RedirectToAction("Cart");
+            return RedirectToAction(TempData["Route"].ToString());
         }
         [HttpGet]
         public IActionResult RemovefromCart(String MaSp)
