@@ -38,7 +38,7 @@
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
                         <li>
-                            <a href="">Loại sản phẩm</a>
+                            <a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="">Loại sản phẩm</a>
                             <ul class="dropdown-menu">
                                 <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop gaming">Laptop gaming</a></li>
                                 <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop văn phòng">Laptop văn phòng</a></li>
@@ -73,7 +73,7 @@
     </main>
     @*<div class="zalo-chat-widget" data-oaid="579745863508352884" data-welcome-message="Rất vui khi được hỗ trợ bạn!" data-autopopup="0" data-width="350" data-height="420"></div>
 
-    <script src="https://sp.zalo.me/plugins/sdk.js"></script>*@
+        <script src="https://sp.zalo.me/plugins/sdk.js"></script>*@
     <div class="promo-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
@@ -155,7 +155,7 @@
 
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-newsletter">
-                        <h2 class="footer-wid-title" >Tìm kiếm sản phẩm</h2>
+                        <h2 class="footer-wid-title">Tìm kiếm sản phẩm</h2>
                         @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get))
                         {
                             <form action="#">
@@ -211,7 +211,26 @@
 
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/main.js"></script>
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
 
+        // When the user clicks the button, open the modal
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

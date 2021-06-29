@@ -11,7 +11,7 @@
 
     double finaltotal = total;
     Khuyenmai khuyenmai=new Khuyenmai();
-    if (ViewData["Coupon"] != null && !ViewData["Coupon"].ToString().Equals("Sucess"))
+    if (ViewData["Coupon"] != null && !ViewData["Coupon"].ToString().Equals("ErrorCoupon"))
     {  coupon= ViewData["Coupon"].ToString();
         khuyenmai = ViewData["Coupon"] as Khuyenmai;
         finaltotal = total * (100 - khuyenmai.LoaiKm.Value) / 100;
