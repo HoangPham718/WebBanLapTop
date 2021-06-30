@@ -127,19 +127,28 @@ namespace WebLapTop.Controllers
                     {
                         var khuyenmai = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == checkKM.MaKm);
                         ViewData["Coupon"] = khuyenmai;
+                        TempData["Coupon"] = null;
                     }
                     else
                     {
                         checkKM.MaKm = 0;
                         _context.SaveChanges();
-                        ViewData["Coupon"] = TempData["Coupon"];
+                        ViewData["Coupon"] = TempData["Coupon"] !=null?TempData["Coupon"] :"";
+                        TempData["Coupon"] = null;
                     }
                 }
                 else
                 {
                     ViewData["Coupon"] = TempData["Coupon"];
+                    TempData["Coupon"] = null;
                 }
-
+                //cart k co gi ma nhap coupon
+                ViewData["AlertOrder"] = "";
+                if (TempData["AlertOrder"]!=null)
+                {
+                    ViewData["AlertOrder"] = TempData["AlertOrder"];
+                    TempData["AlertOrder"] = null;
+                }
                 //get data
 
                 var product = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(Masp));
@@ -619,7 +628,8 @@ namespace WebLapTop.Controllers
             var order = _context.OrderCarts.FirstOrDefault();
             if(order==null)
             {
-                return RedirectToAction("Index");
+                TempData["AlertOrder"] = "None";
+                return RedirectToAction(TempData["Route"].ToString());
             }
 
             if (MaKm !=0)
