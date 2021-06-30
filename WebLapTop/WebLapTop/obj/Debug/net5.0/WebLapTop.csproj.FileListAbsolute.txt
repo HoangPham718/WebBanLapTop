@@ -26,6 +26,8 @@ E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\Microsoft.IdentityMo
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\Newtonsoft.Json.dll
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\PagedList.dll
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\PagedList.Mvc.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\System.Configuration.ConfigurationManager.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\System.Diagnostics.DiagnosticSource.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
@@ -57,10 +59,12 @@ E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.TagHelpers
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.TagHelpers.output.cache
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.RazorCoreGenerate.cache
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Cart.cshtml.g.cs
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\ChangePassword.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Checkout.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Contact.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Detail.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\InfoAccount.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\ListProduct.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Login.cshtml.g.cs
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\Signup.cshtml.g.cs
@@ -78,8 +82,4 @@ E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\ref\WebLapTop.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.pdb
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.genruntimeconfig.cache
-E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\PagedList.dll
-E:\Github\WebBanLapTop\WebLapTop\WebLapTop\bin\Debug\net5.0\PagedList.Mvc.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.csproj.AssemblyReference.cache
-E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\ChangePassword.cshtml.g.cs
-E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Home\InfoAccount.cshtml.g.cs
