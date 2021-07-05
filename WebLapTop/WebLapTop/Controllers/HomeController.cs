@@ -443,6 +443,9 @@ namespace WebLapTop.Controllers
             {
                 MaSp = TempData["RouteDetail"].ToString();
                 TempData["RouteDetail"] = null;
+            }
+            if(TempData["Order"]!=null)
+            {
                 ViewData["Order"] = TempData["Order"];
                 TempData["Order"] = null;
             }
