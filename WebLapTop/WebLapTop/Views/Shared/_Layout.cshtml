@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+}
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -51,7 +54,7 @@
                             @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get))
                             {
                                 <input type="text" name="keyword" style="padding:20px" placeholder="Từ khóa tìm..." />
-                                <input type="submit" style="padding:20px" value="Tìm kiếm" />
+                                <input class="SearchInput" type="submit" style="padding:20px;background-color:white;color:black" value="Tìm kiếm" />
                             }
                         </li>
                         @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
@@ -61,7 +64,7 @@
                         else
                         {
                             <li><a asp-area="" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
-                            <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount">Tài khoản - <i class="fa fa-user"></i></a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount">@HttpContextAccessor.HttpContext.Session.GetString("UserName") - <i class="fa fa-user"></i></a></li>
                         }
                     </ul>
                 </div>
@@ -124,7 +127,7 @@
 
                 <div class="col-md-3 col-sm-6">
                     <div class="footer-menu">
-                        <h2 class="footer-wid-title">Tên khách hàng</h2>
+                        <h2 class="footer-wid-title">Khách hàng</h2>
                         <ul>
                             @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
                             {
@@ -174,7 +177,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <div class="copyright">
-                        <p>&copy; 2015 uCommerce. All Rights Reserved. <a asp-area="" asp-action="Index" asp-controller="Home" target="_blank">shoplaptop.com</a></p>
+                        <p>&copy; 2021 Shoplaptop All Rights Reserved. <a asp-area="" asp-action="Index" asp-controller="Home" target="_blank">shoplaptop.com</a></p>
                     </div>
                 </div>
 

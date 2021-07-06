@@ -22,7 +22,7 @@
 
                         <h2><a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp"> @item.MaSpNavigation.ThuongHieu @item.MaSpNavigation.TenSp</a></h2>
                         <div class="product-carousel-price">
-                            <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)))</del>
+                            <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia).Replace(',', '.')) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)).Replace(',', '.'))</del>
                         </div>
                     </div>
                     </div>

@@ -20,6 +20,12 @@ namespace WebLapTop.Controllers
             this._context = context;
         }
 
+
+        public String findNameUser(string email)
+        {
+            var user = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
+            return user.TenKh.Split(" ").Last();
+        }
         public IActionResult Index()
         {
             TempData["Route"] = "Index";
@@ -30,7 +36,14 @@ namespace WebLapTop.Controllers
                 ViewData["AlertBill"] = TempData["AlertBill"];
                 TempData["AlertBill"] = null;
             }
-            ViewData["Log"] = LogCheck();
+
+            String email = LogCheck();
+            ViewData["Log"] =email;
+            if(!String.IsNullOrEmpty(email))
+            {
+                TempData["UserName"] = findNameUser(email);
+            }
+            
 
             try
             {
@@ -78,7 +91,9 @@ namespace WebLapTop.Controllers
             string email = LogCheck();
             ViewData["Log"] = email;
 
-            if(TempData["RemoveReadonly"]!=null)
+
+
+            if (TempData["RemoveReadonly"]!=null)
             {
                 ViewData["RemoveReadonly"] = true;
                 TempData["RemoveReadonly"] = null;
@@ -103,6 +118,9 @@ namespace WebLapTop.Controllers
             TempData["Route"] = "Cart";
             String email = LogCheck();
             ViewData["Log"] = email;
+
+
+
             try
             {
 
@@ -197,6 +215,8 @@ namespace WebLapTop.Controllers
             TempData["Route"] = "Checkout";
             String email = LogCheck();
             ViewData["Log"] = email;
+
+
 
             if (String.IsNullOrEmpty(email))
             {
@@ -372,6 +392,7 @@ namespace WebLapTop.Controllers
                             Response.Cookies.Append("userName", log.Email);
                             HttpContext.Session.SetString("EmailUser", log.Email);
                             HttpContext.Session.SetString("PassWord", log.MatKhau);
+                            HttpContext.Session.SetString("UserName",findNameUser(log.Email));
                             return RedirectToAction(TempData["Route"].ToString());          
                         }
                         else
@@ -436,7 +457,10 @@ namespace WebLapTop.Controllers
         [HttpGet]
         public IActionResult Detail(String MaSp)
         {
-            ViewData["Log"] = LogCheck();
+            String email = LogCheck();
+            ViewData["Log"] = email;
+
+
             ViewData["Order"] = "";
             //order
             if (TempData["RouteDetail"] != null)
@@ -470,7 +494,7 @@ namespace WebLapTop.Controllers
                                where anh.MaSp.Equals(MaSp)
                                select new Anh
                                {
-                                   MaAnh = "/img/" + anh.MaAnh + ".png",
+                                   MaAnh = anh.MaAnh,
                                    MaSp = sp.MaSp,
                                    MaSpNavigation = sp,
                                };
@@ -508,7 +532,9 @@ namespace WebLapTop.Controllers
         public IActionResult Contact()
         {
             TempData["Route"] = "Cart";
-            ViewData["Log"] = LogCheck();
+            String email = LogCheck();
+            ViewData["Log"] = email;
+
             return View();
         }
         public IActionResult ListProduct(String keyword,int? page)
