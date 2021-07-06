@@ -48,7 +48,7 @@
                             <img src="@item.MaAnh" class="recent-thumb" alt="">
                             <h2><a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.MaSpNavigation.TenSp</a></h2>
                             <div class="product-sidebar-price">
-                                <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)))</del>
+                                <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia).Replace(',', '.')) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)).Replace(',', '.'))</del>
                             </div>
                         </div>
                     }
@@ -151,7 +151,7 @@
                                                                 @item.TenSP <strong class="product-quantity">X @item.SL cái</strong>
                                                             </td>
                                                             <td class="product-total">
-                                                                <span class="amount">@(String.Format("{0:0,0}",(item.SL*item.DonGia))) VNĐ</span>
+                                                                <span class="amount">@(String.Format("{0:0,0}",(item.SL*item.DonGia)).Replace(',', '.')) VNĐ</span>
                                                             </td>
                                                         </tr>
                                                     }
@@ -161,7 +161,7 @@
                                                     <tr class="cart-subtotal">
                                                         <th>Tổng giá trị giỏ hàng</th>
                                                         <td>
-                                                            <span class="amount">@(String.Format("{0:0,0}",total))</span>
+                                                            <span class="amount">@(String.Format("{0:0,0}",total).Replace(',', '.'))</span>
                                                         </td>
                                                     </tr>
                                                     @if (makm != -1)
@@ -176,7 +176,7 @@
 
                                                         <tr class="order-total">
                                                             <th>Thành tiền</th>
-                                                            <td><strong><span class="amount">@(String.Format("{0:0,0}",finalTotal)) VNĐ</span></strong> </td>
+                                                            <td><strong><span class="amount">@(String.Format("{0:0,0}",finalTotal).Replace(',', '.')) VNĐ</span></strong> </td>
                                                         </tr>
                                                     }
                                                     else if (makm == 0)
@@ -191,7 +191,7 @@
 
                                                         <tr class="order-total">
                                                             <th>Thành tiền</th>
-                                                            <td><strong><span class="amount">@(String.Format("{0:0,0}",total)) VNĐ</span></strong> </td>
+                                                            <td><strong><span class="amount">@(String.Format("{0:0,0}",total).Replace(',', '.')) VNĐ</span></strong> </td>
                                                         </tr>
                                                     }
                                                     else

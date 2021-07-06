@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{@using Microsoft.AspNetCore.Http;
+  @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+}
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -39,7 +42,7 @@
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
                         <li>
-                            <a href="">Loại sản phẩm</a>
+                            <a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="">Loại sản phẩm</a>
                             <ul class="dropdown-menu">
                                 <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop gaming">Laptop gaming</a></li>
                                 <li><a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="Laptop văn phòng">Laptop văn phòng</a></li>
@@ -52,7 +55,7 @@
                             @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get, new { @style = "display:flex" }))
                             {
                                 <input type="text" name="keyword" style="padding:20px" placeholder="Từ khóa tìm..." />
-                                <input type="submit" style="padding:20px" value="Tìm kiếm" />
+                                <input class="SearchInput" type="submit" style="padding:20px;background-color:white;color:black" value="Tìm kiếm" />
                             }
                         </li>
                         @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
@@ -62,7 +65,7 @@
                         else
                         {
                             <li><a asp-area="" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
-                            <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount" >Tài khoản - <i class="fa fa-user"></i></a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount">@HttpContextAccessor.HttpContext.Session.GetString("UserName") - <i class="fa fa-user"></i></a></li>
                         }
                     </ul>
                 </div>

@@ -44,6 +44,11 @@
         text-decoration: none;
         cursor: pointer;
     }
+
+input:hover[type="submit"] .SearchInput:hover {
+    background-color: blue;
+    color: black;
+}
 .checkout-btn {
     background: none repeat scroll 0 0 #5a88ca;
     border: medium none;
@@ -233,7 +238,7 @@ z-index: 999;}
 
 .mainmenu-area ul.navbar-nav li a {
     color: #000;
-    font-size: 14px;
+    font-size: 18px;
     padding: 20px;
 }
 
@@ -913,10 +918,15 @@ input[type="submit"]:hover, button[type=submit]:hover {background-color: #222}
     margin-left: 15px;
     width: 76px;
 }
-.product-name {
-    font-size: 25px;
-    margin-bottom: 20px;
-}
+.product-gallery img:hover {
+     -ms-transform: scale(1.5); /* IE 9 */
+     -webkit-transform: scale(1.5); /* Safari 3-8 */
+    transform: scale(1.5);
+ }
+    .product-name {
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
 .product-inner-price {
     margin-bottom: 25px;
 }
@@ -1073,7 +1083,7 @@ td.actions div.coupon {
     width: 40%;
 }
 .cart-collaterals h2 {
-    color: #5a88ca;
+    color: yellow;
     font-size: 25px;
     margin-bottom: 25px;
     text-transform: uppercase;

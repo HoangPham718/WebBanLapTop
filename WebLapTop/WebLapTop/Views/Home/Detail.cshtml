@@ -25,12 +25,12 @@
                     <div class="single-sidebar">
                         <h2 class="sidebar-title">Tìm kiếm sản phẩm</h2>
                         @using (Html.BeginForm("ListProduct", "Home", FormMethod.Get))
-                                    {
-                                        <form action="#">
-                                            <input type="text" name="keyword" placeholder="Tìm sản phẩm...">
-                                            <input type="submit" value="Tìm">
-                                        </form>
-                                    }
+                        {
+                            <form action="#">
+                                <input type="text" name="keyword" placeholder="Tìm sản phẩm...">
+                                <input type="submit" value="Tìm">
+                            </form>
+                        }
                     </div>
 
                     <div class="single-sidebar">
@@ -41,20 +41,20 @@
                                 <img src="@item.MaAnh" class="recent-thumb" alt="">
                                 <h2><a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.MaSpNavigation.TenSp</a></h2>
                                 <div class="product-sidebar-price">
-                                    <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)))</del>
+                                    <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia).Replace(',', '.')) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)).Replace(',', '.'))</del>
                                 </div>
                             </div>
                         }
                         @*<div class="single-sidebar">
-                                <h2 class="sidebar-title">Từ khóa tương tự</h2>
-                                <ul>
-                                    <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                                    <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                                    <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                                    <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                                    <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
-                                </ul>
-                            </div>*@
+                        <h2 class="sidebar-title">Từ khóa tương tự</h2>
+                        <ul>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="Detail">Dell Vostro</a></li>
+                        </ul>
+                    </div>*@
                     </div>
                 </div>
 
@@ -70,13 +70,13 @@
                             <div class="col-sm-6">
                                 <div class="product-images">
                                     <div class="product-main-img">
-                                        <img src="@ViewBag.Anh.MaAnh" alt="">
+                                        <img src="@("/img/"+ViewBag.Anh.MaAnh+".png")" alt="">
                                     </div>
 
                                     <div class="product-gallery">
-                                        <img src="~/img/product-thumb-1.jpg" alt="">
-                                        <img src="~/img/product-thumb-2.jpg" alt="">
-                                        <img src="~/img/product-thumb-3.jpg" alt="">
+                                        <img src="@("/img/1-"+ViewBag.Anh.MaAnh+".png")" alt="">
+                                        <img src="@("/img/2-"+ViewBag.Anh.MaAnh+".png")" alt="">
+                                        <img src="@("/img/3-"+ViewBag.Anh.MaAnh+".png")" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                                 <div class="product-inner">
                                     <h2 class="product-name">@ViewBag.Anh.MaSpNavigation.ThuongHieu @ViewBag.Anh.MaSpNavigation.TenSp</h2>
                                     <div class="product-inner-price">
-                                        <ins>@(String.Format("{0:0,0}", ViewBag.Anh.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (ViewBag.Anh.MaSpNavigation.DonGia * 1.05)))</del>
+                                        <ins>@(String.Format("{0:0,0}", ViewBag.Anh.MaSpNavigation.DonGia).Replace(',', '.')) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (ViewBag.Anh.MaSpNavigation.DonGia * 1.05)).Replace(',', '.'))</del>
                                     </div>
                                     @if (Convert.ToInt32(ViewData["InStock"].ToString()) != 0)
                                     {
@@ -112,7 +112,7 @@
                                         <span> HẾT HÀNG</span>
                                     }
                                     <div class="product-inner-category">
-                                        <p>Thể loại: <a href="">@ViewBag.Anh.MaSpNavigation.LoaiSp</a>
+                                        <p>Thể loại:<a asp-area="" asp-controller="Home" asp-action="ListProduct" asp-route-keyword="@ViewBag.Anh.MaSpNavigation.LoaiSp">@ViewBag.Anh.MaSpNavigation.LoaiSp</a>
                                     </div>
 
                                     <div role="tabpanel">
@@ -126,58 +126,60 @@
                                                 <p>@ViewBag.Anh.MaSpNavigation.ChiTietSp</p>
                                             </div>
                                             @*<div role="tabpanel" class="tab-pane fade" id="profile">
-                                                    <h2>Đánh giá</h2>
-                                                    <div class="submit-review">
-                                                        <p><label for="name">Tên</label> <input name="name" type="text"></p>
-                                                        <p><label for="email">Email</label> <input name="email" type="email"></p>
-                                                        <div class="rating-chooser">
-                                                            <p>Đánh giá</p>
+                                            <h2>Đánh giá</h2>
+                                            <div class="submit-review">
+                                                <p><label for="name">Tên</label> <input name="name" type="text"></p>
+                                                <p><label for="email">Email</label> <input name="email" type="email"></p>
+                                                <div class="rating-chooser">
+                                                    <p>Đánh giá</p>
 
-                                                            <div class="rating-wrap-post">
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                                <i class="fa fa-star"></i>
-                                                            </div>
-                                                        </div>
-                                                        <p><label for="review">Bình luận</label> <textarea name="review" id="" cols="30" rows="10"></textarea></p>
-                                                        <p><input type="submit" value="Gửi"></p>
+                                                    <div class="rating-wrap-post">
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
+                                                        <i class="fa fa-star"></i>
                                                     </div>
-                                                </div>*@
+                                                </div>
+                                                <p><label for="review">Bình luận</label> <textarea name="review" id="" cols="30" rows="10"></textarea></p>
+                                                <p><input type="submit" value="Gửi"></p>
+                                            </div>
+                                        </div>*@
                                         </div>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="related-products-wrapper">
-                            <h2 class="related-products-title">Bạn có thể thích</h2>
-                            <div class="related-products-carousel">
-                                @foreach (var item in RelativePros)
-                                {
-                                    <div class="single-product">
-                                        <div class="product-f-image">
-                                            <img src="@item.MaAnh" alt="">
-                                            <div class="product-hover">
-                                                <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
-                                                <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
-                                            </div>
-                                        </div>
-
-                                        <h2><a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.MaSpNavigation.ThuongHieu @item.MaSpNavigation.TenSp</a></h2>
-
-                                        <div class="product-carousel-price">
-                                            <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia)) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)))</del>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="latest-product">
+                        <h2 class="related-products-title">Bạn có thể thích</h2>
+                                <div class="product-carousel">
+                                    @foreach (var item in RelativePros)
+                                    {
+                                        <div class="single-product">
+                                            <div class="product-f-image">
+                                                <img src="@item.MaAnh" alt="">
+                                                <div class="product-hover">
+                                                    <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
+                                                    <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp" class="view-details-link"><i class="fa fa-link"></i> Xem chi tiết</a>
+                                                </div>
+                                            </div>
+
+                                            <h2><a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.MaSpNavigation.ThuongHieu @item.MaSpNavigation.TenSp</a></h2>
+
+                                            <div class="product-carousel-price">
+                                                <ins>@(String.Format("{0:0,0}", @item.MaSpNavigation.DonGia).Replace(',', '.')) VNĐ</ins> <del style="color:red;">@(String.Format("{0:0,0}", (@item.MaSpNavigation.DonGia*1.05)).Replace(',', '.'))</del>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
         </div>
     </div>

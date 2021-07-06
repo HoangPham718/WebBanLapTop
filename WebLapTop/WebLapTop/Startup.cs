@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WebLapTop.Models;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace WebLapTop
 {
@@ -34,6 +35,7 @@ namespace WebLapTop
 
             services.AddDistributedMemoryCache();
             services.AddSession((options) => { options.IdleTimeout = TimeSpan.FromMinutes(45); });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
