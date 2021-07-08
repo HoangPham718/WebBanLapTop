@@ -1,21 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Github\\WebBanLapTop\\WebLapTop\\WebLapTop\\WebLapTop.csproj": {}
+    "C:\\Users\\WIN\\Desktop\\WebBanLapTop\\WebLapTop\\WebLapTop\\WebLapTop.csproj": {}
   },
   "projects": {
-    "E:\\Github\\WebBanLapTop\\WebLapTop\\WebLapTop\\WebLapTop.csproj": {
+    "C:\\Users\\WIN\\Desktop\\WebBanLapTop\\WebLapTop\\WebLapTop\\WebLapTop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Github\\WebBanLapTop\\WebLapTop\\WebLapTop\\WebLapTop.csproj",
+        "projectUniqueName": "C:\\Users\\WIN\\Desktop\\WebBanLapTop\\WebLapTop\\WebLapTop\\WebLapTop.csproj",
         "projectName": "WebLapTop",
-        "projectPath": "E:\\Github\\WebBanLapTop\\WebLapTop\\WebLapTop\\WebLapTop.csproj",
-        "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-        "outputPath": "E:\\Github\\WebBanLapTop\\WebLapTop\\WebLapTop\\obj\\",
+        "projectPath": "C:\\Users\\WIN\\Desktop\\WebBanLapTop\\WebLapTop\\WebLapTop\\WebLapTop.csproj",
+        "packagesPath": "C:\\Users\\WIN\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\WIN\\Desktop\\WebBanLapTop\\WebLapTop\\WebLapTop\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ACER\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\WIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -65,6 +71,10 @@
             "Microsoft.Extensions.Caching.Memory": {
               "target": "Package",
               "version": "[5.0.0, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[5.0.2, )"
             },
             "PagedList.Mvc": {
               "target": "Package",
