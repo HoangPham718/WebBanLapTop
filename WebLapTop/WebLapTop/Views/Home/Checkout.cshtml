@@ -86,7 +86,7 @@
                                         <div id="customer_details" class="col2-set">
                                             <div class="col-1">
                                                 <div class="woocommerce-billing-fields">
-                                                    <h3>Thông tin hóa đơn</h3>
+                                                    <h3 style="padding-top:10px;font-size:24px">Thông tin hóa đơn</h3>
                                                     <p id="billing_shiper_fun" class="form-row form-row-first validate-required">
                                                         <label class="" for="billing_country">
                                                             Chọn cách thức giao hàng(phí giao hàng bạn sẽ trả khi gặp shipper) <abbr title="required" class="required">*</abbr>
@@ -164,19 +164,10 @@
                                                             <span class="amount">@(String.Format("{0:0,0}",total).Replace(',', '.'))</span>
                                                         </td>
                                                     </tr>
-                                                    @if (makm != -1)
+                                                    @if (makm == -1)
                                                     {
-                                                        <tr class="coupon-check">
-                                                            <th>Mã khuyến mãi</th>
-                                                            <td>
-                                                                <span class="coupon-name">@khuyenmai.TenKm %</span>
-                                                            </td>
-                                                        </tr>
-
-
-                                                        <tr class="order-total">
-                                                            <th>Thành tiền</th>
-                                                            <td><strong><span class="amount">@(String.Format("{0:0,0}",finalTotal).Replace(',', '.')) VNĐ</span></strong> </td>
+                                                        <tr class="shipping">
+                                                            <th>Nothing here</th>
                                                         </tr>
                                                     }
                                                     else if (makm == 0)
@@ -196,8 +187,17 @@
                                                     }
                                                     else
                                                     {
-                                                        <tr class="shipping">
-                                                            <th>Nothing here</th>
+                                                        <tr class="coupon-check">
+                                                            <th>Mã khuyến mãi</th>
+                                                            <td>
+                                                                <span class="coupon-name">@khuyenmai.LoaiKm %</span>
+                                                            </td>
+                                                        </tr>
+
+
+                                                        <tr class="order-total">
+                                                            <th>Thành tiền</th>
+                                                            <td><strong><span class="amount">@(String.Format("{0:0,0}",finalTotal).Replace(',', '.')) VNĐ</span></strong> </td>
                                                         </tr>
                                                     }
                                                 </tfoot>

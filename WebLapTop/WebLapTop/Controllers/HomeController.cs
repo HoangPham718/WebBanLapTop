@@ -26,8 +26,14 @@ namespace WebLapTop.Controllers
             var user = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
             return user.TenKh.Split(" ").Last();
         }
+        public int countCart()
+        {
+            var countC = _context.OrderCarts.Sum(u => u.SL);
+            return countC;
+        }
         public IActionResult Index()
         {
+            HttpContext.Session.SetInt32("CountCart", countCart());
             TempData["Route"] = "Index";
 
             ViewData["AlertBill"] = "";
@@ -180,7 +186,7 @@ namespace WebLapTop.Controllers
                                     MaSp = sp.MaSp,
                                     MaSpNavigation = sp,
                                 };
-                ViewData["BrandPros"] = BrandPros.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+                ViewData["BrandPros"] = BrandPros.Take(4).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
 
                 var RelativeProducts = from anh in _context.Anhs
                                        join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
@@ -359,6 +365,7 @@ namespace WebLapTop.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
+            HttpContext.Session.SetInt32("CountCart", countCart());
             return RedirectToAction("Login");
         }
         [HttpPost]
@@ -457,6 +464,7 @@ namespace WebLapTop.Controllers
         [HttpGet]
         public IActionResult Detail(String MaSp)
         {
+            TempData["Route"] = "Detail";
             String email = LogCheck();
             ViewData["Log"] = email;
 
@@ -510,7 +518,7 @@ namespace WebLapTop.Controllers
                                     MaSp = sp.MaSp,
                                     MaSpNavigation = sp,
                                 };
-                ViewData["BrandPros"] = BrandPros.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+                ViewData["BrandPros"] = BrandPros.Take(4).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
 
                 var RelativeProducts = from anh in _context.Anhs
                                        join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
@@ -531,7 +539,7 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Contact()
         {
-            TempData["Route"] = "Cart";
+            TempData["Route"] = "Contact";
             String email = LogCheck();
             ViewData["Log"] = email;
 
@@ -539,6 +547,7 @@ namespace WebLapTop.Controllers
         }
         public IActionResult ListProduct(String keyword,int? page)
         {
+            TempData["Route"] = "ListProduct";
             //check login 
             ViewData["Log"] = LogCheck();
             string keyquery="";
@@ -620,7 +629,7 @@ namespace WebLapTop.Controllers
             {
                 TempData["OutOfStock"] = "Out";
                 TempData["SL"] = checkPro;
-                return RedirectToAction("Detail", "Home");
+                return RedirectToAction(TempData["Route"].ToString());
 
             }
 
@@ -636,7 +645,61 @@ namespace WebLapTop.Controllers
             }
             TempData["Order"] = "sucess";
             _context.SaveChanges();
-            return RedirectToAction("Detail","Home");
+            HttpContext.Session.SetInt32("CountCart", countCart());
+            return RedirectToAction(TempData["Route"].ToString());
+        }
+        [HttpGet]
+        public IActionResult AddOneToCart(String maSp)
+        {
+            var products = from anh in _context.Anhs
+                           join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
+                           where anh.MaSp.Equals(maSp)
+                           select new Anh
+                           {
+                               MaAnh = anh.MaAnh,
+                               MaSp = sp.MaSp,
+                               MaSpNavigation = sp,
+                           };
+            var product = products.FirstOrDefault();
+
+            OrderCart order = new OrderCart()
+            {
+                MaSp=maSp,
+                SL=1,
+                MaKm=0,
+                DonGia=product.MaSpNavigation.DonGia.Value,
+                TenSP=product.MaSpNavigation.TenSp,
+                MaAnh=product.MaAnh
+            };
+            //check sp in order ?
+            var checkOrder = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(order.MaSp));
+            //check sl con lai
+            var checkPro = _context.KhoSanphams.Where(u => u.MaSp == order.MaSp).Sum(u => u.SoLuong);
+            if (TempData["Route"].Equals("Detail"))
+            {
+                TempData["RouteDetail"] = order.MaSp;
+            }
+            if (checkPro < order.SL)
+            {
+                TempData["OutOfStock"] = "Out";
+                TempData["SL"] = checkPro;
+                return RedirectToAction(TempData["Route"].ToString());
+
+            }
+
+
+            if (checkOrder == null)
+            {
+                var insert = _context.OrderCarts.Add(order);
+            }
+            else
+            {
+                int update = order.SL + checkOrder.SL;
+                checkOrder.SL = update;
+            }
+            _context.SaveChanges();
+            HttpContext.Session.SetInt32("CountCart", countCart());
+            return RedirectToAction(TempData["Route"].ToString());
         }
         [HttpPost]
         public IActionResult AddCoupon(String code)
