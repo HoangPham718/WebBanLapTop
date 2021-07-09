@@ -25,14 +25,18 @@ namespace WebLapTop.Controllers
         // hiển thị nhân viên
         public IActionResult NhanVien()
         {
-            TempData["Route"] = "Index";
+            TempData["Route"] = "NhanVien";
 
-            ViewData["AlertBill"] = "";
-            if (TempData["AlertBill"] != null)
+            if(TempData["employee"] !=null)
             {
-                ViewData["AlertBill"] = TempData["AlertBill"];
-                TempData["AlertBill"] = null;
+
+                String id= TempData["employee"].ToString();
+                var employee = _context.Nhanviens.FirstOrDefault(u => u.MaNv.Equals(id));
+                ViewData["employee"] = employee;
+
+                TempData["employee"] = null;
             }
+
             //ViewData["Log"] = LogCheck();
 
             try
@@ -40,7 +44,7 @@ namespace WebLapTop.Controllers
                 var NVmodel = from nv in _context.Nhanviens
                               join cn in _context.Chinhanhs
                               on nv.MaCn equals cn.MaCn
-                              where nv.MaCn == cn.MaCn
+                              where nv.TrangThai==true
                               select new Nhanvien
                               {
                                   MaNv = nv.MaNv,
@@ -77,7 +81,7 @@ namespace WebLapTop.Controllers
                     var insert = _context.Nhanviens.Add(new Nhanvien
                     {
                         MaNv = lastId >= 9 ? "NV" + (lastId + 1) : "NV0" + (lastId + 1),
-                        MaCn = "CN01",
+                        MaCn = nv.MaCn,
                         TenNv = nv.TenNv,
                         Email = nv.Email,
                         Sdt = nv.Sdt,
@@ -97,45 +101,43 @@ namespace WebLapTop.Controllers
                     ModelState.AddModelError("Email", "Email đã tồn tại");
                 }
             }
-            return View();
+            return RedirectToAction("NhanVien");
         }
         // sửa nhân viên
         [HttpPost]
         public IActionResult NhanVien_sua(Nhanvien nv)
         {
-            ViewData["Log"] = "";
-            if (ModelState.IsValid)
-            {
-                var emailExist = _context.Nhanviens.FirstOrDefault(u => u.Email.Equals(nv.Email));
-                if (emailExist == null)
-                {
-                    int lastId = Convert.ToInt32(_context.Nhanviens.OrderBy(u => u.MaNv).LastOrDefault().MaNv.Substring(2));
-                    var insert = _context.Nhanviens.Add(new Nhanvien
-                    {
-                        MaNv = nv.MaNv,
-                        MaCn = "CN01",
-                        TenNv = nv.TenNv,
-                        Email = nv.Email,
-                        Sdt = nv.Sdt,
-                        DiaChi = nv.DiaChi,
-                        MatKhau = nv.MatKhau,
-                        ChucVu = nv.ChucVu,
-                        Quyen = nv.Quyen,
-                        TrangThai = true
-                    });
+             ViewData["Log"] = "";
+                    var update = _context.Nhanviens.FirstOrDefault(u => u.MaNv.Equals(nv.MaNv));
+                    update.MaCn = nv.MaCn;
+                    update.TenNv = nv.TenNv;
+                    update.Email = nv.Email;
+                    update.Sdt = nv.Sdt;
+                    update.DiaChi = nv.DiaChi;
+                    update.MatKhau = nv.MatKhau;
+                    update.ChucVu = nv.ChucVu;
+                    update.Quyen = nv.Quyen;
+                    update.TrangThai = true;
                     _context.SaveChanges();
-                    //HttpContext.Session.SetString("EmailUser", kh.Email);
-                    //HttpContext.Session.SetString("PassWord", kh.MatKhau);
-                    return RedirectToAction("NhanVien_sua");
-                }
-                else
-                {
-                    ModelState.AddModelError("Email", "Email đã tồn tại");
-                }
-            }
-            return View();
+            return RedirectToAction("NhanVien");
         }
-
+        //load data nv
+        [HttpGet]
+        public IActionResult load_DataNV(string id)
+        {
+            //tempdata k lưu dc object muốn thì dùng jsonconvert
+            TempData["employee"] = id;
+            return RedirectToAction("NhanVien");
+        }
+        [HttpGet]
+        public IActionResult NhanVien_xoa(string id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Nhanviens.FirstOrDefault(u => u.MaNv.Equals(id));
+            update.TrangThai = false;
+            _context.SaveChanges();
+            return RedirectToAction("NhanVien");
+        }
         // hiển thị khách hàng
         public IActionResult KhachHang()
         {
