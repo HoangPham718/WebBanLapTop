@@ -752,6 +752,7 @@ namespace WebLapTop.Controllers
             var itemRemove = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(MaSp));
             _context.OrderCarts.Remove(itemRemove);
             _context.SaveChanges();
+            HttpContext.Session.SetInt32("CountCart", countCart());
             return RedirectToAction("Cart");
         }
 
