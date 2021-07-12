@@ -83,3 +83,4 @@ E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\ref\WebLapTop.dll
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.pdb
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.genruntimeconfig.cache
 E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.csproj.AssemblyReference.cache
+E:\Github\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Admin\NhanVien.cshtml.g.cs
