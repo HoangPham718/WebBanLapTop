@@ -3,6 +3,8 @@
     ViewData["Title"] = "KhachHang";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var lstKH = ViewData["dsKhachHang"] as List<Khachhang>;
+
+    var update = ViewData["employee"] as Khachhang;
 }
 
 <h3>DANH SÁCH KHÁCH HÀNG</h3>
@@ -116,61 +118,61 @@ body {font-family: Arial, Helvetica, sans-serif;}
                         <div class="container-1">
                             <div class="signup-content">
                                 <div class="signup-form">
-                                    @using (Html.BeginForm("NhanVien", "Admin", FormMethod.Post))
+                                    @using (Html.BeginForm("KhachHang", "Admin", FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.ValidationSummary()
-                                    <form method="POST" class="register-form" id="register-form">
-                                        @*<div class="form-group">
-                                            <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                            <label for="fname" style="padding-right:77px">Họ tên: </label>
-                                            @Html.TextBoxFor(a => a.MaKh, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên nhân viên" })
-                                        </div>*@
-                                        <div class="form-group">
-                                            <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                            <label for="fname" style="padding-right:44px">Mã khuyến mãi: </label>
-                                            @Html.TextBoxFor(a => a.MaKm, new { @name = "name", @id = "name", @type = "text", @placeholder = "Mã khuyến mãi" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                            <label for="fname" style="padding-right:30px">Tên khách hàngh: </label>
-                                            @Html.TextBoxFor(a => a.TenKh, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên khách hàng" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="address"><i class="zmdi zmdi-my-location"></i></label>
-                                            <label for="fname" style="padding-right:113px">Email: </label>
-                                            @Html.TextBoxFor(a => a.Email, new { @name = "email", @id = "email", @type = "email", @placeholder = "Email" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
-                                            <label for="fname" style="padding-right:60px">Số điện thoại: </label>
-                                            @Html.TextBoxFor(a => a.Sdt, new { @name = "phone", @id = "phone", @type = "number", @placeholder = "Số điện thoại" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                            <label for="fname" style="padding-right:103px">Địa chỉ: </label>
-                                            @Html.PasswordFor(a => a.DiaChi, new { @name = "address", @id = "address", @type = "text", @placeholder = "Địa chỉ" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                            <label for="fname" style="padding-right:86px">Mật khẩu: </label>
-                                            @Html.PasswordFor(a => a.MatKhau, new { @name = "re-pass", @id = "re-pass", @placeholder = "Mật khẩu" })
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                            <label for="fname" style="padding-right:35px">Loại khách hàng: </label>
-                                            @Html.PasswordFor(a => a.LoaiKh, new { @name = "chucvu", @id = "chucvu", @type = "text", @placeholder = "Loại khách hàng" })
-                                        </div>
-                                        @*<div class="form-group">
-                                            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                            <label for="fname" style="padding-right:80px">Quyền: </label>
-                                            @Html.PasswordFor(a => a.Quyen, new { @name = "quyen", @id = "quyen", @type = "text", @placeholder = "Quyền" })
-                                        </div>*@
+                                        <form method="POST" class="register-form" id="register-form">
+                                            @*<div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:77px">Họ tên: </label>
+                                                    @Html.TextBoxFor(a => a.MaKh, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên nhân viên" })
+                                                </div>*@
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:44px">Mã khuyến mãi: </label>
+                                                @Html.TextBoxFor(a => a.MaKm, new { @name = "MaKm", @id = "MaKm", @type = "number", @placeholder = "Mã khuyến mãi" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:30px">Tên khách hàngh: </label>
+                                                @Html.TextBoxFor(a => a.TenKh, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên khách hàng" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                <label for="fname" style="padding-right:113px">Email: </label>
+                                                @Html.TextBoxFor(a => a.Email, new { @name = "email", @id = "email", @type = "email", @placeholder = "Email" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                                                <label for="fname" style="padding-right:60px">Số điện thoại: </label>
+                                                @Html.TextBoxFor(a => a.Sdt, new { @name = "phone", @id = "phone", @type = "number", @placeholder = "Số điện thoại" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                                <label for="fname" style="padding-right:103px">Địa chỉ: </label>
+                                                @Html.PasswordFor(a => a.DiaChi, new { @name = "address", @id = "address", @type = "text", @placeholder = "Địa chỉ" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:86px">Mật khẩu: </label>
+                                                @Html.PasswordFor(a => a.MatKhau, new { @name = "re-pass", @id = "re-pass", @placeholder = "Mật khẩu" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:35px">Loại khách hàng: </label>
+                                                @Html.PasswordFor(a => a.LoaiKh, new { @name = "chucvu", @id = "chucvu", @type = "text", @placeholder = "Loại khách hàng" })
+                                            </div>
+                                            @*<div class="form-group">
+                                                    <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                    <label for="fname" style="padding-right:80px">Quyền: </label>
+                                                    @Html.PasswordFor(a => a.Quyen, new { @name = "quyen", @id = "quyen", @type = "text", @placeholder = "Quyền" })
+                                                </div>*@
 
-                                        <div class="form-group form-button">
-                                            <input type="submit" name="signup" id="signup" class="form-submit" value="THÊM" />
-                                        </div>
-                                    </form>
+                                            <div class="form-group form-button">
+                                                <input type="submit" name="signup" id="signup" class="form-submit" value="THÊM" />
+                                            </div>
+                                        </form>
                                     }
                                 </div>
                             </div>
@@ -181,7 +183,94 @@ body {font-family: Arial, Helvetica, sans-serif;}
             </div>
         </div>
     </div>
+    @*---model update*@
+    @if (update != null)
+    {<div id="updateModal" class="modal" style="display:block">
 
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="closeu">&times;</span>
+                    @*<button style="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                    <h2>SỬA THÀNH VIÊN</h2>
+                </div>
+                <div class="modal-body">
+                    @* Nội dung thêm *@
+                    <div class="main">
+
+                        <!-- Add nhân viên form -->
+                        <section class="signup">
+                            <div class="container-1">
+                                <div class="signup-content">
+                                    <div class="signup-form">
+                                        @using (Html.BeginForm("KhachHang_sua", "Admin", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary()
+                                        <form method="POST" class="register-form" id="register-form">
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:42px">Mã khách hàng: </label>
+                                                <input name="MaKh" id="MaKh" type="text" value="@update.MaKh" disabled />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:44px">Mã khuyến mãi: </label>
+                                                <input name="MaKm" id="MaKm" type="text" value="@update.MaKm" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:37px">Tên khách hàng: </label>
+                                                <input name="TenKh" id="TenKh" type="text" value="@update.TenKh" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                <label for="fname" style="padding-right:113px">Email: </label>
+                                                <input name="Email" id="Email" type="email" value="@update.Email" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                                                <label for="fname" style="padding-right:60px">Số điện thoại: </label>
+                                                <input name="Sdt" id="Sdt" type="number" value="@update.Sdt" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                                <label for="fname" style="padding-right:103px">Địa chỉ: </label>
+                                                <input name="DiaChi" id="DiaChi" type="text" value="@update.DiaChi" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:86px">Mật khẩu: </label>
+                                                <input name="MatKhau" id="MatKhau" type="text" value="@update.MatKhau" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:114px">Điểm: </label>
+                                                <input name="Diem" id="Diem" type="text" value="@update.Diem" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:34px">Loại khách hàng: </label>
+                                                <input name="LoaiKh" id="LoaiKh" type="text" value="@update.LoaiKh" />
+                                            </div>
+                                            <input type="text" name="MaKh" style="display:none" value="@update.MaKh" />
+                                            <div class="form-group form-button">
+                                                <input type="submit" name="signup" id="signup" class="form-submit" value="Cập nhật" />
+                                            </div>
+                                        </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        @* ------------------------------------------------------ *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     <script>
         // Get the modal
         var modal = document.getElementById("myModal");
@@ -209,7 +298,31 @@ body {font-family: Arial, Helvetica, sans-serif;}
             }
         }
     </script>
+    <script>
+        // Get the modal
+        var modal_sua = document.getElementById("updateModal");
 
+        var btn_sua = document.getElementById("btn_sua");
+
+        btn_sua.onclick = function () {
+            modal_sua.style.display = "block";
+        }
+        //Get the <span> element that closes the modal
+        var span_x = document.getElementsByClassName("close")[0];
+
+
+        //// When the user clicks on <span> (x), close the modal
+        span_x.onclick = function () {
+            modal_sua.style.display = "none";
+            //}
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal_sua) {
+                    modal_sua.style.display = "none";
+                }
+            }
+    </script>
 </body>
 </html>
 @* ---------------------------------------- *@
@@ -225,9 +338,9 @@ body {font-family: Arial, Helvetica, sans-serif;}
             <td>SĐT</td>
             <td>Địa chỉ</td>
             <td>Loại khách hành</td>
-            @*<td>Trth</td>*@
-            <td>Xóa</td>
+            @*<td>Trth</td>*@            
             <td>Sửa</td>
+            <td>Xóa</td>
         </tr>
     </thead>
     <tbody>
@@ -245,8 +358,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
             <td>@item.LoaiKh</td>
             @*<td>@item.TrangThai</td>*@
             @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
-            <td><button>Sửa</button></td>
-            <td><button>Xóa</button></td>
+            <td><button><a asp-area="" asp-controller="Admin" asp-action="load_DataKH" asp-route-id="@item.MaKh">Sửa</a></button></td>
+            <td><button><a asp-area="" asp-controller="Admin" asp-action="KhachHang_xoa" asp-route-id="@item.MaKh">Xóa</a></button></td>
         </tr>
             }
         }

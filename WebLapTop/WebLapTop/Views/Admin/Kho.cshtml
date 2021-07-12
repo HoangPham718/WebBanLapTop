@@ -3,6 +3,8 @@
     ViewData["Title"] = "Kho";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var lstK = ViewData["dsKho"] as List<Kho>;
+
+    var update = ViewData["employee"] as Kho;
 }
 <h3>DANH SÁCH KHO</h3>
 @model WebLapTop.Models.Kho
@@ -118,12 +120,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.ValidationSummary()
-                                    <form method="POST" class="register-form" id="register-form">
-                                        @*<div class="form-group">
-                                            <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                            <label for="fname" style="padding-right:77px">Mã kho: </label>
-                                            @Html.TextBoxFor(a => a.MaKho, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên nhân viên" })
-                                        </div>*@
+                                    <form method="POST" class="register-form" id="register-form">                                        
                                         <div class="form-group">
                                             <label for="email"><i class="zmdi zmdi-email"></i></label>
                                             <label for="fname" style="padding-right:70px">Tên kho: </label>
@@ -143,7 +140,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
                                             <label for="address"><i class="zmdi zmdi-my-location"></i></label>
                                             <label for="fname" style="padding-right:87px">Email: </label>
                                             @Html.TextBoxFor(a => a.Email, new { @name = "email", @id = "email", @type = "email", @placeholder = "Email" })
-                                        </div>                                      
+                                        </div>
+                                        
                                         <div class="form-group form-button">
                                             <input type="submit" name="signup" id="signup" class="form-submit" value="THÊM" />
                                         </div>
@@ -159,6 +157,76 @@ body {font-family: Arial, Helvetica, sans-serif;}
         </div>
     </div>
 
+    @* --sửa  *@
+    @if (update != null)
+    {<div id="updateModal" class="modal" style="display:block">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="closeu">&times;</span>
+                    @*<button style="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                    <h2>SỬA KHO</h2>
+                </div>
+                <div class="modal-body">
+                    @* Nội dung thêm *@
+                    <div class="main">
+
+                        <!-- Sửa nhân viên form -->
+                        <section class="signup">
+                            <div class="container-1">
+                                <div class="signup-content">
+                                    <div class="signup-form">
+                                        @using (Html.BeginForm("Kho_sua", "Admin", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary()
+                                        <form method="POST" class="register-form" id="register-form">
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:77px">Mã Kho: </label>
+                                                <input name="MaKho" id="MaKho" type="text" value="@update.MaKho" disabled/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:70px">Tên Kho: </label>
+                                                <input name="TenKho" id="TenKho" type="text" value="@update.TenKho" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:79px">Địa Chỉ: </label>
+                                                <input name="DiaChi" id="DiaChi" type="text" value="@update.DiaChi" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                                                <label for="fname" style="padding-right:38px">Số điện thoại: </label>
+                                                <input name="Sdt" id="Sdt" type="number" value="@update.Sdt" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                <label for="fname" style="padding-right:92px">Email: </label>
+                                                <input name="Email" id="Email" type="email" value="@update.Email" />
+                                            </div>
+
+                                            <input type="text" name="MaKho" style="display:none" value="@update.MaKho" />
+                                            <div class="form-group form-button">
+                                                <input type="submit" name="signup" id="signup" class="form-submit" value="Cập nhật" />
+                                            </div>
+                                        </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        @* ------------------------------------------------------ *@
+                    </div>
+                </div>
+            </div>
+      </div>
+    }
     <script>
         // Get the modal
         var modal = document.getElementById("myModal");
@@ -186,6 +254,31 @@ body {font-family: Arial, Helvetica, sans-serif;}
             }
         }
     </script>
+    <script>
+        // Get the modal
+        var modal_sua = document.getElementById("updateModal");
+
+        var btn_sua = document.getElementById("btn_sua");
+
+        btn_sua.onclick = function () {
+            modal_sua.style.display = "block";
+        }
+        //Get the <span> element that closes the modal
+        //var span_x = document.getElementsByClassName("close_x")[0];
+
+
+        ////// When the user clicks on <span> (x), close the modal
+        //span_x.onclick = function () {
+        //    modal_sua.style.display = "none";
+        //    //}
+
+        //    // When the user clicks anywhere outside of the modal, close it
+        //    window.onclick = function (event) {
+        //        if (event.target == modal_sua) {
+        //            modal_sua.style.display = "none";
+        //        }
+        //    }
+    </script>
 
 </body>
 </html>
@@ -201,24 +294,28 @@ body {font-family: Arial, Helvetica, sans-serif;}
             <td>SĐT</td>            
             <td>Email</td>
             @*<td>Trth</td>*@
-            <td>Xóa</td>
-            <td>Sửa</td>
+        <td>Sửa</td>
+        <td>Xóa</td>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in lstK)
-        {            
-                <tr>
-                    <td>@item.MaKho</td>
-                    <td>@item.TenKho</td>
-                    <td>@item.DiaChi</td>
-                    <td>@item.Sdt</td>
-                    <td>@item.Email</td>
-                    @*<td>@item.TrangThai</td>*@
-                    @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
-                    <td><a href="~/Admin_layout/@item.MaKho">Sửa</a></td>
-                    <td><a href="~/Admin_layout/@item.MaKho">Xóa</a></td>
-                </tr>
+        {
+            if (item.TrangThai == true)
+            {
+            <tr>
+                <td>@item.MaKho</td>
+                <td>@item.TenKho</td>
+                <td>@item.DiaChi</td>
+                <td>@item.Sdt</td>
+                <td>@item.Email</td>
+                @*<td>@item.TrangThai</td>*@
+                @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
+                <td><button><a asp-area="" asp-controller="Admin" asp-action="load_DataKho" asp-route-id="@item.MaKho">Sửa</a></button></td>
+                <td><button><a asp-area="" asp-controller="Admin" asp-action="Kho_xoa" asp-route-id="@item.MaKho">Xóa</a></button></td>
+            </tr>
+            }
+        
         }
     </tbody>
 </table>

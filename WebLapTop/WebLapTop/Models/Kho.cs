@@ -18,6 +18,7 @@ namespace WebLapTop.Models
         public string DiaChi { get; set; }
         public string Sdt { get; set; }
         public string Email { get; set; }
+        public bool? TrangThai { get; set; }
 
         public virtual ICollection<Chinhanh> Chinhanhs { get; set; }
         public virtual ICollection<KhoSanpham> KhoSanphams { get; set; }
