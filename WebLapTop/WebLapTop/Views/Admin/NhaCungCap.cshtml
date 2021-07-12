@@ -3,6 +3,8 @@
     ViewData["Title"] = "NhaCungCap";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var lstCC = ViewData["dsNCC"] as List<Nhacungcap>;
+
+    var update = ViewData["employee"] as Nhacungcap;
 }
 <h3>DANH SÁCH NHÀ CUNG CẤP</h3>
 @model WebLapTop.Models.Nhacungcap
@@ -77,7 +79,10 @@ body {font-family: Arial, Helvetica, sans-serif;}
             text-align: left;
         }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+    padding: 2px 16px;
+
+}
 
 .modal-footer {
   padding: 2px 16px;
@@ -92,7 +97,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
     @*<h2>Animated Modal with Header and Footer</h2>*@
 
     <!-- Trigger/Open The Modal -->
-    <button id="myBtn">Thêm Nhân Viên</button>
+    <button id="myBtn">Thêm Nhà Cung Cấp</button>
 
     <!-- The Modal -->
 
@@ -157,7 +162,75 @@ body {font-family: Arial, Helvetica, sans-serif;}
             </div>
         </div>
     </div>
+    @* Sửa  *@
+    @if (update != null)
+    {<div id="updateModal" class="modal" style="display:block">
 
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="closeu">&times;</span>
+                    @*<button style="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                    <h2>SỬA NHÀ CUNG CẤP</h2>
+                </div>
+                <div class="modal-body">
+                    @* Nội dung thêm *@
+                    <div class="main">
+
+                        <!-- Add nhân viên form -->
+                        <section class="signup">
+                            <div class="container-1">
+                                <div class="signup-content">
+                                    <div class="signup-form">
+                                        @using (Html.BeginForm("NhaCungCap_sua", "Admin", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary()
+                                            <form method="POST" class="register-form" id="register-form">
+                                                <div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:36px">Mã nhà cung cấp: </label>
+                                                    <input name="MaNcc" id="MaNcc" type="text" value="@update.MaNcc" disabled />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:36px">Tên nhà cung cấp: </label>
+                                                    <input name="TenNcc" id="TenNcc" type="text" value="@update.TenNcc" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                                    <label for="fname" style="padding-right:116px">Địa chỉ: </label>
+                                                    <input name="DiaChi" id="DiaChi" type="text" value="@update.DiaChi" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                                                    <label for="fname" style="padding-right:72px">Số điện thoại: </label>
+                                                    <input name="Sdt" id="Sdt" type="number" value="@update.Sdt" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                    <label for="fname" style="padding-right:124px">Email: </label>
+                                                    <input name="Email" id="Email" type="text" value="@update.Email" />
+                                                </div>
+
+                                                <input type="text" name="MaNcc" style="display:none" value="@update.MaNcc" />
+                                                <div class="form-group form-button">
+                                                    <input type="submit" name="signup" id="signup" class="form-submit" value="Cập nhật" />
+                                                </div>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        @* ------------------------------------------------------ *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     <script>
         // Get the modal
         var modal = document.getElementById("myModal");
@@ -185,7 +258,31 @@ body {font-family: Arial, Helvetica, sans-serif;}
             }
         }
     </script>
+    <script>
+        // Get the modal
+        var modal_sua = document.getElementById("updateModal");
 
+        var btn_sua = document.getElementById("btn_sua");
+
+        btn_sua.onclick = function () {
+            modal_sua.style.display = "block";
+        }
+        //Get the <span> element that closes the modal
+        var span_x = document.getElementsByClassName("closeu")[0];
+
+
+        //// When the user clicks on <span> (x), close the modal
+        span_x.onclick = function () {
+            modal_sua.style.display = "none";
+            //}
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal_sua) {
+                    modal_sua.style.display = "none";
+                }
+            }
+    </script>
 </body>
 </html>
 @* ---------------------------------------- *@
@@ -200,24 +297,28 @@ body {font-family: Arial, Helvetica, sans-serif;}
             <td>SĐT</td>
             <td>Email</td>
             @*<td>Trth</td>*@
-            <td>Xóa</td>
             <td>Sửa</td>
+            <td>Xóa</td>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in lstCC)
         {
-            <tr>
-                <td>@item.MaNcc</td>
-                <td>@item.TenNcc</td>
-                <td>@item.DiaChi</td>
-                <td>@item.Sdt</td>
-                <td>@item.Email</td>
-                @*<td>@item.TrangThai</td>*@
-                @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
-                <td><button>Sửa</button></td>
-                <td><button>Xóa</button></td>
-            </tr>
+            if (item.TrangThai == true)
+            {
+                <tr>
+                    <td>@item.MaNcc</td>
+                    <td>@item.TenNcc</td>
+                    <td>@item.DiaChi</td>
+                    <td>@item.Sdt</td>
+                    <td>@item.Email</td>
+                    @*<td>@item.TrangThai</td>*@
+                    @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="load_DataNCC" asp-route-id="@item.MaNcc">Sửa</a></button></td>
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="NhaCungCap_xoa" asp-route-id="@item.MaNcc">Xóa</a></button></td>
+                </tr>
+            }
+
         }
     </tbody>
 </table>

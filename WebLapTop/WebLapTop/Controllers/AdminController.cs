@@ -27,10 +27,10 @@ namespace WebLapTop.Controllers
         {
             TempData["Route"] = "NhanVien";
 
-            if(TempData["employee"] !=null)
+            if (TempData["employee"] != null)
             {
 
-                String id= TempData["employee"].ToString();
+                String id = TempData["employee"].ToString();
                 var employee = _context.Nhanviens.FirstOrDefault(u => u.MaNv.Equals(id));
                 ViewData["employee"] = employee;
 
@@ -42,13 +42,12 @@ namespace WebLapTop.Controllers
             try
             {
                 var NVmodel = from nv in _context.Nhanviens
-                              join cn in _context.Chinhanhs
-                              on nv.MaCn equals cn.MaCn
-                              where nv.TrangThai==true
+                              join cn in _context.Chinhanhs on nv.MaCn equals cn.MaCn
+                              where nv.MaCn.Equals(cn.MaCn)
                               select new Nhanvien
                               {
                                   MaNv = nv.MaNv,
-                                  //MaCN=cn.MaCn,
+                                  MaCn = nv.MaCn,
                                   TenNv = nv.TenNv,
                                   Email = nv.Email,
                                   Sdt = nv.Sdt,
@@ -58,6 +57,7 @@ namespace WebLapTop.Controllers
                                   Quyen = nv.Quyen,
                                   TrangThai = nv.TrangThai
                               };
+
                 ViewData["dsNhanVien"] = NVmodel.ToList();
 
             }
@@ -81,7 +81,8 @@ namespace WebLapTop.Controllers
                     var insert = _context.Nhanviens.Add(new Nhanvien
                     {
                         MaNv = lastId >= 9 ? "NV" + (lastId + 1) : "NV0" + (lastId + 1),
-                        MaCn = nv.MaCn,
+                        //MaCn = nv.MaCn,
+                        MaCn = "CN01",
                         TenNv = nv.TenNv,
                         Email = nv.Email,
                         Sdt = nv.Sdt,
@@ -103,25 +104,25 @@ namespace WebLapTop.Controllers
             }
             return RedirectToAction("NhanVien");
         }
-        // sửa nhân viên
+        // sửa nhân viên-----------------------------
         [HttpPost]
         public IActionResult NhanVien_sua(Nhanvien nv)
         {
-             ViewData["Log"] = "";
-                    var update = _context.Nhanviens.FirstOrDefault(u => u.MaNv.Equals(nv.MaNv));
-                    update.MaCn = nv.MaCn;
-                    update.TenNv = nv.TenNv;
-                    update.Email = nv.Email;
-                    update.Sdt = nv.Sdt;
-                    update.DiaChi = nv.DiaChi;
-                    update.MatKhau = nv.MatKhau;
-                    update.ChucVu = nv.ChucVu;
-                    update.Quyen = nv.Quyen;
-                    update.TrangThai = true;
-                    _context.SaveChanges();
+            ViewData["Log"] = "";
+            var update = _context.Nhanviens.FirstOrDefault(u => u.MaNv.Equals(nv.MaNv));
+            update.MaCn = nv.MaCn;
+            update.TenNv = nv.TenNv;
+            update.Email = nv.Email;
+            update.Sdt = nv.Sdt;
+            update.DiaChi = nv.DiaChi;
+            update.MatKhau = nv.MatKhau;
+            update.ChucVu = nv.ChucVu;
+            update.Quyen = nv.Quyen;
+            update.TrangThai = true;
+            _context.SaveChanges();
             return RedirectToAction("NhanVien");
         }
-        //load data nv
+        //load data nv-----------------------------------------------
         [HttpGet]
         public IActionResult load_DataNV(string id)
         {
@@ -129,6 +130,7 @@ namespace WebLapTop.Controllers
             TempData["employee"] = id;
             return RedirectToAction("NhanVien");
         }
+
         [HttpGet]
         public IActionResult NhanVien_xoa(string id)
         {
@@ -138,22 +140,37 @@ namespace WebLapTop.Controllers
             _context.SaveChanges();
             return RedirectToAction("NhanVien");
         }
+
+
+
         // hiển thị khách hàng
         public IActionResult KhachHang()
         {
-            TempData["Route"] = "Index";
 
-            ViewData["AlertBill"] = "";
-            if (TempData["AlertBill"] != null)
+            //ViewData["AlertBill"] = "";
+            //if (TempData["AlertBill"] != null)
+            //{
+            //    ViewData["AlertBill"] = TempData["AlertBill"];
+            //    TempData["AlertBill"] = null;
+            //}
+            TempData["Route"] = "KhachHang";
+
+            if (TempData["employee"] != null)
             {
-                ViewData["AlertBill"] = TempData["AlertBill"];
-                TempData["AlertBill"] = null;
+
+                String id = TempData["employee"].ToString();
+                var employee = _context.Khachhangs.FirstOrDefault(u => u.MaKh.Equals(id));
+                ViewData["employee"] = employee;
+
+                TempData["employee"] = null;
             }
+
             //ViewData["Log"] = LogCheck();
 
             try
             {
-                var KHmodel = from kh in _context.Khachhangs                                  
+                var KHmodel = from kh in _context.Khachhangs
+                              where kh.TrangThai == true
                               select new Khachhang
                               {
                                   MaKh = kh.MaKh,
@@ -165,7 +182,7 @@ namespace WebLapTop.Controllers
                                   MatKhau = kh.MatKhau,
                                   Diem = kh.Diem,
                                   LoaiKh = kh.LoaiKh,
-                                  TrangThai=kh.TrangThai
+                                  TrangThai = kh.TrangThai
                               };
                 ViewData["dsKhachHang"] = KHmodel.ToList();
 
@@ -181,7 +198,7 @@ namespace WebLapTop.Controllers
         [HttpPost]
         public IActionResult KhachHang(Khachhang kh)
         {
-            ViewData["Log"] = "";
+            //ViewData["Log"] = "";
             if (ModelState.IsValid)
             {
                 var emailExist = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(kh.Email));
@@ -196,9 +213,9 @@ namespace WebLapTop.Controllers
                         Email = kh.Email,
                         Sdt = kh.Sdt,
                         DiaChi = kh.DiaChi,
-                        MatKhau = kh.MatKhau,  
-                        Diem=0,
-                        LoaiKh="New",
+                        MatKhau = kh.MatKhau,
+                        Diem = 0,
+                        LoaiKh = "New",
                         TrangThai = true
                     });
                     _context.SaveChanges();
@@ -213,15 +230,45 @@ namespace WebLapTop.Controllers
             }
             return View();
         }
-        // Hóa đơn
-        public IActionResult HoaDon()
-        {
-            return View();
 
+        // sửa khách hàng-----------------------------
+        [HttpPost]
+        public IActionResult KhachHang_sua(Khachhang kh)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Khachhangs.FirstOrDefault(u => u.MaKh.Equals(kh.MaKh));
+            update.MaKm = kh.MaKm;
+            update.TenKh = kh.TenKh;
+            update.Email = kh.Email;
+            update.Sdt = kh.Sdt;
+            update.DiaChi = kh.DiaChi;
+            update.MatKhau = kh.MatKhau;
+            update.Diem = kh.Diem;
+            update.LoaiKh = kh.LoaiKh;
+            update.TrangThai = true;
+            _context.SaveChanges();
+            return RedirectToAction("KhachHang");
+        }
+        //load data khach hàng-----------------------------------------------
+        [HttpGet]
+        public IActionResult load_DataKH(string id)
+        {
+            //tempdata k lưu dc object muốn thì dùng jsonconvert
+            TempData["employee"] = id;
+            return RedirectToAction("KhachHang");
         }
 
-        //hiển thị danh sách Chi nhánh
-        public IActionResult ChiNhanh()
+        [HttpGet]
+        public IActionResult KhachHang_xoa(string id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Khachhangs.FirstOrDefault(u => u.MaKh.Equals(id));
+            update.TrangThai = false;
+            _context.SaveChanges();
+            return RedirectToAction("KhachHang");
+        }
+        // Hóa đơn
+        public IActionResult HoaDon()
         {
             TempData["Route"] = "Index";
 
@@ -235,17 +282,90 @@ namespace WebLapTop.Controllers
 
             try
             {
+                var HDmodel = from hd in _context.Hoadons
+                              select new Hoadon
+                              {
+                                  MaHd = hd.MaHd,
+                                  MaNv = hd.MaNv,
+                                  MaKh = hd.MaKh,
+                                  NgayLap = hd.NgayLap,
+                                  NgayGiao = hd.NgayGiao,
+                                  TenNn = hd.TenNn,
+                                  Sdtnn = hd.Sdtnn,
+                                  DiaChi = hd.DiaChi,
+                                  shippingNote = hd.shippingNote,
+                                  shipping = hd.shipping,
+                                  TrangThai = hd.TrangThai
+                              };
+                ViewData["dsHD"] = HDmodel.ToList();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
+
+        }
+        // duyệt hóa đơn
+        [HttpGet]
+        public IActionResult DuyetHoaDon(String id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Hoadons.FirstOrDefault(u => u.MaHd.Equals(id));
+            update.shipping = 1;
+            _context.SaveChanges();
+            return RedirectToAction("HoaDon");
+        }
+        // hủy hóa đơn
+        [HttpGet]
+        public IActionResult HuyHoaDon(String id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Hoadons.FirstOrDefault(u => u.MaHd.Equals(id));
+            update.shipping = -1;
+            _context.SaveChanges();
+            return RedirectToAction("HoaDon");
+        }
+        // Đã giao
+        [HttpGet]
+        public IActionResult DaGiaotHoaDon(String id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Hoadons.FirstOrDefault(u => u.MaHd.Equals(id));
+            update.shipping = 2;
+            _context.SaveChanges();
+            return RedirectToAction("HoaDonDaDuyet");
+        }
+
+        //hiển thị danh sách Chi nhánh
+        public IActionResult ChiNhanh()
+        {
+            TempData["Route"] = "ChiNhanh";
+
+            //ViewData["AlertBill"] = "";
+            //if (TempData["AlertBill"] != null)
+            //{
+            //    ViewData["AlertBill"] = TempData["AlertBill"];
+            //    TempData["AlertBill"] = null;
+            //}
+
+
+            //ViewData["Log"] = LogCheck();
+
+            try
+            {
                 var CNmodel = from cn in _context.Chinhanhs
-                             select new Chinhanh
-                             {
-                                 MaCn =cn.MaCn,
-                                 Makho = cn.Makho,
-                                 TenCn=cn.TenCn,
-                                 DiaChi = cn.DiaChi,
-                                 Sdt = cn.Sdt,
-                                 Email = cn.Email,
-                                 TrangThai=cn.TrangThai
-                             };
+                              select new Chinhanh
+                              {
+                                  MaCn = cn.MaCn,
+                                  Makho = cn.Makho,
+                                  TenCn = cn.TenCn,
+                                  DiaChi = cn.DiaChi,
+                                  Sdt = cn.Sdt,
+                                  Email = cn.Email,
+                                  TrangThai = cn.TrangThai
+                              };
                 ViewData["dsCN"] = CNmodel.ToList();
 
             }
@@ -267,12 +387,12 @@ namespace WebLapTop.Controllers
                 var insert = _context.Chinhanhs.Add(new Chinhanh
                 {
                     MaCn = lastId >= 9 ? "CN" + (lastId + 1) : "CN0" + (lastId + 1),
-                    Makho= "KHO01",
+                    Makho = "KHO01",
                     TenCn = cn.TenCn,
                     DiaChi = cn.DiaChi,
                     Sdt = cn.Sdt,
                     Email = cn.Email,
-                    TrangThai=cn.TrangThai
+                    TrangThai = true
                 });
                 _context.SaveChanges();
                 //HttpContext.Session.SetString("EmailUser", kh.Email);
@@ -282,31 +402,75 @@ namespace WebLapTop.Controllers
             return View();
         }
 
+        // sửa chi nhánh-----------------------------
+        [HttpPost]
+        public IActionResult ChiNhanh_sua(Chinhanh cn)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Chinhanhs.FirstOrDefault(u => u.MaCn.Equals(cn.MaCn));
+            update.Makho = cn.Makho;
+            update.TenCn = cn.TenCn;
+            update.Email = cn.Email;
+            update.Sdt = cn.Sdt;
+            update.DiaChi = cn.DiaChi;
+            update.TrangThai = true;
+            _context.SaveChanges();
+            return RedirectToAction("ChiNhanh");
+        }
+        //load data chi nhánh-----------------------------------------------
+        [HttpGet]
+        public IActionResult load_DataCN(string id)
+        {
+            //tempdata k lưu dc object muốn thì dùng jsonconvert
+            TempData["employee"] = id;
+            return RedirectToAction("ChiNhanh");
+        }
+
+        [HttpGet]
+        public IActionResult ChiNhanh_xoa(string id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Chinhanhs.FirstOrDefault(u => u.MaCn.Equals(id));
+            update.TrangThai = false;
+            _context.SaveChanges();
+            return RedirectToAction("ChiNhanh");
+        }
 
         // hiển thị danh sách Kho---------------
         public IActionResult Kho()
         {
-            TempData["Route"] = "Index";
+            TempData["Route"] = "Kho";
 
-            ViewData["AlertBill"] = "";
-            if (TempData["AlertBill"] != null)
+            //ViewData["AlertBill"] = "";
+            //if (TempData["AlertBill"] != null)
+            //{
+            //    ViewData["AlertBill"] = TempData["AlertBill"];
+            //    TempData["AlertBill"] = null;
+            //}
+
+            if (TempData["employee"] != null)
             {
-                ViewData["AlertBill"] = TempData["AlertBill"];
-                TempData["AlertBill"] = null;
+
+                String id = TempData["employee"].ToString();
+                var employee = _context.Khos.FirstOrDefault(u => u.MaKho.Equals(id));
+                ViewData["employee"] = employee;
+
+                TempData["employee"] = null;
             }
             //ViewData["Log"] = LogCheck();
 
             try
             {
-                var Kmodel = from k in _context.Khos                                                                                   
+                var Kmodel = from k in _context.Khos
                              select new Kho
-                              {
-                                  MaKho=k.MaKho,
-                                  TenKho=k.TenKho,
-                                  DiaChi=k.DiaChi,
-                                  Sdt=k.Sdt,
-                                  Email=k.Email
-                              };
+                             {
+                                 MaKho = k.MaKho,
+                                 TenKho = k.TenKho,
+                                 DiaChi = k.DiaChi,
+                                 Sdt = k.Sdt,
+                                 Email = k.Email,
+                                 TrangThai = k.TrangThai
+                             };
                 ViewData["dsKho"] = Kmodel.ToList();
 
             }
@@ -325,54 +489,198 @@ namespace WebLapTop.Controllers
             ViewData["Log"] = "";
             if (ModelState.IsValid)
             {
-                    int lastId = Convert.ToInt32(_context.Khos.OrderBy(u => u.MaKho).LastOrDefault().MaKho.Substring(3));
-                    var insert = _context.Khos.Add(new Kho
-                    {
-                        MaKho = lastId >= 9 ? "KHO" + (lastId + 1) : "KHO0" + (lastId + 1),
-                        TenKho=k.TenKho,
-                        DiaChi=k.DiaChi,
-                        Sdt=k.Sdt,
-                        Email=k.Email
-                    });
-                    _context.SaveChanges();
-                    //HttpContext.Session.SetString("EmailUser", kh.Email);
-                    //HttpContext.Session.SetString("PassWord", kh.MatKhau);
-                    return RedirectToAction("Kho");             
+                int lastId = Convert.ToInt32(_context.Khos.OrderBy(u => u.MaKho).LastOrDefault().MaKho.Substring(3));
+                var insert = _context.Khos.Add(new Kho
+                {
+                    MaKho = lastId >= 9 ? "KHO" + (lastId + 1) : "KHO0" + (lastId + 1),
+                    TenKho = k.TenKho,
+                    DiaChi = k.DiaChi,
+                    Sdt = k.Sdt,
+                    Email = k.Email,
+                    TrangThai = true,
+                });
+                _context.SaveChanges();
+                //HttpContext.Session.SetString("EmailUser", kh.Email);
+                //HttpContext.Session.SetString("PassWord", kh.MatKhau);
+                return RedirectToAction("Kho");
             }
             return View();
         }
 
-        // Khuyến mãi
+        // sửa kho-----------------------------
+        [HttpPost]
+        public IActionResult Kho_sua(Kho k)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Khos.FirstOrDefault(u => u.MaKho.Equals(k.MaKho));
+            update.TenKho = k.TenKho;
+            update.Email = k.Email;
+            update.Sdt = k.Sdt;
+            update.DiaChi = k.DiaChi;
+            _context.SaveChanges();
+            return RedirectToAction("Kho");
+        }
+        //load data kho-----------------------------------------------
+        [HttpGet]
+        public IActionResult load_DataKho(string id)
+        {
+            //tempdata k lưu dc object muốn thì dùng jsonconvert
+            TempData["employee"] = id;
+            return RedirectToAction("Kho");
+        }
+
+        [HttpGet]
+        public IActionResult Kho_xoa(string id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Khos.FirstOrDefault(u => u.MaKho.Equals(id));
+            update.TrangThai = false;
+            _context.SaveChanges();
+            return RedirectToAction("Kho");
+        }
+
+        // hiển thị danh sách Khuyến mãi
         public IActionResult KhuyenMai()
         {
+            TempData["Route"] = "KhuyenMai";
+
+            //ViewData["AlertBill"] = "";
+            //if (TempData["AlertBill"] != null)
+            //{
+            //    ViewData["AlertBill"] = TempData["AlertBill"];
+            //    TempData["AlertBill"] = null;
+            //}
+
+            if (TempData["employee"] != null)
+            {
+
+                String id = TempData["employee"].ToString();
+                int id_int = Int32.Parse(id.ToString());
+                var employee = _context.Khuyenmais.FirstOrDefault(u => u.MaKm.Equals(id_int));
+                ViewData["employee"] = employee;
+
+                TempData["employee"] = null;
+            }
+            //ViewData["Log"] = LogCheck();
+
+            try
+            {
+                var KMmodel = from km in _context.Khuyenmais
+                              select new Khuyenmai
+                              {
+                                  MaKm = km.MaKm,
+                                  TenKm = km.TenKm,
+                                  MoTa = km.MoTa,
+                                  LoaiKm = km.LoaiKm,
+                                  NgayBd = km.NgayBd,
+                                  NgayKt = km.NgayKt,
+                                  TrangThai = km.TrangThai
+                              };
+                ViewData["dsKhuyenMai"] = KMmodel.ToList();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             return View();
 
+        }
+        // thêm khuyến mãi
+        [HttpPost]
+        public IActionResult KhuyenMai(Khuyenmai km)
+        {
+            ViewData["Log"] = "";
+            if (ModelState.IsValid)
+            {
+                //int lastId = Convert.ToInt32(_context.Khuyenmais.OrderBy(u => u.MaKm).LastOrDefault().MaKm.Substring(0));
+                int lastId = Convert.ToInt32(_context.Khuyenmais.OrderBy(u => u.MaKm).LastOrDefault().MaKm);
+                var insert = _context.Khuyenmais.Add(new Khuyenmai
+                {
+                    MaKm = lastId + 1,
+                    TenKm = km.TenKm,
+                    MoTa = km.MoTa,
+                    LoaiKm = km.LoaiKm,
+                    NgayBd = km.NgayBd,
+                    NgayKt = km.NgayKt,
+                    TrangThai = true
+                });
+                _context.SaveChanges();
+                //HttpContext.Session.SetString("EmailUser", kh.Email);
+                //HttpContext.Session.SetString("PassWord", kh.MatKhau);
+                return RedirectToAction("KhuyenMai");
+            }
+            return View();
+        }
+
+        // sửa khuyen mai-----------------------------
+        [HttpPost]
+        public IActionResult KhuyenMai_sua(Khuyenmai km)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Khuyenmais.FirstOrDefault(u => u.MaKm.Equals(km.MaKm));
+            update.TenKm = km.TenKm;
+            update.MoTa = km.MoTa;
+            update.LoaiKm = km.LoaiKm;
+            update.NgayBd = km.NgayBd;
+            update.NgayKt = km.NgayKt;
+            update.TrangThai = true;
+            _context.SaveChanges();
+            return RedirectToAction("KhuyenMai");
+        }
+        //load data nv-----------------------------------------------
+        [HttpGet]
+        public IActionResult load_DataKM(int id)
+        {
+            //tempdata k lưu dc object muốn thì dùng jsonconvert
+            TempData["employee"] = id;
+            return RedirectToAction("KhuyenMai");
+        }
+
+        [HttpGet]
+        public IActionResult KhuyenMai_xoa(int id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Khuyenmais.FirstOrDefault(u => u.MaKm.Equals(id));
+            update.TrangThai = false;
+            _context.SaveChanges();
+            return RedirectToAction("KhuyenMai");
         }
 
         // HIỂN THỊ danh sách Nha Cung cấp
         public IActionResult NhaCungCap()
         {
-            TempData["Route"] = "Index";
+            TempData["Route"] = "NhaCungCap";
 
-            ViewData["AlertBill"] = "";
-            if (TempData["AlertBill"] != null)
+            //ViewData["AlertBill"] = "";
+            //if (TempData["AlertBill"] != null)
+            //{
+            //    ViewData["AlertBill"] = TempData["AlertBill"];
+            //    TempData["AlertBill"] = null;
+            //}
+            if (TempData["employee"] != null)
             {
-                ViewData["AlertBill"] = TempData["AlertBill"];
-                TempData["AlertBill"] = null;
+
+                String id = TempData["employee"].ToString();
+                var employee = _context.Nhacungcaps.FirstOrDefault(u => u.MaNcc.Equals(id));
+                ViewData["employee"] = employee;
+
+                TempData["employee"] = null;
             }
             //ViewData["Log"] = LogCheck();
 
             try
             {
                 var CCmodel = from cc in _context.Nhacungcaps
-                             select new Nhacungcap
-                             {
-                                 MaNcc = cc.MaNcc,
-                                 TenNcc = cc.TenNcc,
-                                 DiaChi = cc.DiaChi,
-                                 Sdt = cc.Sdt,
-                                 Email = cc.Email
-                             };
+                              select new Nhacungcap
+                              {
+                                  MaNcc = cc.MaNcc,
+                                  TenNcc = cc.TenNcc,
+                                  DiaChi = cc.DiaChi,
+                                  Sdt = cc.Sdt,
+                                  Email = cc.Email,
+                                  TrangThai = cc.TrangThai
+                              };
                 ViewData["dsNCC"] = CCmodel.ToList();
 
             }
@@ -392,16 +700,90 @@ namespace WebLapTop.Controllers
                 int lastId = Convert.ToInt32(_context.Nhacungcaps.OrderBy(u => u.MaNcc).LastOrDefault().MaNcc.Substring(3));
                 var insert = _context.Nhacungcaps.Add(new Nhacungcap
                 {
-                    MaNcc= lastId >= 9 ? "NCC" + (lastId + 1) : "NCC0" + (lastId + 1),
+                    MaNcc = lastId >= 9 ? "NCC" + (lastId + 1) : "NCC0" + (lastId + 1),
                     TenNcc = cc.TenNcc,
                     DiaChi = cc.DiaChi,
                     Sdt = cc.Sdt,
-                    Email = cc.Email
+                    Email = cc.Email,
+                    TrangThai = true
                 });
                 _context.SaveChanges();
                 //HttpContext.Session.SetString("EmailUser", kh.Email);
                 //HttpContext.Session.SetString("PassWord", kh.MatKhau);
                 return RedirectToAction("NhaCungCap");
+            }
+            return View();
+        }
+
+        // sửa nhà cung cấp -----------------------------
+        [HttpPost]
+        public IActionResult NhaCungCap_sua(Nhacungcap ncc)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Nhacungcaps.FirstOrDefault(u => u.MaNcc.Equals(ncc.MaNcc));
+            //update.MaNcc = ncc.MaNcc;
+            update.TenNcc = ncc.TenNcc;
+            update.Email = ncc.Email;
+            update.Sdt = ncc.Sdt;
+            update.DiaChi = ncc.DiaChi;
+            update.TrangThai = true;
+            _context.SaveChanges();
+            return RedirectToAction("NhaCungCap");
+        }
+        //load data nv-----------------------------------------------
+        [HttpGet]
+        public IActionResult load_DataNCC(string id)
+        {
+            //tempdata k lưu dc object muốn thì dùng jsonconvert
+            TempData["employee"] = id;
+            return RedirectToAction("NhaCungCap");
+        }
+
+        [HttpGet]
+        public IActionResult NhaCungCap_xoa(string id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Nhacungcaps.FirstOrDefault(u => u.MaNcc.Equals(id));
+            update.TrangThai = false;
+            _context.SaveChanges();
+            return RedirectToAction("NhaCungCap");
+        }
+
+        public IActionResult HoaDonDaDuyet()
+        {
+            TempData["Route"] = "Index";
+
+            ViewData["AlertBill"] = "";
+            if (TempData["AlertBill"] != null)
+            {
+                ViewData["AlertBill"] = TempData["AlertBill"];
+                TempData["AlertBill"] = null;
+            }
+            //ViewData["Log"] = LogCheck();
+
+            try
+            {
+                var HDmodel = from hd in _context.Hoadons
+                              select new Hoadon
+                              {
+                                  MaHd = hd.MaHd,
+                                  MaNv = hd.MaNv,
+                                  MaKh = hd.MaKh,
+                                  NgayLap = hd.NgayLap,
+                                  NgayGiao = hd.NgayGiao,
+                                  TenNn = hd.TenNn,
+                                  Sdtnn = hd.Sdtnn,
+                                  DiaChi = hd.DiaChi,
+                                  shippingNote = hd.shippingNote,
+                                  shipping = hd.shipping,
+                                  TrangThai = hd.TrangThai
+                              };
+                ViewData["dsHD"] = HDmodel.ToList();
+
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return View();
         }

@@ -2,7 +2,331 @@
 @{
     ViewData["Title"] = "KhuyenMai";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var lstKM = ViewData["dsKhuyenMai"] as List<Khuyenmai>;
+
+    var update = ViewData["employee"] as Khuyenmai;
+}
+<h3>DANH SÁCH KHUYẾN MÃI</h3>
+@model WebLapTop.Models.Khuyenmai
+@* Form thêm------------------------------------ *@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-<h1>KhuyenMai</h1>
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+        /* Add Animation */
+@*@webkit -keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}*@
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+        .modal-header {
+            padding: 2px 20px;
+            background-color: #5cb85c;
+            color: white;
+            text-align: left;
+        }
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+  padding-top: 20px;
+}
+    </style>
+</head>
+<body>
+
+    @*<h2>Animated Modal with Header and Footer</h2>*@
+
+    <!-- Trigger/Open The Modal -->
+    <button id="myBtn">Thêm Khuyến Mãi</button>
+
+    <!-- The Modal -->
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>THÊM KHUYẾN MÃI</h2>
+            </div>
+            <div class="modal-body">
+                @* Nội dung thêm *@
+                <div class="main">
+
+                    <!-- Add nhân viên form -->
+                    <section class="signup">
+                        <div class="container-1">
+                            <div class="signup-content">
+                                <div class="signup-form">
+                                    @using (Html.BeginForm("KhuyenMai", "Admin", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary()
+                                        <form method="POST" class="register-form" id="register-form">
+                                            @*<div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:77px">Mã kho: </label>
+                                                    @Html.TextBoxFor(a => a.MaKho, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên nhân viên" })
+                                                </div>*@
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:34px">Tên khuyến mãi: </label>
+                                                @Html.TextBoxFor(a => a.TenKm, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên khuyến mãi" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                                <label for="fname" style="padding-right:109px">Mô tả: </label>
+                                                @Html.PasswordFor(a => a.MoTa, new { @name = "Mota", @id = "Mota", @type = "textarea", @placeholder = "Mô tả" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                                                <label for="fname" style="padding-right:34px">Loại khuyến mãi: </label>
+                                                @Html.TextBoxFor(a => a.LoaiKm, new { @name = "khuyenmai", @id = "khuyenmai", @type = "number", @placeholder = "Loại khuyến mãi" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                <label for="fname" style="padding-right:56px">Ngày bắt đẩu: </label>
+                                                @Html.TextBoxFor(a => a.NgayBd, new { @name = "email", @id = "email", @type = "date", @placeholder = "" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                <label for="fname" style="padding-right:56px">Ngày kết thúc: </label>
+                                                @Html.TextBoxFor(a => a.NgayKt, new { @name = "email", @id = "email", @type = "date", @placeholder = "" })
+                                            </div>
+
+                                            <div class="form-group form-button">
+                                                <input type="submit" name="signup" id="signup" class="form-submit" value="THÊM" />
+                                            </div>
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    @* ------------------------------------------------------ *@
+                </div>
+            </div>
+        </div>
+    </div>
+    @* ------------------- *@
+    @if (update != null)
+    {<div id="updateModal" class="modal" style="display:block">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="closeu">&times;</span>
+                    @*<button style="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                    <h2>SỬA KHUYÊN MÃI</h2>
+                </div>
+                <div class="modal-body">
+                    @* Nội dung thêm *@
+                    <div class="main">
+
+                        <!-- Sửa nhân viên form -->
+                        <section class="signup">
+                            <div class="container-1">
+                                <div class="signup-content">
+                                    <div class="signup-form">
+                                        @using (Html.BeginForm("KhuyenMai_sua", "Admin", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary()
+                                            <form method="POST" class="register-form" id="register-form">
+                                                <div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:39px">Mã Khuyến Mãi: </label>
+                                                    <input name="MaKm" id="MaKm" type="text" value="@update.MaKm" disabled />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:34px">Tên Khuyến Mãi: </label>
+                                                    <input name="TenKm" id="TenKm" type="text" value="@update.TenKm" />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:104px">Mô Tả: </label>
+                                                    <input name="MoTa" id="MoTa" type="text" value="@update.MoTa" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                                                    <label for="fname" style="padding-right:31px">Loại Khuyến Mãi: </label>
+                                                    <input name="LoaiKm" id="LoaiKm" type="number" value="@update.LoaiKm" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                    <label for="fname" style="padding-right:53px">Ngày Bắt Đầu: </label>
+                                                    <input name="NgayBd" id="NgayBd" type="text" value="@update.NgayBd" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                    <label for="fname" style="padding-right:46px">Ngày Kết Thúc: </label>
+                                                    <input name="NgayKt" id="NgayKt" type="text" value="@update.NgayKt" />
+                                                </div>
+                                                <input type="text" name="MaKm" style="display:none" value="@update.MaKm" />
+                                                <div class="form-group form-button">
+                                                    <input type="submit" name="signup" id="signup" class="form-submit" value="Cập nhật" />
+                                                </div>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        @* ------------------------------------------------------ *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        // Get the modal
+        var modal_sua = document.getElementById("updateModal");
+
+        var btn_sua = document.getElementById("btn_sua");
+
+        btn_sua.onclick = function () {
+            modal_sua.style.display = "block";
+        }
+        //Get the <span> element that closes the modal
+        var span_x = document.getElementsByClassName("close")[0];
+
+
+        //// When the user clicks on <span> (x), close the modal
+        span_x.onclick = function () {
+            modal_sua.style.display = "none";
+            //}
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal_sua) {
+                    modal_sua.style.display = "none";
+                }
+            }
+    </script>
+</body>
+</html>
+@* ---------------------------------------- *@
+
+@* Hiển thị danh sách nhân viên*@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Mã khuyến mãi</td>
+            <td>Tên khuyến mãi</td>
+            <td>Mô tả</td>
+            <td>Loại khuyến mãi</td>
+            <td>Ngày bắt đầu</td>
+            <td>Ngày kết thúc</td>
+            <td>Sửa</td>
+            <td>Xóa</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in lstKM)
+        {
+            if (item.TrangThai == true)
+            {
+                <tr>
+                    <td>@item.MaKm</td>
+                    <td>@item.TenKm</td>
+                    <td>@item.MoTa</td>
+                    <td>@item.LoaiKm</td>
+                    <td>@item.NgayBd</td>
+                    <td>@item.NgayKt</td>
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="load_DataKM" asp-route-id="@item.MaKm">Sửa</a></button></td>
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="KhuyenMai_xoa" asp-route-id="@item.MaKm">Xóa</a></button></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
 
