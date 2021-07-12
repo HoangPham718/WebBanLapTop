@@ -37,7 +37,7 @@ namespace WebLapTop.Controllers
                 TempData["employee"] = null;
             }
 
-            //ViewData["Log"] = LogCheck();
+            ViewData["Log"] = LogCheck();
 
             try
             {
@@ -314,6 +314,7 @@ namespace WebLapTop.Controllers
             ViewData["Log"] = "";
             var update = _context.Hoadons.FirstOrDefault(u => u.MaHd.Equals(id));
             update.shipping = 1;
+            update.NgayGiao = DateTime.Now;
             _context.SaveChanges();
             return RedirectToAction("HoaDon");
         }
@@ -334,6 +335,7 @@ namespace WebLapTop.Controllers
             ViewData["Log"] = "";
             var update = _context.Hoadons.FirstOrDefault(u => u.MaHd.Equals(id));
             update.shipping = 2;
+            update.NgayGiao = DateTime.Now;
             _context.SaveChanges();
             return RedirectToAction("HoaDonDaDuyet");
         }
@@ -748,7 +750,7 @@ namespace WebLapTop.Controllers
             _context.SaveChanges();
             return RedirectToAction("NhaCungCap");
         }
-
+        // hiển hị hóa đơn
         public IActionResult HoaDonDaDuyet()
         {
             TempData["Route"] = "Index";
@@ -787,5 +789,224 @@ namespace WebLapTop.Controllers
             }
             return View();
         }
+        //-----hiện form login
+        public IActionResult Admin_Login()
+        {
+            ViewData["Log"] = "";
+            AccountLogin account = new AccountLogin();
+            if (!String.IsNullOrEmpty(Request.Cookies["userName"]))
+            {
+                account.Email = Request.Cookies["userName"].ToString();
+                account.MatKhau = !String.IsNullOrEmpty(Request.Cookies["userPass"].ToString()) ? Request.Cookies["userPass"].ToString() : null;
+                account.Remember = !String.IsNullOrEmpty(Request.Cookies["remember"].ToString()) ? true : false;
+            }
+            ViewData["Account"] = account;
+            return View();
+        }
+
+        //---- Logout
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            //HttpContext.Session.SetInt32("CountCart", countCart());
+            return RedirectToAction("Admin_Login");
+        }
+
+        // ------- đăng nhập
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Admin_Login(AccountLogin log)
+        {
+            AccountLogin account = new AccountLogin();
+            ViewData["Account"] = account;
+            ViewData["Log"] = "";
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    var userExist = _context.Nhanviens.Where(u => u.Email.Equals(log.Email)).Count();
+                    if (userExist > 0)
+                    {
+                        var PassCheck = _context.Nhanviens.Where(u => u.Email.Equals(log.Email) && u.MatKhau.Equals(log.MatKhau));
+                        if (PassCheck.Count() > 0)
+                        {                            
+                            Response.Cookies.Append("userName", log.Email); 
+                            HttpContext.Session.SetString("EmailUser", log.Email);
+                            HttpContext.Session.SetString("PassWord", log.MatKhau);
+                            HttpContext.Session.SetString("UserName", findNameUser(log.Email));
+                            //return RedirectToAction(TempData["Route"].ToString());
+                            return RedirectToAction("HoaDon");
+
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Matkhau", "Sai mật khẩu");
+                        }
+                    }
+                    else
+                    {
+
+                        ModelState.AddModelError("Email", "Không tìm thấy tài khoản");
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return View();
+
+        }
+
+        public String findNameUser(string email)
+        {
+            var user = _context.Nhanviens.FirstOrDefault(u => u.Email.Equals(email));
+            return user.TenNv.Split(" ").Last();
+        }
+
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public String LogCheck()
+        {
+            string logcheck = HttpContext.Session.GetString("EmailUser");
+            string log;
+            if (String.IsNullOrEmpty(logcheck))
+            {
+                log = "";
+            }
+            else
+            {
+                log = logcheck;
+            }
+            return log;
+        }
+
+
+        // hiển thị sản phẩm
+        public IActionResult SanPham()
+        {
+            TempData["Route"] = "SanPham";
+
+            if (TempData["employee"] != null)
+            {
+
+                String id = TempData["employee"].ToString();
+                var employee = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(id));
+                ViewData["employee"] = employee;
+
+                TempData["employee"] = null;
+            }
+
+            ViewData["Log"] = LogCheck();
+
+            try
+            {
+                var SPmodel = from sp in _context.Sanphams
+                              //join cn in _context.Chinhanhs on nv.MaCn equals cn.MaCn
+                              //where nv.MaCn.Equals(cn.MaCn)
+                              select new Sanpham
+                              {
+                                  MaSp=sp.MaSp,
+                                  MaNcc=sp.MaNcc,
+                                  MaNv=sp.MaNv,
+                                  MaKm=sp.MaKm,
+                                  TenSp=sp.TenSp,
+                                  LoaiSp=sp.LoaiSp,
+                                  ThuongHieu=sp.ThuongHieu,
+                                  ChiTietSp=sp.ChiTietSp,
+                                  DonGia=sp.DonGia,
+                                  DanhGia=sp.DanhGia,
+                                  NgaySua=sp.NgaySua,
+                                  NgayTao=sp.NgayTao,
+                                  TrangThai = sp.TrangThai
+                              };
+
+                ViewData["dsSanPham"] = SPmodel.ToList();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
+        }
+        // Thêm nhân viên
+        [HttpPost]
+        public IActionResult SanPham(Sanpham sp)
+        {
+            ViewData["Log"] = "";
+            if (ModelState.IsValid)
+            {              
+                
+                    int lastId = Convert.ToInt32(_context.Nhanviens.OrderBy(u => u.MaNv).LastOrDefault().MaNv.Substring(2));
+                    var insert = _context.Sanphams.Add(new Sanpham
+                    {
+                        MaSp = lastId >= 9 ? "SP" + (lastId + 1) : "SP0" + (lastId + 1),                        
+                        MaNcc = sp.MaNcc,
+                        MaNv = sp.MaNv,
+                        MaKm = sp.MaKm,
+                        TenSp = sp.TenSp,
+                        LoaiSp = sp.LoaiSp,
+                        ThuongHieu = sp.ThuongHieu,
+                        ChiTietSp = sp.ChiTietSp,
+                        DonGia = sp.DonGia,
+                        DanhGia = sp.DanhGia,
+                        NgaySua = sp.NgaySua,
+                        NgayTao = sp.NgayTao,                     
+                        TrangThai = true
+                    });
+                    _context.SaveChanges();
+                    //HttpContext.Session.SetString("EmailUser", kh.Email);
+                    //HttpContext.Session.SetString("PassWord", kh.MatKhau);
+                    return RedirectToAction("SanPham");                              
+            }
+            return RedirectToAction("SanPham");
+        }
+        // sửa nhân viên-----------------------------
+        [HttpPost]
+        public IActionResult SanPham_sua(Sanpham sp)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(sp.MaSp));
+            update.MaNcc = sp.MaNcc;
+            update.MaNv = sp.MaNv;
+            update.MaKm = sp.MaKm;
+            update.TenSp = sp.TenSp;
+            update.LoaiSp = sp.LoaiSp;
+            update.ThuongHieu = sp.ThuongHieu;
+            update.ChiTietSp = sp.ChiTietSp;
+            update.DonGia = sp.DonGia;
+            update.DanhGia = sp.DanhGia;
+            update.NgaySua = sp.NgaySua;
+            update.NgayTao = sp.NgayTao;
+            update.TrangThai = true;
+            _context.SaveChanges();
+            return RedirectToAction("SanPham");
+        }
+        //load data nv-----------------------------------------------
+        [HttpGet]
+        public IActionResult load_DataSP(string id)
+        {
+            //tempdata k lưu dc object muốn thì dùng jsonconvert
+            TempData["employee"] = id;
+            return RedirectToAction("SanPham");
+        }
+
+        [HttpGet]
+        public IActionResult SanPham_xoa(string id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(id));
+            update.TrangThai = false;
+            _context.SaveChanges();
+            return RedirectToAction("SanPham");
+        }
+
     }
 }

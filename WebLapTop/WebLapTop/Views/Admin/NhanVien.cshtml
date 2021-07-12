@@ -112,6 +112,19 @@
             color: white;
             padding-top: 20px;
         }
+        .cs {
+            width: 145px;
+            height: 34px;
+            padding: 0px;
+            margin: 10px 10px 20px 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            background-color:chartreuse;
+        }
+
+        
     </style>
 </head>
 <body>
@@ -119,7 +132,7 @@
     @*<h2>Animated Modal with Header and Footer</h2>*@
 
     <!-- Trigger/Open The Modal -->
-    <button id="myBtn">Thêm Nhân Viên</button>
+    <button id="myBtn" class="cs">Thêm Nhân Viên</button>
 
     <!-- The Modal -->
 
@@ -342,6 +355,12 @@
 @* ---------------------------------------- *@
 
 @* Hiển thị danh sách nhân viên*@
+
+<style>
+   .table-bordered:{
+       padding:10px;
+   }
+</style>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -353,8 +372,9 @@
             <td>Địa chỉ</td>
             <td>Email</td>
             @*<td>Trth</td>*@
-            <td>Xóa</td>
+            
             <td>Sửa</td>
+            <td>Xóa</td>
         </tr>
     </thead>
     <tbody>

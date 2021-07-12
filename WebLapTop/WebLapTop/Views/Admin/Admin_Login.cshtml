@@ -1,22 +1,24 @@
-﻿@{
-    ViewData["Title"] = "Login";
+﻿
+@{
+    ViewData["Title"] = "Admin_Login";
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
     var account = ViewData["Account"] as AccountLogin;
 }
-@model  WebLapTop.Models.AccountLogin
-<div class="main" >
+@model WebLapTop.Models.AccountLogin
+<div class="main">
+
     <!-- Sing in  Form -->
     <section class="sign-in">
         <div class="container-1">
             <div class="signin-content">
                 <div class="signin-image">
                     <figure><img src="~/img/signin-image.jpg" alt="sing up image"></figure>
-                    <a asp-area="" asp-controller="Home" asp-action="Signup" class="signup-image-link">Tạo tài khoản</a>
+                    
                 </div>
 
                 <div class="signin-form">
-                    <h2 class="form-title">Đăng nhập</h2>
-                    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+                    <h2 class="form-title">TRANG CHO ADMIN</h2>
+                    @using (Html.BeginForm("Admin_Login", "Admin", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary()
@@ -42,33 +44,14 @@
                                 }
                                 else
                                 {
-                                    @Html.PasswordFor(a => a.MatKhau, new { @name = "your_pass", @id = "your_pass" ,@value=account.MatKhau})
+                                    @Html.PasswordFor(a => a.MatKhau, new { @name = "your_pass", @id = "your_pass", @value = account.MatKhau })
                                 }
-                            </div>
-                            <div class="form-group">
-                                @if (String.IsNullOrEmpty(account.MatKhau))
-                                {
-                                    @Html.CheckBoxFor(a => a.Remember, new { @name = "remember-me", @id = "remember-me" })
-                                }
-                                else
-                                {
-                                    @Html.CheckBoxFor(a => a.Remember, new { @name = "remember-me", @id = "remember-me",@checked=account.Remember })
-                                }
-                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Lưu tài khoản</label>
-                            </div>
+                            </div>                           
                             <div class="form-group form-button">
                                 <input type="submit" name="signin" id="signin" class="form-submit" value="Đăng nhập" />
                             </div>
-                     </form>
-                    }
-                    <div class="social-login">
-                        <span class="social-label">Hoặc đăng nhập với</span>
-                        <ul class="socials">
-                            <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                            <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                            <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
-                        </ul>
-                    </div>
+                        </form>
+                    }               
                 </div>
             </div>
         </div>

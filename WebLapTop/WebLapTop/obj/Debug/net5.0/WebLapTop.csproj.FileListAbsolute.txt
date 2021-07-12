@@ -333,3 +333,5 @@ C:\Users\WIN\Desktop\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Vie
 C:\Users\WIN\Desktop\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.Views.pdb
 C:\Users\WIN\Desktop\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.csproj.CopyComplete
 C:\Users\WIN\Desktop\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\WebLapTop.genruntimeconfig.cache
+C:\Users\WIN\Desktop\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Admin\Admin_Login.cshtml.g.cs
+C:\Users\WIN\Desktop\WebBanLapTop\WebLapTop\WebLapTop\obj\Debug\net5.0\Razor\Views\Admin\SanPham.cshtml.g.cs

@@ -60,12 +60,14 @@
                         @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
                         {
                             <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
+                            
                         }
                         else
                         {
                             <li><a asp-area="" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
                             <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount">@HttpContextAccessor.HttpContext.Session.GetString("UserName") - <i class="fa fa-user"></i></a></li>
                         }
+
                     </ul>
                 </div>
             </div>

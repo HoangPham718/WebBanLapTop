@@ -58,15 +58,17 @@
                                 <input class="SearchInput" type="submit" style="padding:20px;background-color:white;color:black" value="Tìm kiếm" />
                             }
                         </li>
-                        @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))
+                        @if (String.IsNullOrEmpty(ViewData["Log"].ToString()))                       
                         {
                             <li><a asp-area="" asp-controller="Home" asp-action="Login">Đăng nhập</a></li>
+                            <li><a asp-area="" asp-controller="Admin" asp-action="Admin_Login">Admin Đăng nhập</a></li>
                         }
                         else
                         {
                             <li><a asp-area="" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
                             <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount">@HttpContextAccessor.HttpContext.Session.GetString("UserName") - <i class="fa fa-user"></i></a></li>
                         }
+                        
                     </ul>
                 </div>
             </div>
