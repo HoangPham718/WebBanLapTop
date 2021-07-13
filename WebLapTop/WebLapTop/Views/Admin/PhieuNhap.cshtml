@@ -1,0 +1,385 @@
+﻿
+@{
+    ViewData["Title"] = "PhieuNhap";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var lstPN = ViewData["dsPhieuNhap"] as List<Phieunhap>;
+    //var account = ViewData["Account"] as AccountLogin;
+
+    var update = ViewData["employee"] as Phieunhap;
+}
+
+<h3>DANH SÁCH PHIẾU NHẬP</h3>
+@*@model WebLapTop.Models.Chinhanh*@
+@model WebLapTop.Models.Phieunhap
+@* Form thêm------------------------------------ *@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            position: relative;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 0;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+            -webkit-animation-name: animatetop;
+            -webkit-animation-duration: 0.4s;
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+
+
+        .close {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .closeu {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close_x {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .closeu:hover,
+        .closeu:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .close_x:hover,
+        .closeu_x:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal-header {
+            padding: 2px 20px;
+            background-color: #5cb85c;
+            color: white;
+            text-align: left;
+        }
+
+        .modal-body {
+            padding: 2px 16px;
+        }
+
+        .modal-footer {
+            padding: 2px 16px;
+            background-color: #5cb85c;
+            color: white;
+            padding-top: 20px;
+        }
+
+        .cs {
+            width: 145px;
+            height: 34px;
+            padding: 0px;
+            margin: 10px 10px 20px 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            background-color: chartreuse;
+        }
+    </style>
+</head>
+<body>
+
+    @*<h2>Animated Modal with Header and Footer</h2>*@
+
+    <!-- Trigger/Open The Modal -->
+    <button id="myBtn" class="cs">Thêm Phiếu Nhập</button>
+
+    <!-- The Modal -->
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="closeu">&times;</span>
+                <h2>THÊM PHIẾU NHẬP</h2>
+            </div>
+            <div class="modal-body">
+                @* Nội dung thêm *@
+                <div class="main">
+
+                    <!-- Add nhân viên form -->
+                    <section class="signup">
+                        <div class="container-1">
+                            <div class="signup-content">
+                                <div class="signup-form">
+                                    @using (Html.BeginForm("PhieuNhap", "Admin", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary()
+                                        <form method="POST" class="register-form" id="register-form">
+                                            @*<div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:60px">Mã phiếu nhập: </label>
+                                                @Html.TextBoxFor(a => a.MaPn, new { @name = "MaPn", @id = "MaPn", @type = "text", @placeholder = "Mã phiếu nhập" })
+                                            </div>*@
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:70px">Mã nhân viên: </label>
+                                                @Html.TextBoxFor(a => a.MaNv, new { @name = "MaNv", @id = "MaNv", @type = "text", @placeholder = "Mã nhân viên" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                <label for="fname" style="padding-right:68px">Mã sản phẩm: </label>
+                                                @Html.TextBoxFor(a => a.MaSp, new { @name = "MaSp", @id = "MaSp", @type = "text", @placeholder = "Mã sản phẩm" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                                                <label for="fname" style="padding-right:99px">Số lượng: </label>
+                                                @Html.TextBoxFor(a => a.SoLuong, new { @name = "SoLuong", @id = "TenSp", @type = "number", @placeholder = "Số lượng" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                                <label for="fname" style="padding-right:107px">Đơn giá: </label>
+                                                @Html.PasswordFor(a => a.DonGia, new { @name = "DonGia", @id = "DonGia", @type = "number", @placeholder = "Đơn giá" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:88px">Thành tiền: </label>
+                                                @Html.PasswordFor(a => a.ThanhTien, new { @name = "ThanhTien", @id = "ThanhTien", @type = "number", @placeholder = "Thành tiền" })
+                                            </div>
+                                            <div class="form-group form-button">
+                                                <input type="submit" name="signup" id="signup" class="form-submit" value="THÊM" />
+                                            </div>                                          
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    @* ------------------------------------------------------ *@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*---model update*@
+    @if (update != null)
+    {<div id="updateModal" class="modal" style="display:block">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="closeu">&times;</span>
+                    @*<button style="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                    <h2>SỬA PHIẾU NHẬP</h2>
+                </div>
+                <div class="modal-body">
+                    @* Nội dung thêm *@
+                    <div class="main">
+
+                        <!-- Add nhân viên form -->
+                        <section class="signup">
+                            <div class="container-1">
+                                <div class="signup-content">
+                                    <div class="signup-form">
+                                        @using (Html.BeginForm("PhieuNhap_sua", "Admin", FormMethod.Post))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            @Html.ValidationSummary()
+                                        <form method="POST" class="register-form" id="register-form">
+
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:60px">Mã phiếu nhập: </label>
+                                                <input name="MaSp" id="MaSp" type="text" value="@update.MaPn" disabled />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                <label for="fname" style="padding-right:70px">Mã nhân viên: </label>
+                                                <input name="MaNv" id="MaSp" type="text" value="@update.MaNv" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address"><i class="zmdi zmdi-my-location"></i></label>
+                                                <label for="fname" style="padding-right:68px">Mã sản phẩm: </label>
+                                                <input name="MaSp" id="MaSp" type="text" value="@update.MaSp" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
+                                                <label for="fname" style="padding-right:99px">Số lượng: </label>
+                                                <input name="SoLuong" id="SoLuong" type="number" value="@update.SoLuong" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                                <label for="fname" style="padding-right:107px">Đơn giá: </label>
+                                                <input name="DonGia" id="DonGia" type="number" value="@update.DonGia" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:88px">Thành tiền: </label>
+                                                <input name="ThanhTien" id="ThanhTien" type="number" value="@update.ThanhTien" />
+                                            </div>
+                                            
+                                            <input type="text" name="MaPn" style="display:none" value="@update.MaPn" />
+                                            <div class="form-group form-button">
+                                                <input type="submit" name="signup" id="signup" class="form-submit" value="Cập nhật" />
+                                            </div>
+                                        </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        @* ------------------------------------------------------ *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("closeu")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        // Get the modal
+        var modal_sua = document.getElementById("updateModal");
+
+        var btn_sua = document.getElementById("btn_sua");
+
+        btn_sua.onclick = function () {
+            modal_sua.style.display = "block";
+        }
+        //Get the <span> element that closes the modal
+        var span_x = document.getElementsByClassName("close_x")[0];
+
+
+        //// When the user clicks on <span> (x), close the modal
+        span_x.onclick = function () {
+            modal_sua.style.display = "none";
+            //}
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal_sua) {
+                    modal_sua.style.display = "none";
+                }
+            }
+    </script>
+
+</body>
+</html>
+@* ---------------------------------------- *@
+
+@* Hiển thị danh sách nhân viên*@
+
+<style>
+    .table-bordered: {
+        padding: 10px;
+    }
+</style>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Mã phiếu nhập</td>
+            <td>Mã mã nhân viên </td>
+            <td>Mã sản phẩm</td>
+            <td>Số lượng</td>
+            <td>Đơn giá</td>
+            <td>Thành tiền</td>            
+            <td>Ngày nhập</td>
+            <td>Sửa</td>
+            <td>Xóa</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in lstPN)
+        {
+            if (item.TrangThai == true)
+            {
+                <tr>
+                    <td>@item.MaPn</td>
+                    <td>@item.MaNv</td>
+                    <td>@item.MaSp</td>
+                    <td>@item.SoLuong</td>
+                    <td>@item.DonGia</td>
+                    <td>@item.ThanhTien</td>
+                    <td>@item.NgayNhap</td>
+
+                    @*<td>@item.TrangThai</td>*@
+                    @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="load_DataPN" asp-route-id="@item.MaPn">Sửa</a></button></td>
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="PhieuNhap_xoa" asp-route-id="@item.MaSp">Xóa</a></button></td>
+                </tr>
+            }
+
+        }
+
+    </tbody>
+</table>
+
+
+
+

@@ -1008,5 +1008,114 @@ namespace WebLapTop.Controllers
             return RedirectToAction("SanPham");
         }
 
+
+        // hiển thị phiếu nhập
+        public IActionResult PhieuNhap()
+        {
+            TempData["Route"] = "PhieuNhap";
+
+            if (TempData["employee"] != null)
+            {
+
+                String id = TempData["employee"].ToString();
+                var employee = _context.Phieunhaps.FirstOrDefault(u => u.MaPn.Equals(id));
+                ViewData["employee"] = employee;
+
+                TempData["employee"] = null;
+            }
+
+            ViewData["Log"] = LogCheck();
+
+            try
+            {
+                var NVmodel = from nv in _context.Phieunhaps
+                              //join cn in _context.Chinhanhs on nv.MaCn equals cn.MaCn
+                              //where nv.MaCn.Equals(cn.MaCn)
+                              select new Phieunhap
+                              {
+                                  MaPn = nv.MaPn,
+                                  MaNv = nv.MaNv,
+                                  MaSp=nv.MaSp,
+                                  SoLuong = nv.SoLuong,
+                                  DonGia = nv.DonGia,
+                                  ThanhTien = nv.ThanhTien,
+                                  NgayNhap=nv.NgayNhap,
+                                  TrangThai=nv.TrangThai                                
+                              };
+
+                ViewData["dsPhieuNhap"] = NVmodel.ToList();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View();
+        }
+        // Thêm nhân viên
+        [HttpPost]
+        public IActionResult PhieuNhap(Phieunhap nv)
+        {
+            ViewData["Log"] = "";
+            if (ModelState.IsValid)
+            {
+                
+                    int lastId = Convert.ToInt32(_context.Phieunhaps.OrderBy(u => u.MaPn).LastOrDefault().MaPn.Substring(2));
+                    var insert = _context.Phieunhaps.Add(new Phieunhap
+                    {
+                        MaPn = lastId >= 9 ? "PN" + (lastId + 1) : "PN0" + (lastId + 1),
+                        //MaCn = nv.MaCn,
+                        MaNv = nv.MaNv,
+                        MaSp = nv.MaSp,
+                        SoLuong = nv.SoLuong,
+                        DonGia = nv.DonGia,
+                        ThanhTien = nv.ThanhTien,
+                        NgayNhap = DateTime.Now,                       
+                        TrangThai = true
+                    });
+                    _context.SaveChanges();
+                    //HttpContext.Session.SetString("EmailUser", kh.Email);
+                    //HttpContext.Session.SetString("PassWord", kh.MatKhau);
+                    return RedirectToAction("PhieuNhap");
+                
+            }
+            return RedirectToAction("PhieuNhap");
+        }
+        // sửa nhân viên-----------------------------
+        [HttpPost]
+        public IActionResult PhieuNhap_sua(Phieunhap nv)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Phieunhaps.FirstOrDefault(u => u.MaPn.Equals(nv.MaPn));
+            update.MaNv = nv.MaNv;
+            update.MaSp = nv.MaSp;
+            update.SoLuong = nv.SoLuong;
+            update.DonGia = nv.DonGia;
+            update.ThanhTien = nv.ThanhTien;
+            update.NgayNhap = DateTime.Now;
+            
+            update.TrangThai = true;
+            _context.SaveChanges();
+            return RedirectToAction("PhieuNhap");
+        }
+        //load data nv-----------------------------------------------
+        [HttpGet]
+        public IActionResult load_DataPN(string id)
+        {
+            //tempdata k lưu dc object muốn thì dùng jsonconvert
+            TempData["employee"] = id;
+            return RedirectToAction("PhieuNhap");
+        }
+
+        [HttpGet]
+        public IActionResult PhieuNhap_xoa(string id)
+        {
+            ViewData["Log"] = "";
+            var update = _context.Phieunhaps.FirstOrDefault(u => u.MaPn.Equals(id));
+            update.TrangThai = false;
+            _context.SaveChanges();
+            return RedirectToAction("PhieuNhap");
+        }
+
     }
 }
