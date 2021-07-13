@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using PagedList;
+
 namespace WebLapTop.Controllers
 {
     public class HomeController : Controller
@@ -443,7 +444,7 @@ namespace WebLapTop.Controllers
                         Email=kh.Email,
                         MatKhau=kh.MatKhau,
                         Sdt=kh.Sdt,
-                        DiaChi=kh.DiaChi,
+                        DiaChi=kh.soNha+","+kh.xaP+","+kh.quanH+","+kh.tinhTP,
                         Diem=0,
                         LoaiKh="New",
                         TrangThai=true

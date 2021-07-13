@@ -79,5 +79,18 @@
     <!-- JS -->
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/main.js"></script>
+    <script>
+        function showpass() {
+            var x = document.getElementById("your_pass");
+            var y = document.getElementById("btnShow");
+            if (x.type === "password") {
+                x.type = "text";
+                y.value = "Ẩn mật khẩu";
+            } else {
+                x.type = "password";
+                y.value = "Hiện mật khẩu";
+            }
+        }
+    </script>
 </body>
 </html>

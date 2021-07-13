@@ -200,7 +200,7 @@
                                     <tbody>
                                         <tr class="cart-subtotal">
                                             <th>Tổng giá trị giỏ hàng</th>
-                                            <td><span class="amount">@(String.Format("{0:0,0}", total)) VNĐ</span></td>
+                                            <td><span class="amount">@(String.Format("{0:0,0}", total).Replace(',', '.')) VNĐ</span></td>
                                         </tr>
                                         @if (coupon.Equals("") || coupon.Equals("ErrorCoupon") || khuyenmai == null)
                                         {
@@ -210,7 +210,7 @@
                                             </tr>
 
                                             <tr class="order-total">
-                                                <th>Tổng đơn hàng</th>
+                                                <th>Thành tiền phải trả</th>
                                                 <td><strong><span class="amount">@(String.Format("{0:0,0}", total).Replace(',', '.')) VNĐ</span></strong> </td>
                                             </tr>
                                         }
@@ -222,7 +222,7 @@
                                             </tr>
 
                                             <tr class="order-total">
-                                                <th>Thành tiền</th>
+                                                <th>Thành tiền phải trả</th>
                                                 <td><strong><span class="amount">@(String.Format("{0:0,0}",finaltotal ).Replace(',', '.')) VNĐ</span></strong> </td>
                                             </tr>
                                         }

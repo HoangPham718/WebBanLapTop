@@ -16,8 +16,14 @@ namespace WebLapTop.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống sdt")]
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Định dạng số điện thoại sai")]
         public string Sdt { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống địa chỉ")]
-        public string DiaChi { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống số nhà, đường")]
+        public string soNha { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống xã phường")]
+        public string xaP { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống quận huyện")]
+        public string quanH { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống tỉnh thành")]
+        public string tinhTP { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống mật khẩu")]
         [StringLength(12, ErrorMessage = "Mật khẩu tối thiểu {2} kí tự và nhiều nhất {1}.", MinimumLength = 6)]
         public string MatKhau { get; set; }
