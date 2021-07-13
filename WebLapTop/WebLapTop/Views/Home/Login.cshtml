@@ -35,16 +35,16 @@
                                 }
                             </div>
                             <div class="form-group">
-                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+
                                 @if (String.IsNullOrEmpty(account.MatKhau))
                                 {
                                     @Html.PasswordFor(a => a.MatKhau, new { @name = "your_pass", @id = "your_pass", @placeholder = "Mật khẩu" })
                                 }
                                 else
                                 {
-                                    @Html.PasswordFor(a => a.MatKhau, new { @name = "your_pass", @id = "your_pass" ,@value=account.MatKhau})
+                                    @Html.PasswordFor(a => a.MatKhau, new { @name = "your_pass", @id = "your_pass", @value = account.MatKhau })
                                 }
-
+                                <input type="button" id="btnShow" onclick="showpass()" value="Hiện mật khẩu" style="padding: inherit; background-color: #5a88ca;color:white"  />
                             </div>
                             <div class="form-group">
                                 @if (String.IsNullOrEmpty(account.MatKhau))
