@@ -451,6 +451,7 @@ namespace WebLapTop.Controllers
                     _context.SaveChanges();
                     HttpContext.Session.SetString("EmailUser", kh.Email);
                     HttpContext.Session.SetString("PassWord", kh.MatKhau);
+                    HttpContext.Session.SetString("UserName", findNameUser(kh.Email));
                     return RedirectToAction("Index");
                 }
                 else
@@ -775,11 +776,12 @@ namespace WebLapTop.Controllers
                 HttpContext.Session.SetString("EmailUser", khachhang.Email);
                 Response.Cookies.Append("userName", khachhang.Email);
             }
-
+            TempData["RemoveReadonly"] = null;
             updateInfo.TenKh = khachhang.TenKh;
             updateInfo.DiaChi = khachhang.DiaChi;
             updateInfo.Email = khachhang.Email;
             updateInfo.Sdt = khachhang.Sdt;
+            HttpContext.Session.SetString("UserName", findNameUser(khachhang.Email));
 
             _context.SaveChanges();
 
