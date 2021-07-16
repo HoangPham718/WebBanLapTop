@@ -14,7 +14,7 @@ namespace WebLapTop.Models
         public double? DonGia { get; set; }
         public double? ThanhTien { get; set; }
         public DateTime? NgayNhap { get; set; }
-
+        public bool? TrangThai { get; set; }
         public virtual Nhanvien MaNvNavigation { get; set; }
         public virtual Sanpham MaSpNavigation { get; set; }
     }

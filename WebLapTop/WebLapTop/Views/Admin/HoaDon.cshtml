@@ -2,7 +2,55 @@
 @{
     ViewData["Title"] = "HoaDon";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var lstHD = ViewData["dsHD"] as List<Hoadon>;
 }
+<h3>DANH SÁCH HÓA ĐƠN</h3>
+@model WebLapTop.Models.Hoadon
+@* ---------------------------------------- *@
 
-<h1>HoaDon</h1>
+@* Hiển thị danh sách nhân viên*@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Mã hóa đơn</td>
+            <td>Mã nhân viên</td>
+            <td>Mã khách hàng</td>
+            <td>Ngày lập</td>
+            <td>Ngày giao</td>
+            <td>Tên người nhận</td>
+            <td>Số điện thoại người nhận</td>
+            <td>Địa chỉ</td>
+            <td>Ghi chú</td>
+            <td>Duyệt</td>
+            <td>Hủy</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in lstHD)
+        {
+            if (item.shipping == 1)
+            {
+                <tr>
+                    <td>@item.MaHd</td>
+                    <td>@item.MaNv</td>
+                    <td>@item.MaKh</td>
+                    <td>@item.NgayLap</td>
+                    <td>@item.NgayGiao</td>
+                    <td>@item.TenNn</td>
+                    <td>@item.Sdtnn</td>
+                    <td>@item.DiaChi</td>
+                    <td>@item.shippingNote</td>
+                    @*<td>@item.TrangThai</td>*@
+                    @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
+
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="DuyetHoaDon" asp-route-id="@item.MaHd">Duyệt</a></button></td>
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="HuyHoaDon" asp-route-id="@item.MaHd">Hủy</a></button></td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>
+
+
 
