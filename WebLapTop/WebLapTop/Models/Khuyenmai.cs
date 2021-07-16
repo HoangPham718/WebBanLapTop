@@ -19,7 +19,7 @@ namespace WebLapTop.Models
         public int? LoaiKm { get; set; }
         public DateTime? NgayBd { get; set; }
         public DateTime? NgayKt { get; set; }
-
+        public bool? TrangThai { get; set; }
         public virtual ICollection<Khachhang> Khachhangs { get; set; }
         public virtual ICollection<Sanpham> Sanphams { get; set; }
     }

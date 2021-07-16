@@ -1,17 +1,17 @@
 ﻿
 @{
-    ViewData["Title"] = "NhanVien";
+    ViewData["Title"] = "SanPham";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     //Layout = "~/Views/Shared/_LoginLayout.cshtml";
-    var lstNV = ViewData["dsNhanVien"] as List<Nhanvien>;
+    var lstSP = ViewData["dsSanPham"] as List<Sanpham>;
     //var account = ViewData["Account"] as AccountLogin;
 
-    var update = ViewData["employee"] as Nhanvien;
+    var update = ViewData["employee"] as Sanpham;
 }
 
-<h3>DANH SÁCH NHÂN VIÊN</h3>
+<h3>DANH SÁCH SẢN PHẨM</h3>
 @*@model WebLapTop.Models.Chinhanh*@
-@model WebLapTop.Models.Nhanvien
+@model WebLapTop.Models.Sanpham
 @* Form thêm------------------------------------ *@
 <!DOCTYPE html>
 <html>
@@ -131,7 +131,7 @@
     @*<h2>Animated Modal with Header and Footer</h2>*@
 
     <!-- Trigger/Open The Modal -->
-    <button id="myBtn" class="cs">Thêm Nhân Viên</button>
+    <button id="myBtn" class="cs">Thêm Sản Phẩm</button>
 
     <!-- The Modal -->
 
@@ -141,7 +141,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="closeu">&times;</span>
-                <h2>THÊM THÀNH VIÊN</h2>
+                <h2>THÊM SẢN PHẨM</h2>
             </div>
             <div class="modal-body">
                 @* Nội dung thêm *@
@@ -152,52 +152,66 @@
                         <div class="container-1">
                             <div class="signup-content">
                                 <div class="signup-form">
-                                    @using (Html.BeginForm("NhanVien", "Admin", FormMethod.Post))
+                                    @using (Html.BeginForm("SanPham", "Admin", FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.ValidationSummary()
                                         <form method="POST" class="register-form" id="register-form">
                                             <div class="form-group">
                                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                                <label for="fname" style="padding-right:77px">Họ tên: </label>
-                                                @Html.TextBoxFor(a => a.TenNv, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên nhân viên" })
+                                                <label for="fname" style="padding-right:60px">Mã nhà cung cấp: </label>
+                                                @Html.TextBoxFor(a => a.MaNcc, new { @name = "MaNcc", @id = "MaNcc", @type = "text", @placeholder = "Mã nhà cung cấp" })
                                             </div>
                                             <div class="form-group">
                                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                                <label for="fname" style="padding-right:30px">Mã chi nhánh: </label>
-                                                @Html.TextBoxFor(a => a.MaCn, new { @name = "name", @id = "name", @type = "text", @placeholder = "Mã chi nhánh" })
+                                                <label for="fname" style="padding-right:86px">Mã nhân viên: </label>
+                                                @Html.TextBoxFor(a => a.MaNv, new { @name = "MaNv", @id = "MaNv", @type = "text", @placeholder = "Mã nhân viên" })
                                             </div>
                                             <div class="form-group">
                                                 <label for="address"><i class="zmdi zmdi-my-location"></i></label>
-                                                <label for="fname" style="padding-right:87px">Email: </label>
-                                                @Html.TextBoxFor(a => a.Email, new { @name = "email", @id = "email", @type = "email", @placeholder = "Email" })
+                                                <label for="fname" style="padding-right:75px">Mã khuyến mãi: </label>
+                                                @Html.TextBoxFor(a => a.MaKm, new { @name = "MaKm", @id = "MaKm", @type = "number", @placeholder = "Mã khuyến mãi" })
                                             </div>
                                             <div class="form-group">
                                                 <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
-                                                <label for="fname" style="padding-right:34px">Số điện thoại: </label>
-                                                @Html.TextBoxFor(a => a.Sdt, new { @name = "phone", @id = "phone", @type = "number", @placeholder = "Số điện thoại" })
+                                                <label for="fname" style="padding-right:80px">Tên sản phẩm: </label>
+                                                @Html.TextBoxFor(a => a.TenSp, new { @name = "TenSp", @id = "TenSp", @type = "text", @placeholder = "Tên sản phẩm" })
                                             </div>
                                             <div class="form-group">
                                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                                <label for="fname" style="padding-right:79px">Địa chỉ: </label>
-                                                @Html.PasswordFor(a => a.DiaChi, new { @name = "address", @id = "address", @type = "text", @placeholder = "Địa chỉ" })
+                                                <label for="fname" style="padding-right:77px">Loại sản phẩm: </label>
+                                                @Html.PasswordFor(a => a.LoaiSp, new { @name = "LoaiSp", @id = "LoaiSp", @type = "text", @placeholder = "Loại sản phẩm" })
                                             </div>
                                             <div class="form-group">
                                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                <label for="fname" style="padding-right:61px">Mật khẩu: </label>
-                                                @Html.PasswordFor(a => a.MatKhau, new { @name = "re-pass", @id = "re-pass", @placeholder = "Mật khẩu" })
+                                                <label for="fname" style="padding-right:88px">Thương hiệu: </label>
+                                                @Html.PasswordFor(a => a.ThuongHieu, new { @name = "ThuongHieu", @id = "ThuongHieu", @type = "text", @placeholder = "Thương hiệu" })
                                             </div>
                                             <div class="form-group">
                                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                <label for="fname" style="padding-right:67px">Chức vụ: </label>
-                                                @Html.PasswordFor(a => a.ChucVu, new { @name = "chucvu", @id = "chucvu", @type = "text", @placeholder = "Chức vụ" })
+                                                <label for="fname" style="padding-right:57px">Chi tiết sản phẩm: </label>
+                                                @Html.PasswordFor(a => a.ChiTietSp, new { @name = "ChiTietSp", @id = "ChiTietSp", @type = "text", @placeholder = "Chi tiết sản phẩm" })
                                             </div>
                                             <div class="form-group">
                                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                <label for="fname" style="padding-right:80px">Quyền: </label>
-                                                @Html.PasswordFor(a => a.Quyen, new { @name = "quyen", @id = "quyen", @type = "text", @placeholder = "Quyền" })
+                                                <label for="fname" style="padding-right:124px">Đơn giá: </label>
+                                                @Html.PasswordFor(a => a.DonGia, new { @name = "DonGia", @id = "DonGia", @type = "number", @placeholder = "Đơn giá" })
                                             </div>
-
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:116px">Đánh giá: </label>
+                                                @Html.PasswordFor(a => a.DanhGia, new { @name = "DanhGia", @id = "DanhGia", @type = "number", @placeholder = "Đánh giá" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:115px">Ngày tạo: </label>
+                                                @Html.PasswordFor(a => a.NgayTao, new { @name = "NgayTao", @id = "NgayTao", @type = "date", @placeholder = "Ngày tạo" })
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                <label for="fname" style="padding-right:110px">Ngày sửa: </label>
+                                                @Html.PasswordFor(a => a.NgaySua, new { @name = "NgaySua", @id = "NgaySua", @type = "date", @placeholder = "Ngày sửa" })
+                                            </div>
                                             <div class="form-group form-button">
                                                 <input type="submit" name="signup" id="signup" class="form-submit" value="THÊM" />
                                             </div>
@@ -235,52 +249,73 @@
                             <div class="container-1">
                                 <div class="signup-content">
                                     <div class="signup-form">
-                                        @using (Html.BeginForm("NhanVien_sua", "Admin", FormMethod.Post))
+                                        @using (Html.BeginForm("SanPham_sua", "Admin", FormMethod.Post))
                                         {
                                             @Html.AntiForgeryToken()
                                             @Html.ValidationSummary()
                                             <form method="POST" class="register-form" id="register-form">
                                                 <div class="form-group">
                                                     <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                                    <label for="fname" style="padding-right:77px">Họ tên: </label>
-                                                    <input name="TenNv" id="TenNv" type="text" value="@update.TenNv" />
+                                                    <label for="fname" style="padding-right:85px">Mã sản phẩm: </label>
+                                                    <input name="MaSp" id="MaSp" type="text" value="@update.MaSp" disabled />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                                    <label for="fname" style="padding-right:30px">Mã chi nhánh: </label>
-                                                    <input name="MaCn" id="MaCn" type="text" value="@update.MaCn" />
+                                                    <label for="fname" style="padding-right:60px">Mã nhà cung cấp: </label>
+                                                    <input name="MaNcc" id="MaNcc" type="text" value="@update.MaNcc" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:86px">Mã nhân viên: </label>
+                                                    <input name="MaNv" id="MaNv" type="text" value="@update.MaNv" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="address"><i class="zmdi zmdi-my-location"></i></label>
-                                                    <label for="fname" style="padding-right:87px">Email: </label>
-                                                    <input name="Email" id="Email" type="text" value="@update.Email" />
+                                                    <label for="fname" style="padding-right:75px">Mã khuyến mãi: </label>
+                                                    <input name="MaKm" id="MaKm" type="text" value="@update.MaKm" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="phone"><i class="zmdi zmdi-account-box-phone"></i></label>
-                                                    <label for="fname" style="padding-right:34px">Số điện thoại: </label>
-                                                    <input name="Sdt" id="Sdt" type="text" value="@update.Sdt" />
+                                                    <label for="fname" style="padding-right:80px">Tên sản phẩm: </label>
+                                                    <input name="TenSp" id="TenSp" type="text" value="@update.TenSp" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                                    <label for="fname" style="padding-right:79px">Địa chỉ: </label>
-                                                    <input name="DiaChi" id="DiaChi" type="text" value="@update.DiaChi" />
+                                                    <label for="fname" style="padding-right:77px">Loại sản phẩm: </label>
+                                                    <input name="LoaiSp" id="LoaiSp" type="text" value="@update.LoaiSp" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                    <label for="fname" style="padding-right:61px">Mật khẩu: </label>
-                                                    <input name="MatKhau" id="MatKhau" type="text" value="@update.MatKhau" />
+                                                    <label for="fname" style="padding-right:88px">Thương hiệu: </label>
+                                                    <input name="ThuongHieu" id="ThuongHieu" type="text" value="@update.ThuongHieu" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                    <label for="fname" style="padding-right:67px">Chức vụ: </label>
-                                                    <input name="ChucVu" id="ChucVu" type="text" value="@update.ChucVu" />
+                                                    <label for="fname" style="padding-right:57px">Chi tiết sản phẩm: </label>
+                                                    <input name="ChiTietSp" id="ChiTietSp" type="text" value="@update.ChiTietSp" />
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                    <label for="fname" style="padding-right:80px">Quyền: </label>
-                                                    <input name="Quyen" id="Quyen" type="text" value="@update.Quyen" />
+                                                    <label for="fname" style="padding-right:124px">Đơn giá: </label>
+                                                    <input name="DonGia" id="DonGia" type="text" value="@update.DonGia" />
                                                 </div>
-                                                <input type="text" name="MaNv" style="display:none" value="@update.MaNv" />
+                                                <div class="form-group">
+                                                    <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                    <label for="fname" style="padding-right:116px">Đánh giá: </label>
+                                                    <input name="DanhGia" id="DanhGia" type="text" value="@update.DanhGia" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                    <label for="fname" style="padding-right:115px">Ngày tạo: </label>
+                                                    <input name="NgayTao" id="NgayTao" type="text" value="@update.NgayTao" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                                    <label for="fname" style="padding-right:110px">Ngày sửa: </label>
+                                                    <input name="NgaySua" id="NgaySua" type="text" value="@update.NgaySua" />
+                                                </div>
+
+                                                <input type="text" name="MaSp" style="display:none" value="@update.MaSp" />
                                                 <div class="form-group form-button">
                                                     <input type="submit" name="signup" id="signup" class="form-submit" value="Cập nhật" />
                                                 </div>
@@ -363,39 +398,51 @@
 <table class="table table-bordered">
     <thead>
         <tr>
+            <td>Mã sản phẩm</td>
+            <td>Mã nhà cung cấp</td>
             <td>Mã nhân viên</td>
-            <td>Mã chi nhánh</td>
-            <td>Tên nhân viên</td>
-            <td>Chức vụ</td>
-            <td>SĐT</td>
-            <td>Địa chỉ</td>
-            <td>Email</td>
-            @*<td>Trth</td>*@
+            <td>Mã khuyến mãi</td>
+            <td>Tên sản phẩm</td>
+            <td>Loại sản phẩm</td>
+            <td>Thương hiệu</td>
+            <td>Chi tiết</td>
+            <td>Đơn giá</td>
+            <td>Đánh giá</td>
+            <td>Ngày tạo</td>
+            <td>Ngày sửa</td>
 
             <td>Sửa</td>
             <td>Xóa</td>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in lstNV)
+        @foreach (var item in lstSP)
         {
             if (item.TrangThai == true)
             {
                 <tr>
+                    <td>@item.MaSp</td>
+                    <td>@item.MaNcc</td>
                     <td>@item.MaNv</td>
-                    <td>@item.MaCn</td>
-                    <td>@item.TenNv</td>
-                    <td>@item.ChucVu</td>
-                    <td>@item.Sdt</td>
-                    <td>@item.DiaChi</td>
-                    <td>@item.Email</td>
+                    <td>@item.MaKm</td>
+                    <td>@item.TenSp</td>
+                    <td>@item.LoaiSp</td>
+                    <td>@item.ThuongHieu</td>
+                    <td>@item.ChiTietSp</td>
+                    <td>@item.DonGia</td>
+                    <td>@item.DanhGia</td>
+                    <td>@item.NgayTao</td>
+                    <td>@item.NgaySua</td>
+
                     @*<td>@item.TrangThai</td>*@
                     @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
-                    <td><button><a asp-area="" asp-controller="Admin" asp-action="load_DataNV" asp-route-id="@item.MaNv">Sửa</a></button></td>
-                    <td><button><a asp-area="" asp-controller="Admin" asp-action="NhanVien_xoa" asp-route-id="@item.MaNv">Xóa</a></button></td>
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="load_DataSP" asp-route-id="@item.MaSp">Sửa</a></button></td>
+                    <td><button><a asp-area="" asp-controller="Admin" asp-action="SanPham_xoa" asp-route-id="@item.MaSp">Xóa</a></button></td>
                 </tr>
             }
         }
     </tbody>
 </table>
+
+
 
