@@ -138,11 +138,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
                                                     <label for="fname" style="padding-right:77px">Họ tên: </label>
                                                     @Html.TextBoxFor(a => a.MaKh, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên nhân viên" })
                                                 </div>*@
-                                            <div class="form-group">
-                                                <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                                <label for="fname" style="padding-right:44px">Mã khuyến mãi: </label>
-                                                @Html.TextBoxFor(a => a.MaKm, new { @name = "MaKm", @id = "MaKm", @type = "number", @placeholder = "Mã khuyến mãi" })
-                                            </div>
+                                            @*<div class="form-group">
+                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                    <label for="fname" style="padding-right:44px">Mã khuyến mãi: </label>
+                                                    @Html.TextBoxFor(a => a.MaKm, new { @name = "MaKm", @id = "MaKm", @type = "number", @placeholder = "Mã khuyến mãi" })
+                                                </div>*@
                                             <div class="form-group">
                                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
                                                 <label for="fname" style="padding-right:30px">Tên khách hàngh: </label>
@@ -225,11 +225,11 @@ body {font-family: Arial, Helvetica, sans-serif;}
                                                     <label for="fname" style="padding-right:42px">Mã khách hàng: </label>
                                                     <input name="MaKh" id="MaKh" type="text" value="@update.MaKh" disabled />
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                                    <label for="fname" style="padding-right:44px">Mã khuyến mãi: </label>
-                                                    <input name="MaKm" id="MaKm" type="text" value="@update.MaKm" />
-                                                </div>
+                                                @*<div class="form-group">
+                                                        <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                                        <label for="fname" style="padding-right:44px">Mã khuyến mãi: </label>
+                                                        <input name="MaKm" id="MaKm" type="text" value="@update.MaKm" />
+                                                    </div>*@
                                                 <div class="form-group">
                                                     <label for="email"><i class="zmdi zmdi-email"></i></label>
                                                     <label for="fname" style="padding-right:37px">Tên khách hàng: </label>
@@ -338,19 +338,29 @@ body {font-family: Arial, Helvetica, sans-serif;}
 @* ---------------------------------------- *@
 
 @* Hiển thị danh sách nhân viên*@
+
+<style>
+    .table-bordered: {
+        padding: 10px;
+    }
+
+    .mau {
+        background-color: #66d9ff;
+    }
+</style>
 <table class="table table-bordered">
     <thead>
-        <tr>
-            <td>Mã khách hành</td>
-            <td>Mã khuyến mãi</td>
-            <td>Tên khách hàng</td>
-            <td>Email</td>
+        <tr class="mau">
+            <td>MÃ KHÁCH HÀNG</td>
+            @*<td>MÃ KHUYẾN MÃI</td>*@
+            <td>TÊN KHÁCH HÀNG</td>
+            <td>EMAIL</td>
             <td>SĐT</td>
-            <td>Địa chỉ</td>
-            <td>Loại khách hành</td>
+            <td>ĐỊA CHỈ</td>
+            <td>LOẠI KHÁCH HÀNG</td>
             @*<td>Trth</td>*@
-            <td>Sửa</td>
-            <td>Xóa</td>
+            <td>SỬA</td>
+            <td>XÓA</td>
         </tr>
     </thead>
     <tbody>
@@ -360,7 +370,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
             {
                 <tr>
                     <td>@item.MaKh</td>
-                    <td>@item.MaKm</td>
+                    @*<td>@item.MaKm</td>*@
                     <td>@item.TenKh</td>
                     <td>@item.Email</td>
                     <td>@item.Sdt</td>

@@ -31,7 +31,7 @@ namespace WebLapTop
             services.AddControllersWithViews();
 
             var connectionString = Configuration.GetConnectionString("WebLapTopContext");
-            services.AddDbContext<WebLapTopContext>(item => item.UseSqlServer(connectionString));
+            services.AddDbContext<WebLapTopContext>(options => options.UseSqlServer(connectionString));
 
             services.AddDistributedMemoryCache();
             services.AddSession((options) => { options.IdleTimeout = TimeSpan.FromMinutes(45); });
@@ -64,8 +64,8 @@ namespace WebLapTop
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    //pattern: "{controller=Home}/{action=Index}/{id?}");
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                  //pattern: "{controller=Admin}/{action=NhanVien}/{id?}");
+                     pattern: "{controller=Home}/{action=Index}/{id?}");
         });
         }
     }

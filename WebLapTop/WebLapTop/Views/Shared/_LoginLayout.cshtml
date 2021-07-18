@@ -68,7 +68,6 @@
                             <li><a asp-area="" asp-controller="Home" asp-action="Logout">Đăng xuất</a></li>
                             <li><a asp-area="" asp-controller="Home" asp-action="InfoAccount">@HttpContextAccessor.HttpContext.Session.GetString("UserName") - <i class="fa fa-user"></i></a></li>
                         }
-
                     </ul>
                 </div>
             </div>
@@ -81,5 +80,18 @@
     <!-- JS -->
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/main.js"></script>
+    <script>
+        function showpass() {
+            var x = document.getElementById("your_pass");
+            var y = document.getElementById("btnShow");
+            if (x.type === "password") {
+                x.type = "text";
+                y.value = "Ẩn mật khẩu";
+            } else {
+                x.type = "password";
+                y.value = "Hiện mật khẩu";
+            }
+        }
+    </script>
 </body>
 </html>

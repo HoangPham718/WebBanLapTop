@@ -306,17 +306,27 @@ body {font-family: Arial, Helvetica, sans-serif;}
 @* ---------------------------------------- *@
 
 @* Hiển thị danh sách nhân viên*@
+
+<style>
+    .table-bordered: {
+        padding: 10px;
+    }
+
+    .mau {
+        background-color: #66d9ff;
+    }
+</style>
 <table class="table table-bordered">
     <thead>
-        <tr>
-            <td>Mã khuyến mãi</td>
-            <td>Tên khuyến mãi</td>
-            <td>Mô tả</td>
-            <td>Loại khuyến mãi</td>
-            <td>Ngày bắt đầu</td>
-            <td>Ngày kết thúc</td>
-            <td>Sửa</td>
-            <td>Xóa</td>
+        <tr class="mau">
+            <td>MÃ KHUYẾN MÃI</td>
+            <td>TÊN KHUYẾN MÃI</td>
+            <td>MÔ TẢ</td>
+            <td>LOẠI KHUYẾN MÃI</td>
+            <td>NGÀY BẮT ĐẦU</td>
+            <td>NGÀY KẾT THÚC</td>
+            <td>SỬA</td>
+            <td>XÓA</td>
         </tr>
     </thead>
     <tbody>
