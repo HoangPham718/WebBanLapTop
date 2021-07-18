@@ -61,7 +61,7 @@
                     <div class="product-content-right">
                         <div class="product-breadcroumb">
                             <a asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
-                            <a href="">Chi tiết sản phẩm</a>
+                            <a href="">Thông tin sản phẩm</a>
                             <a href="">@ViewBag.Anh.MaSpNavigation.TenSp</a>
                         </div>
 
@@ -116,12 +116,11 @@
 
                                     <div role="tabpanel">
                                         <ul class="product-tab" role="tablist">
-                                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Thông tin</a></li>
+                                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Thông tin sản phẩm</a></li>
                                             @*<li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Đánh giá</a></li>*@
                                         </ul>
                                         <div class="tab-content">
                                             <div role="tabpanel" class="tab-pane fade in active" id="home">
-                                                <h2>Thông tin sản phẩm</h2>
                                                 <p>@ViewBag.Anh.MaSpNavigation.ChiTietSp</p>
                                             </div>
                                             @*<div role="tabpanel" class="tab-pane fade" id="profile">

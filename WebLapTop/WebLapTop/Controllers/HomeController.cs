@@ -368,6 +368,7 @@ namespace WebLapTop.Controllers
         {
             HttpContext.Session.Clear();
             HttpContext.Session.SetInt32("CountCart", countCart());
+            TempData["Coupon"] = null;
             return RedirectToAction("Login");
         }
         [HttpPost]
