@@ -10,12 +10,15 @@ namespace WebLapTop.Models
     {
         [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống họ và tên")]
         public string TenKh { get; set; }
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống email")]
         [EmailAddress(ErrorMessage = "Định dạng email sai")]
         public string Email { get; set; }
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống sdt")]
         [RegularExpression(@"^(\d{10})$", ErrorMessage = "Định dạng số điện thoại sai")]
         public string Sdt { get; set; }
+
         [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống số nhà, đường")]
         public string soNha { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Không được bỏ trống xã phường")]

@@ -10,32 +10,42 @@
 @model WebLapTop.Models.Hoadon
 @* Form thêm------------------------------------ *@
 
+<style>
+    .table-bordered: {
+        padding: 10px;
+    }
 
-@* Hiển thị danh sách nhân viên*@
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <td>Mã hóa đơn</td>
-            @*<td>Mã nhân viên</td>*@
-            <td>Mã khách hàng</td>
-            <td>Ngày lập</td>
-            <td>Ngày giao</td>
-            <td>Tên người nhận</td>
-            <td>Số điện thoại người nhận</td>
-            <td>Địa chỉ</td>
-            <td>Ghi chú</td>
-            <td>Đang giao</td>
-            <td>Hủy</td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in lstHD)
-        {
-            if (item.shipping == 0 || item.shipping == 2)
-            {
-                if (item.shipping == 2)
-                {
-                    <tr>
+    .mau {
+        background-color: #66d9ff;
+    }
+</style>
+        
+
+            @* Hiển thị danh sách nhân viên*@
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="mau">
+                        <td>MÃ HÓA ĐƠN</td>
+                        @*<td>MÃ NHÂN VIÊN</td>*@
+                        <td>MÃ KHÁCH HÀNG</td>
+                        <td>NGÀY LẬP</td>
+                        <td>NGÀY GIAO</td>
+                        <td>TÊN NGƯỜI NHẬN</td>
+                        <td>SĐT NGƯỜI NHẬN</td>
+                        <td>ĐỊA CHỈ</td>
+                        <td>GHI CHÚ</td>
+                        <td>DUYỆT</td>
+                        <td>HỦY</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in lstHD)
+                    {
+                        if (item.shipping == 0 || item.shipping == 2)
+                        {
+                            if (item.shipping == 2)
+                            {
+                    <tr >
                         <td>@item.MaHd</td>
                         @*<td>@item.MaNv</td>*@
                         <td>@item.MaKh</td>
@@ -50,31 +60,31 @@
                         <td><button><a asp-area="" asp-controller="Admin" asp-action="DaGiaotHoaDon" asp-route-id="@item.MaHd">Đang Giao</a></button></td>
                         <td><button><a asp-area="" asp-controller="Admin" asp-action="HuyHoaDon" asp-route-id="@item.MaHd">Hủy</a></button></td>
                     </tr>
-                }
-                if (item.shipping == 0)
-                {
-                    <tr>
-                        <td>@item.MaHd</td>
-                        @*<td>@item.MaNv</td>*@
-                        <td>@item.MaKh</td>
-                        <td>@item.NgayLap</td>
-                        <td>@item.NgayGiao</td>
-                        <td>@item.TenNn</td>
-                        <td>@item.Sdtnn</td>
-                        <td>@item.DiaChi</td>
-                        <td>@item.shippingNote</td>
-                        @*<td>@item.TrangThai</td>*@
-                        @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
-                        <td><button><a asp-area="" asp-controller="Admin" asp-action="DaGiaotHoaDon" asp-route-id="@item.MaHd">Đã Giao</a></button></td>
-                        <td><button><a href="#">Hủy </a></button></td>
-                    </tr>
-                }
+                            }
+                            if (item.shipping == 0)
+                            {
+                                <tr>
+                                    <td>@item.MaHd</td>
+                                    @*<td>@item.MaNv</td>*@
+                                    <td>@item.MaKh</td>
+                                    <td>@item.NgayLap</td>
+                                    <td>@item.NgayGiao</td>
+                                    <td>@item.TenNn</td>
+                                    <td>@item.Sdtnn</td>
+                                    <td>@item.DiaChi</td>
+                                    <td>@item.shippingNote</td>
+                                    @*<td>@item.TrangThai</td>*@
+                                    @*<td><a href="~/Admin_layout/@item.TenNv">Xóa</a></td>*@
+                                    <td><button><a asp-area="" asp-controller="Admin" asp-action="DaGiaotHoaDon" asp-route-id="@item.MaHd">Đã Giao</a></button></td>
+                                    <td><button><a href="#">Hủy </a></button></td>
+                                </tr>
+                            }
 
-            }
+                        }
 
-        }
-    </tbody>
-</table>
+                    }
+                </tbody>
+            </table>
 
 
 

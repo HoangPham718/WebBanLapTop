@@ -9,20 +9,29 @@
 @* ---------------------------------------- *@
 
 @* Hiển thị danh sách nhân viên*@
+<style>
+    .table-bordered: {
+        padding: 10px;
+    }
+
+    .mau {
+        background-color: #66d9ff;
+    }
+</style>
 <table class="table table-bordered">
     <thead>
-        <tr>
-            <td>Mã hóa đơn</td>
-            <td>Mã nhân viên</td>
-            <td>Mã khách hàng</td>
-            <td>Ngày lập</td>
-            <td>Ngày giao</td>
-            <td>Tên người nhận</td>
-            <td>Số điện thoại người nhận</td>
-            <td>Địa chỉ</td>
-            <td>Ghi chú</td>
-            <td>Duyệt</td>
-            <td>Hủy</td>
+        <tr class="mau">
+            <td>MÃ HÓA ĐƠN</td>
+            @*<td>MÃ NHÂN VIÊN</td>*@
+            <td>MÃ KHÁCH HÀNG</td>
+            <td>NGÀY LẬP</td>
+            <td>NGÀY GIAO</td>
+            <td>TÊN NGƯỜI NHẬN</td>
+            <td>SĐT NGƯỜI NHẬN</td>
+            <td>ĐỊA CHỈ</td>
+            <td>GHI CHÚ</td>
+            <td>DUYỆT</td>
+            <td>HỦY</td>
         </tr>
     </thead>
     <tbody>
@@ -32,7 +41,7 @@
             {
                 <tr>
                     <td>@item.MaHd</td>
-                    <td>@item.MaNv</td>
+                    @*<td>@item.MaNv</td>*@
                     <td>@item.MaKh</td>
                     <td>@item.NgayLap</td>
                     <td>@item.NgayGiao</td>

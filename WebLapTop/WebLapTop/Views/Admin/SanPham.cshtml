@@ -202,16 +202,7 @@
                                                 <label for="fname" style="padding-right:116px">Đánh giá: </label>
                                                 @Html.PasswordFor(a => a.DanhGia, new { @name = "DanhGia", @id = "DanhGia", @type = "number", @placeholder = "Đánh giá" })
                                             </div>
-                                            <div class="form-group">
-                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                <label for="fname" style="padding-right:115px">Ngày tạo: </label>
-                                                @Html.PasswordFor(a => a.NgayTao, new { @name = "NgayTao", @id = "NgayTao", @type = "date", @placeholder = "Ngày tạo" })
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                <label for="fname" style="padding-right:110px">Ngày sửa: </label>
-                                                @Html.PasswordFor(a => a.NgaySua, new { @name = "NgaySua", @id = "NgaySua", @type = "date", @placeholder = "Ngày sửa" })
-                                            </div>
+
                                             <div class="form-group form-button">
                                                 <input type="submit" name="signup" id="signup" class="form-submit" value="THÊM" />
                                             </div>
@@ -309,11 +300,6 @@
                                                     <label for="fname" style="padding-right:115px">Ngày tạo: </label>
                                                     <input name="NgayTao" id="NgayTao" type="text" value="@update.NgayTao" />
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                                    <label for="fname" style="padding-right:110px">Ngày sửa: </label>
-                                                    <input name="NgaySua" id="NgaySua" type="text" value="@update.NgaySua" />
-                                                </div>
 
                                                 <input type="text" name="MaSp" style="display:none" value="@update.MaSp" />
                                                 <div class="form-group form-button">
@@ -393,26 +379,31 @@
 <style>
     .table-bordered: {
         padding: 10px;
+
+        background-color: #66d9ff;
+    }
+    .mau {
+        background-color: #66d9ff;
     }
 </style>
 <table class="table table-bordered">
     <thead>
-        <tr>
-            <td>Mã sản phẩm</td>
-            <td>Mã nhà cung cấp</td>
-            <td>Mã nhân viên</td>
-            <td>Mã khuyến mãi</td>
-            <td>Tên sản phẩm</td>
-            <td>Loại sản phẩm</td>
-            <td>Thương hiệu</td>
-            <td>Chi tiết</td>
-            <td>Đơn giá</td>
-            <td>Đánh giá</td>
-            <td>Ngày tạo</td>
-            <td>Ngày sửa</td>
+        <tr class="mau">
+            <td>MÃ SẢN PHẨM</td>
+            <td>MÃ NHÀ CUNG CẤP</td>
+            <td>MÃ NHÂN VIÊN</td>
+            <td>MÃ KHUYẾN MÃI</td>
+            <td>TÊN SẢN PHẨM</td>
+            <td>LOẠI SẢN PHẨM</td>
+            <td>THƯƠNG HIỆU</td>
+            <td>CHI TIẾT</td>
+            <td>ĐƠN GIÁ</td>
+            <td>ĐÁNH GIÁ</td>
+            <td>NGÀY TẠO</td>
+            <td>NGÀY SỬA</td>
 
-            <td>Sửa</td>
-            <td>Xóa</td>
+            <td>SỬA</td>
+            <td>XÓA</td>
         </tr>
     </thead>
     <tbody>

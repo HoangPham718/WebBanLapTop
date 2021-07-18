@@ -298,17 +298,27 @@ body {font-family: Arial, Helvetica, sans-serif;}
 @* ---------------------------------------- *@
 
 @* Hiển thị danh sách nhân viên*@
+
+<style>
+    .table-bordered: {
+        padding: 10px;
+    }
+
+    .mau {
+        background-color: #66d9ff;
+    }
+</style>
 <table class="table table-bordered">
     <thead>
-        <tr>
-            <td>Mã nhà cung cấp</td>
-            <td>Tên nhà cung cấp</td>
-            <td>Địa chỉ</td>
+        <tr class="mau">
+            <td>MÃ NHÀ CUNG CẤP</td>
+            <td>TÊN NHÀ CUNG CẤP</td>
+            <td>ĐỊA CHỈ</td>
             <td>SĐT</td>
-            <td>Email</td>
+            <td>EMAIL</td>
             @*<td>Trth</td>*@
-            <td>Sửa</td>
-            <td>Xóa</td>
+            <td>SỬA</td>
+            <td>XÓA</td>
         </tr>
     </thead>
     <tbody>

@@ -351,7 +351,17 @@ namespace WebLapTop.Controllers
             //    ViewData["AlertBill"] = TempData["AlertBill"];
             //    TempData["AlertBill"] = null;
             //}
+            TempData["Route"] = "ChiNhanh";
 
+            if (TempData["employee"] != null)
+            {
+
+                String id = TempData["employee"].ToString();
+                var employee = _context.Chinhanhs.FirstOrDefault(u => u.MaCn.Equals(id));
+                ViewData["employee"] = employee;
+
+                TempData["employee"] = null;
+            }
 
             //ViewData["Log"] = LogCheck();
 
@@ -491,20 +501,24 @@ namespace WebLapTop.Controllers
             ViewData["Log"] = "";
             if (ModelState.IsValid)
             {
-                int lastId = Convert.ToInt32(_context.Khos.OrderBy(u => u.MaKho).LastOrDefault().MaKho.Substring(3));
-                var insert = _context.Khos.Add(new Kho
+                if (ModelState.IsValid)
                 {
-                    MaKho = lastId >= 9 ? "KHO" + (lastId + 1) : "KHO0" + (lastId + 1),
-                    TenKho = k.TenKho,
-                    DiaChi = k.DiaChi,
-                    Sdt = k.Sdt,
-                    Email = k.Email,
-                    TrangThai = true,
-                });
-                _context.SaveChanges();
-                //HttpContext.Session.SetString("EmailUser", kh.Email);
-                //HttpContext.Session.SetString("PassWord", kh.MatKhau);
-                return RedirectToAction("Kho");
+                    int lastId = Convert.ToInt32(_context.Khos.OrderBy(u => u.MaKho).LastOrDefault().MaKho.Substring(3));
+                    var insert = _context.Khos.Add(new Kho 
+                    {
+                        MaKho = lastId >= 9 ? "KHO" + (lastId + 1) : "KHO0" + (lastId + 1),
+                        TenKho = k.TenKho,
+                        DiaChi = k.DiaChi,
+                        Sdt = k.Sdt,
+                        Email = k.Email,
+                        TrangThai = true,
+                    });
+                    _context.SaveChanges();
+                    //HttpContext.Session.SetString("EmailUser", kh.Email);
+                    //HttpContext.Session.SetString("PassWord", kh.MatKhau);
+                    return RedirectToAction("Kho");
+                }
+                return View();
             }
             return View();
         }
@@ -944,7 +958,7 @@ namespace WebLapTop.Controllers
             if (ModelState.IsValid)
             {
 
-                int lastId = Convert.ToInt32(_context.Nhanviens.OrderBy(u => u.MaNv).LastOrDefault().MaNv.Substring(2));
+                int lastId = Convert.ToInt32(_context.Sanphams.OrderBy(u => u.MaSp).LastOrDefault().MaSp.Substring(2));
                 var insert = _context.Sanphams.Add(new Sanpham
                 {
                     MaSp = lastId >= 9 ? "SP" + (lastId + 1) : "SP0" + (lastId + 1),
@@ -957,8 +971,8 @@ namespace WebLapTop.Controllers
                     ChiTietSp = sp.ChiTietSp,
                     DonGia = sp.DonGia,
                     DanhGia = sp.DanhGia,
-                    NgaySua = sp.NgaySua,
-                    NgayTao = sp.NgayTao,
+                    
+                    NgayTao = DateTime.Now,
                     TrangThai = true
                 });
                 _context.SaveChanges();
@@ -983,7 +997,7 @@ namespace WebLapTop.Controllers
             update.ChiTietSp = sp.ChiTietSp;
             update.DonGia = sp.DonGia;
             update.DanhGia = sp.DanhGia;
-            update.NgaySua = sp.NgaySua;
+            update.NgaySua = DateTime.Now;
             update.NgayTao = sp.NgayTao;
             update.TrangThai = true;
             _context.SaveChanges();

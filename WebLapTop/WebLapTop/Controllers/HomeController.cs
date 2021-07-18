@@ -45,12 +45,12 @@ namespace WebLapTop.Controllers
             }
 
             String email = LogCheck();
-            ViewData["Log"] =email;
-            if(!String.IsNullOrEmpty(email))
+            ViewData["Log"] = email;
+            if (!String.IsNullOrEmpty(email))
             {
                 TempData["UserName"] = findNameUser(email);
             }
-            
+
 
             try
             {
@@ -100,12 +100,12 @@ namespace WebLapTop.Controllers
 
 
 
-            if (TempData["RemoveReadonly"]!=null)
+            if (TempData["RemoveReadonly"] != null)
             {
                 ViewData["RemoveReadonly"] = true;
                 TempData["RemoveReadonly"] = null;
             }
-            if(TempData["ValidPhone"] !=null)
+            if (TempData["ValidPhone"] != null)
             {
                 ViewData["ValidPhone"] = TempData["ValidPhone"];
                 TempData["ValidPhone"] = null;
@@ -113,7 +113,7 @@ namespace WebLapTop.Controllers
             var info = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
 
             var mota = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == info.MaKm).MoTa;
-            if(mota!=null)
+            if (mota != null)
                 ViewData["mota"] = mota;
             else
                 ViewData["mota"] = "Không có khuyến mãi nào!";
@@ -135,7 +135,7 @@ namespace WebLapTop.Controllers
 
                 String Masp;
                 //check order
-                if (cart.Count==0)
+                if (cart.Count == 0)
                 {
                     Masp = "SP01";
                 }
@@ -158,7 +158,7 @@ namespace WebLapTop.Controllers
                     {
                         checkKM.MaKm = 0;
                         _context.SaveChanges();
-                        ViewData["Coupon"] = TempData["Coupon"] !=null?TempData["Coupon"] :"";
+                        ViewData["Coupon"] = TempData["Coupon"] != null ? TempData["Coupon"] : "";
                         TempData["Coupon"] = null;
                     }
                 }
@@ -169,7 +169,7 @@ namespace WebLapTop.Controllers
                 }
                 //cart k co gi ma nhap coupon
                 ViewData["AlertOrder"] = "";
-                if (TempData["AlertOrder"]!=null)
+                if (TempData["AlertOrder"] != null)
                 {
                     ViewData["AlertOrder"] = TempData["AlertOrder"];
                     TempData["AlertOrder"] = null;
@@ -259,7 +259,7 @@ namespace WebLapTop.Controllers
             ViewData["Total"] = _context.OrderCarts.Sum(u => u.DonGia * u.SL);
 
             //get data sidebar
-            var product = _context.Sanphams.FirstOrDefault(u=>u.MaSp.Equals(checkCoupon.MaSp));
+            var product = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(checkCoupon.MaSp));
             var RelativeProducts = from anh in _context.Anhs
                                    join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
                                    where anh.MaSpNavigation.ThuongHieu.Equals(product.ThuongHieu) || anh.MaSpNavigation.LoaiSp.Contains(product.LoaiSp)
@@ -280,23 +280,23 @@ namespace WebLapTop.Controllers
             //get data bill
             string email = LogCheck();
             var findKH = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
-            var lastMa = _context.Hoadons.OrderBy(u=>u.MaHd).LastOrDefault().MaHd;
+            var lastMa = _context.Hoadons.OrderBy(u => u.MaHd).LastOrDefault().MaHd;
             int lstid = Convert.ToInt32(lastMa.Substring(2));
 
             Hoadon bill = new Hoadon()
             {
-                MaHd= lstid>9? "HD"+(lstid+1): "HD0" + (lstid + 1),
-                MaKh =findKH.MaKh,
-                NgayLap=DateTime.Now,
-                shipping=order.shipping,
-                TenNn=order.TenNn,
-                DiaChi=order.DiaChi,
-                Sdtnn=order.Sdtnn,
-                shippingNote=order.shippingNote,
-                TrangThai=0
+                MaHd = lstid > 9 ? "HD" + (lstid + 1) : "HD0" + (lstid + 1),
+                MaKh = findKH.MaKh,
+                NgayLap = DateTime.Now,
+                shipping = order.shipping,
+                TenNn = order.TenNn,
+                DiaChi = order.DiaChi,
+                Sdtnn = order.Sdtnn,
+                shippingNote = order.shippingNote,
+                TrangThai = 0
             };
             //tao bill
-             _context.Hoadons.Add(bill);
+            _context.Hoadons.Add(bill);
 
             //get data order
             var listOrder = _context.OrderCarts.ToList();
@@ -307,36 +307,37 @@ namespace WebLapTop.Controllers
                 LoaiKm = 0;
             }
             else
-            { 
-                LoaiKm = _context.Khuyenmais.FirstOrDefault(u => u.MaKm ==checkKm).LoaiKm.Value; 
+            {
+                LoaiKm = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == checkKm).LoaiKm.Value;
             }
-            
+
 
             // add billdetail
             foreach (var item in listOrder)
             {
-                Chitiethoadon chitiethoadon = new Chitiethoadon() { 
-                    MaHd=bill.MaHd,
-                    MaSp=item.MaSp,
-                    DonGia=item.DonGia,
-                    SoLuong=item.SL,
-                    TienKm=LoaiKm*item.DonGia*item.SL/100,
-                    ThanhTien= (100-LoaiKm) * item.DonGia * item.SL / 100
+                Chitiethoadon chitiethoadon = new Chitiethoadon()
+                {
+                    MaHd = bill.MaHd,
+                    MaSp = item.MaSp,
+                    DonGia = item.DonGia,
+                    SoLuong = item.SL,
+                    TienKm = LoaiKm * item.DonGia * item.SL / 100,
+                    ThanhTien = (100 - LoaiKm) * item.DonGia * item.SL / 100
                 };
 
                 _context.Chitiethoadons.Add(chitiethoadon);
 
                 //remove soluong tu kho
-                var kho= _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).Sum(u => u.SoLuong);
+                var kho = _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).Sum(u => u.SoLuong);
                 kho = kho - chitiethoadon.SoLuong;
 
                 var updateKho = _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).ToList();
 
                 double total = 0;
-                foreach(KhoSanpham sanpham in updateKho)
+                foreach (KhoSanpham sanpham in updateKho)
                 {
                     total = total + sanpham.SoLuong.Value;
-                    if(total>=chitiethoadon.SoLuong)
+                    if (total >= chitiethoadon.SoLuong)
                     {
                         sanpham.SoLuong = kho;
                         break;
@@ -357,9 +358,9 @@ namespace WebLapTop.Controllers
             if (!String.IsNullOrEmpty(Request.Cookies["userName"]))
             {
                 account.Email = Request.Cookies["userName"].ToString();
-                account.MatKhau = !String.IsNullOrEmpty(Request.Cookies["userPass"].ToString()) ? Request.Cookies["userPass"].ToString():null;
-                account.Remember = !String.IsNullOrEmpty(Request.Cookies["remember"].ToString())? true:false ;
-            }              
+                account.MatKhau = !String.IsNullOrEmpty(Request.Cookies["userPass"].ToString()) ? Request.Cookies["userPass"].ToString() : null;
+                account.Remember = !String.IsNullOrEmpty(Request.Cookies["remember"].ToString()) ? true : false;
+            }
             ViewData["Account"] = account;
             return View();
         }
@@ -387,7 +388,7 @@ namespace WebLapTop.Controllers
                         var PassCheck = _context.Khachhangs.Where(u => u.Email.Equals(log.Email) && u.MatKhau.Equals(log.MatKhau));
                         if (PassCheck.Count() > 0)
                         {
-                            if(log.Remember)
+                            if (log.Remember)
                             {
                                 Response.Cookies.Append("userPass", log.MatKhau);
                                 Response.Cookies.Append("remember", "y");
@@ -400,8 +401,8 @@ namespace WebLapTop.Controllers
                             Response.Cookies.Append("userName", log.Email);
                             HttpContext.Session.SetString("EmailUser", log.Email);
                             HttpContext.Session.SetString("PassWord", log.MatKhau);
-                            HttpContext.Session.SetString("UserName",findNameUser(log.Email));
-                            return RedirectToAction(TempData["Route"].ToString());          
+                            HttpContext.Session.SetString("UserName", findNameUser(log.Email));
+                            return RedirectToAction(TempData["Route"].ToString());
                         }
                         else
                         {
@@ -419,7 +420,7 @@ namespace WebLapTop.Controllers
                     throw;
                 }
             }
-                return View();
+            return View();
 
         }
         public IActionResult Signup()
@@ -436,18 +437,19 @@ namespace WebLapTop.Controllers
                 var emailExist = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(kh.Email));
                 if (emailExist == null)
                 {
-                    int lastId =Convert.ToInt32(_context.Khachhangs.OrderBy(u=>u.MaKh).LastOrDefault().MaKh.Substring(2));
-                    var insert = _context.Khachhangs.Add( new Khachhang { 
-                        MaKh= lastId>9? "KH"+(lastId+1) : "KH0" + (lastId + 1),
-                        MaKm=1,
-                        TenKh=kh.TenKh,
-                        Email=kh.Email,
-                        MatKhau=kh.MatKhau,
-                        Sdt=kh.Sdt,
-                        DiaChi=kh.soNha+","+kh.xaP+","+kh.quanH+","+kh.tinhTP,
-                        Diem=0,
-                        LoaiKh="New",
-                        TrangThai=true
+                    int lastId = Convert.ToInt32(_context.Khachhangs.OrderBy(u => u.MaKh).LastOrDefault().MaKh.Substring(2));
+                    var insert = _context.Khachhangs.Add(new Khachhang
+                    {
+                        MaKh = lastId > 9 ? "KH" + (lastId + 1) : "KH0" + (lastId + 1),
+                        MaKm = 1,
+                        TenKh = kh.TenKh,
+                        Email = kh.Email,
+                        MatKhau = kh.MatKhau,
+                        Sdt = kh.Sdt,
+                        DiaChi = kh.soNha + "," + kh.xaP + "," + kh.quanH + "," + kh.tinhTP,
+                        Diem = 0,
+                        LoaiKh = "New",
+                        TrangThai = true
                     });
                     _context.SaveChanges();
                     HttpContext.Session.SetString("EmailUser", kh.Email);
@@ -460,7 +462,7 @@ namespace WebLapTop.Controllers
                     ModelState.AddModelError("Email", "Email đã tồn tại");
                 }
             }
-          return View();
+            return View();
         }
 
         [HttpGet]
@@ -478,14 +480,14 @@ namespace WebLapTop.Controllers
                 MaSp = TempData["RouteDetail"].ToString();
                 TempData["RouteDetail"] = null;
             }
-            if(TempData["Order"]!=null)
+            if (TempData["Order"] != null)
             {
                 ViewData["Order"] = TempData["Order"];
                 TempData["Order"] = null;
             }
 
             //check sl
-            if(TempData["OutOfStock"] !=null)
+            if (TempData["OutOfStock"] != null)
             {
                 ViewData["OutOfStock"] = TempData["OutOfStock"];
                 ViewData["Sl"] = TempData["SL"];
@@ -547,16 +549,16 @@ namespace WebLapTop.Controllers
 
             return View();
         }
-        public IActionResult ListProduct(String keyword,int? page)
+        public IActionResult ListProduct(String keyword, int? page)
         {
             TempData["Route"] = "ListProduct";
             //check login 
             ViewData["Log"] = LogCheck();
-            string keyquery="";
+            string keyquery = "";
 
             //page
 
-            if (page == null||page<1) page = 1;
+            if (page == null || page < 1) page = 1;
 
             int pageSize = 12;
             int pageNumber = page.Value;
@@ -569,15 +571,15 @@ namespace WebLapTop.Controllers
             }
             else
             {
-                keyquery= keyword.Trim().ToLower();
+                keyquery = keyword.Trim().ToLower();
             }
             try
             {
-                
+
                 var products = from anh in _context.Anhs
                                join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
-                               where   anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(keyquery+"") 
-                               || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) ||keyquery.Contains(anh.MaSpNavigation.ThuongHieu.Trim().ToLower()+"")
+                               where anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(keyquery + "")
+                               || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) || keyquery.Contains(anh.MaSpNavigation.ThuongHieu.Trim().ToLower() + "")
                                || keyquery.Contains(anh.MaSpNavigation.LoaiSp.Trim().ToLower())
                                select new Anh
                                {
@@ -587,11 +589,11 @@ namespace WebLapTop.Controllers
                                };
                 ViewData["key"] = keyword;
                 products = products.OrderByDescending(u => u.MaSpNavigation.NgayTao);
-                listPro=products.ToPagedList(pageNumber,pageSize);
+                listPro = products.ToPagedList(pageNumber, pageSize);
 
-                
+
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
@@ -603,17 +605,17 @@ namespace WebLapTop.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        public String LogCheck ()
+        public String LogCheck()
         {
             string logcheck = HttpContext.Session.GetString("EmailUser");
             string log;
             if (String.IsNullOrEmpty(logcheck))
             {
-               log = "";
+                log = "";
             }
             else
             {
-               log = logcheck;
+                log = logcheck;
             }
             return log;
         }
@@ -621,13 +623,13 @@ namespace WebLapTop.Controllers
         public IActionResult AddToCart(OrderCart order)
         {
             //check sp in order ?
-            var checkOrder = _context.OrderCarts.FirstOrDefault(u=>u.MaSp.Equals(order.MaSp));
+            var checkOrder = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(order.MaSp));
             //check sl con lai
-            var checkPro = _context.KhoSanphams.Where(u=>u.MaSp==order.MaSp).Sum(u=>u.SoLuong);
+            var checkPro = _context.KhoSanphams.Where(u => u.MaSp == order.MaSp).Sum(u => u.SoLuong);
 
             TempData["RouteDetail"] = order.MaSp;
 
-            if (checkPro<order.SL)
+            if (checkPro < order.SL)
             {
                 TempData["OutOfStock"] = "Out";
                 TempData["SL"] = checkPro;
@@ -666,12 +668,12 @@ namespace WebLapTop.Controllers
 
             OrderCart order = new OrderCart()
             {
-                MaSp=maSp,
-                SL=1,
-                MaKm=0,
-                DonGia=product.MaSpNavigation.DonGia.Value,
-                TenSP=product.MaSpNavigation.TenSp,
-                MaAnh=product.MaAnh
+                MaSp = maSp,
+                SL = 1,
+                MaKm = 0,
+                DonGia = product.MaSpNavigation.DonGia.Value,
+                TenSP = product.MaSpNavigation.TenSp,
+                MaAnh = product.MaAnh
             };
             //check sp in order ?
             var checkOrder = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(order.MaSp));
@@ -708,33 +710,33 @@ namespace WebLapTop.Controllers
         {
             int MaKm = 0;
             String email = LogCheck();
-            if(String.IsNullOrEmpty(email))
+            if (String.IsNullOrEmpty(email))
             {
                 return RedirectToAction("Login");
             }
             try
             {
-                 MaKm = Convert.ToInt32(code);
+                MaKm = Convert.ToInt32(code);
             }
-            catch(Exception)
+            catch (Exception)
             { throw; }
 
             var order = _context.OrderCarts.FirstOrDefault();
-            if(order==null)
+            if (order == null)
             {
                 TempData["AlertOrder"] = "None";
                 return RedirectToAction(TempData["Route"].ToString());
             }
 
-            if (MaKm !=0)
+            if (MaKm != 0)
             {
                 var checkCoupon = _context.Khachhangs.FirstOrDefault(u => u.MaKm == MaKm && u.Email.Equals(email));
-                if(checkCoupon!=null)
+                if (checkCoupon != null)
                 {
-                    
+
                     order.MaKm = MaKm;
                     _context.SaveChanges();
-                    
+
                     TempData["Coupon"] = "Sucess";
                 }
                 else
@@ -762,7 +764,7 @@ namespace WebLapTop.Controllers
         public IActionResult UpdateUser(Khachhang khachhang)
         {
             String email = LogCheck();
-            if(khachhang.Sdt.Count()<10)
+            if (khachhang.Sdt.Count() < 10)
             {
                 TempData["ValidPhone"] = "Số điện thoại sai";
                 TempData["RemoveReadonly"] = true;
@@ -772,7 +774,7 @@ namespace WebLapTop.Controllers
             var updateInfo = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
 
             //thay đổi email session
-            if(!email.Equals(khachhang.Email))
+            if (!email.Equals(khachhang.Email))
             {
                 HttpContext.Session.SetString("EmailUser", khachhang.Email);
                 Response.Cookies.Append("userName", khachhang.Email);
@@ -807,12 +809,12 @@ namespace WebLapTop.Controllers
 
             String email = LogCheck();
             ViewData["Log"] = email;
-            if (kh.MatKhau.Count()<6 || kh.MatKhau.Count()>24)
+            if (kh.MatKhau.Count() < 6 || kh.MatKhau.Count() > 24)
             {
                 ViewData["InValidPass"] = "Độ dài mật khẩu sai";
-                 return View();
+                return View();
             }
-            if(!kh.MatKhau.Equals(kh.reMatKhau))
+            if (!kh.MatKhau.Equals(kh.reMatKhau))
             {
                 ViewData["InValidPass"] = "Nhập lại mật khẩu sai";
                 return View();

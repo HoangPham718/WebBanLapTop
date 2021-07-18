@@ -7,6 +7,7 @@
     var update = ViewData["employee"] as Kho;
 }
 <h3>DANH SÁCH KHO</h3>
+
 @model WebLapTop.Models.Kho
 @* Form thêm------------------------------------ *@
 <!DOCTYPE html>
@@ -97,6 +98,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
   color: white;
   padding-top: 20px;
 }
+
+
     </style>
 </head>
 <body>
@@ -128,12 +131,13 @@ body {font-family: Arial, Helvetica, sans-serif;}
                                     @using (Html.BeginForm("Kho", "Admin", FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
-                                        @Html.ValidationSummary()
+                                        @Html.ValidationSummary(true)
                                         <form method="POST" class="register-form" id="register-form">
                                             <div class="form-group">
                                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
                                                 <label for="fname" style="padding-right:70px">Tên kho: </label>
                                                 @Html.TextBoxFor(a => a.TenKho, new { @name = "name", @id = "name", @type = "text", @placeholder = "Tên kho" })
+
                                             </div>
                                             <div class="form-group">
                                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
@@ -197,6 +201,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
                                                     <label for="email"><i class="zmdi zmdi-email"></i></label>
                                                     <label for="fname" style="padding-right:77px">Mã Kho: </label>
                                                     <input name="MaKho" id="MaKho" type="text" value="@update.MaKho" disabled />
+
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email"><i class="zmdi zmdi-email"></i></label>
@@ -263,6 +268,42 @@ body {font-family: Arial, Helvetica, sans-serif;}
             }
         }
     </script>
+    @*<script>
+            //----------------------------------------o
+            const form = document.getElementById('register-form');
+            const name = document.getElementById('name');
+
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+
+                checkInputs();
+            });
+
+            function checkInputs() {
+                // trim to remove the whitespaces
+                const usernameValue = name.value.trim();
+
+                if (usernameValue === '') {
+                    setErrorFor(name, 'Username cannot be blank');
+                } else {
+                    setSuccessFor(name);
+                }
+
+            }
+
+            function setErrorFor(input, message) {
+                const formControl = input.parentElement;
+                const small = formControl.querySelector('small');
+                formControl.className = 'form-group error';
+                small.innerText = message;
+            }
+
+            function setSuccessFor(input) {
+                const formControl = input.parentElement;
+                formControl.className = 'form-control success';
+            }
+        </script>*@
+
     <script>
         // Get the modal
         var modal_sua = document.getElementById("updateModal");
@@ -272,21 +313,22 @@ body {font-family: Arial, Helvetica, sans-serif;}
         btn_sua.onclick = function () {
             modal_sua.style.display = "block";
         }
-                //Get the <span> element that closes the modal
-                //var span_x = document.getElementsByClassName("close_x")[0];
+        //Get the <span> element that closes the modal
+        var span_x = document.getElementsByClassName("close_x")[0];
 
 
-                ////// When the user clicks on <span> (x), close the modal
-                //span_x.onclick = function () {
-                //    modal_sua.style.display = "none";
-                //    //}
+        ////// When the user clicks on <span> (x), close the modal
+        span_x.onclick = function () {
+            modal_sua.style.display = "none";
+        }
 
-                //    // When the user clicks anywhere outside of the modal, close it
-                //    window.onclick = function (event) {
-                //        if (event.target == modal_sua) {
-                //            modal_sua.style.display = "none";
-                //        }
-                //    }
+        //    // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal_sua) {
+                modal_sua.style.display = "none";
+            }
+        }
+
     </script>
 
 </body>
@@ -294,17 +336,28 @@ body {font-family: Arial, Helvetica, sans-serif;}
 @* ---------------------------------------- *@
 
 @* Hiển thị danh sách nhân viên*@
+
+<style>
+    .table-bordered: {
+        padding: 10px;
+    }
+
+    .mau {
+        background-color: #66d9ff;
+    }
+</style>
 <table class="table table-bordered">
     <thead>
-        <tr>
-            <td>Mã Kho</td>
-            <td>Tên kho</td>
-            <td>Địa chỉ</td>
+        <tr class="mau">
+            @*<td>STT</td>*@
+            <td>MÃ KHO</td>
+            <td>TÊN KHO</td>
+            <td>ĐỊA CHỈ</td>
             <td>SĐT</td>
-            <td>Email</td>
+            <td>EMAIL</td>
             @*<td>Trth</td>*@
-            <td>Sửa</td>
-            <td>Xóa</td>
+            <td>SỬA</td>
+            <td>XÓA</td>
         </tr>
     </thead>
     <tbody>
