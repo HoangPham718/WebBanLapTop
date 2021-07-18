@@ -74,122 +74,116 @@
                     <div class="woocommerce">
                         @using (Html.BeginForm("AddCoupon", "Home", FormMethod.Post))
                         {
-                            <form method="post" action="#">
-                                <table cellspacing="0" class="shop_table cart">
-                                    <thead>
-                                        <tr>
-                                            <th class="product-remove">&nbsp;</th>
-                                            <th class="product-thumbnail">Hình ảnh sản phẩm</th>
-                                            <th class="product-name">Tên sản phẩm</th>
-                                            <th class="product-price">Giá</th>
-                                            <th class="product-quantity">Số lượng</th>
-                                            <th class="product-subtotal">Tổng tiền</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                        <form method="post" action="#">
+                            <table cellspacing="0" class="shop_table cart">
+                                <thead>
+                                    <tr>
+                                        <th class="product-remove">&nbsp;</th>
+                                        <th class="product-thumbnail">Hình ảnh sản phẩm</th>
+                                        <th class="product-name">Tên sản phẩm</th>
+                                        <th class="product-price">Giá</th>
+                                        <th class="product-quantity">Số lượng</th>
+                                        <th class="product-subtotal">Tổng tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                        @if (ViewBag.OrderCart != null)
-                                        {
-                                            @foreach (var item in ViewBag.OrderCart)
-                                            {
-                                                <tr class="cart_item">
-                                                    <td class="product-remove">
-                                                        <a asp-area="" asp-controller="Home" asp-action="RemovefromCart" asp-route-MaSp="@item.MaSp" title="Remove this item" class="remove">×</a>
-                                                    </td>
-
-                                                    <td class="product-thumbnail">
-                                                        <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="@("/img/"+item.MaAnh+".png")"></a>
-                                                    </td>
-
-                                                    <td class="product-name">
-                                                        <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.TenSP</a>
-                                                    </td>
-
-                                                    <td class="product-price">
-                                                        <span class="amount">@(String.Format("{0:0,0}", item.DonGia).Replace(',', '.')) VNĐ</span>
-                                                    </td>
-
-                                                    <td class="product-quantity">
-                                                        <div class="quantity buttons_added">
-                                                            <input readonly="readonly" type="text" size="4" class="input-text qty text" title="Qty" value="@item.SL" min="0" step="1">
-                                                        </div>
-                                                    </td>
-
-                                                    <td class="product-subtotal">
-                                                        <span class="amount">@(String.Format("{0:0,0}", item.DonGia * item.SL).Replace(',', '.')) VNĐ</span>
-                                                    </td>
-                                                </tr>
-                                            }
-                                        }
-                                        else
+                                    @if (ViewBag.OrderCart != null)
+                                    {
+                                        @foreach (var item in ViewBag.OrderCart)
                                         {
                                             <tr class="cart_item">
                                                 <td class="product-remove">
-                                                    @*<a title="Remove this item" class="remove" href="#">×</a>*@
+                                                    <a asp-area="" asp-controller="Home" asp-action="RemovefromCart" asp-route-MaSp="@item.MaSp" title="Remove this item" class="remove">×</a>
                                                 </td>
 
                                                 <td class="product-thumbnail">
-                                                    @*<a href=""><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src=""></a>*@
+                                                    <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="@("/img/"+item.MaAnh+".png")"></a>
                                                 </td>
 
                                                 <td class="product-name">
-                                                    @*<a href=""></a>*@
+                                                    <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.TenSP</a>
                                                 </td>
 
                                                 <td class="product-price">
-                                                    @*<span class="amount"></span>*@
+                                                    <span class="amount">@(String.Format("{0:0,0}", item.DonGia).Replace(',', '.')) VNĐ</span>
                                                 </td>
 
                                                 <td class="product-quantity">
                                                     <div class="quantity buttons_added">
-                                                        <input type="button" class="minus" value="-">
-                                                        <input type="number" size="4" class="input-text qty text" title="Qty" value="" min="0" step="1">
-                                                        <input type="button" class="plus" value="+">
+                                                        <input readonly="readonly" type="text" size="4" class="input-text qty text" title="Qty" value="@item.SL" min="0" step="1">
                                                     </div>
                                                 </td>
 
                                                 <td class="product-subtotal">
-                                                    @*<span class="amount"></span>*@
+                                                    <span class="amount">@(String.Format("{0:0,0}", item.DonGia * item.SL).Replace(',', '.')) VNĐ</span>
                                                 </td>
                                             </tr>
                                         }
-                                        <tr>
-                                            <td class="actions" colspan="6">
-                                                <div class="coupon">
+                                    }
+                                    else
+                                    {
+                                        <tr class="cart_item">
+                                            <td class="product-remove">
+                                                @*<a title="Remove this item" class="remove" href="#">×</a>*@
+                                            </td>
 
-                                                    @if ((String.IsNullOrEmpty(coupon) || coupon.Equals("ErrorCoupon")) && ViewBag.OrderCart != null)
-                                                    {
-                                                        <label for="coupon_code">Khuyến mãi:</label>
-                                                        <input type="text" placeholder="Mã khuyến mãi" value="" id="coupon_code" class="input-text" name="code">
-                                                        <input type="submit" value="Xác nhận mã" name="apply_coupon" class="button">
-                                                    }
+                                            <td class="product-thumbnail">
+                                                @*<a href=""><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src=""></a>*@
+                                            </td>
 
+                                            <td class="product-name">
+                                                @*<a href=""></a>*@
+                                            </td>
+
+                                            <td class="product-price">
+                                                @*<span class="amount"></span>*@
+                                            </td>
+
+                                            <td class="product-quantity">
+                                                <div class="quantity buttons_added">
+                                                    <input type="button" class="minus" value="-">
+                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="" min="0" step="1">
+                                                    <input type="button" class="plus" value="+">
                                                 </div>
+                                            </td>
 
-                                                <button name="proceed" class="checkout-btn" asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</button>
+                                            <td class="product-subtotal">
+                                                @*<span class="amount"></span>*@
                                             </td>
                                         </tr>
+                                    }
+                                    <tr>
+                                        <td class="actions" colspan="6">
+                                            <div class="coupon">
 
-                                        @if (coupon != "" && khuyenmai.TenKm != null)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @khuyenmai.TenKm - @(khuyenmai.LoaiKm.ToString()+"%")
-                                                </td>
-                                            </tr>
-                                        }
-                                        else if (coupon.Equals("ErrorCoupon"))
-                                        {
-                                            <tr>
-                                                <td>
-                                                    Sai mã khuyến mãi
-                                                </td>
-                                            </tr>
-                                        }
+                                                @if ((String.IsNullOrEmpty(coupon) || coupon.Equals("ErrorCoupon")) && ViewBag.OrderCart != null)
+                                                {
+                                                    <label for="coupon_code">Khuyến mãi:</label>
+                                                    <input type="text" placeholder="Mã khuyến mãi" value="" id="coupon_code" class="input-text" name="code">
+                                                    <input type="submit" value="Xác nhận mã" name="apply_coupon" class="button">
+                                                }
 
-                                    </tbody>
-                                </table>
-                            </form>
+                                            </div>
+
+                                            <button name="proceed" class="checkout-btn" asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @if (coupon != "" && khuyenmai.TenKm != null)
+                            {
+                                <p style="padding:10px;color:yellow;font-size:20px;">
+                                    Khuyến mãi: @khuyenmai.TenKm - @(khuyenmai.LoaiKm.ToString()+"%")
+                                </p>
+                            }
+                            else if (coupon.Equals("ErrorCoupon"))
+                            {
+                                <p style="padding:10px;color:red;font-size:20px;">
+                                     Sai mã khuyến mãi
+                                </p>
+                            }
+                        </form>
                         }
                         <div class="cart-collaterals">
 
