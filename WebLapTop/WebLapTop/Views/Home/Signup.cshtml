@@ -7,63 +7,71 @@
 
     <!-- Sign up form -->
     <section class="signup">
-        <div class="container-1">
+        <div class="container-1" style="width:100%">
             <div class="signup-content" style="display:-webkit-box">
-                <div class="signup-form">
-                    <h2 class="form-title">Đăng kí</h2>
+                <div class="signup-form" style="width:80%">
+                    <h2 class="form-title">ĐĂNG KÍ</h2>
                     @using (Html.BeginForm("Signup", "Home", FormMethod.Post))
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary()
                 <form method="POST" class="register-form" id="register-form" >
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white"> Họ và tên<sup>*</sup></p>
-                        @Html.TextBoxFor(a => a.TenKh, new { @name = "name", @id = "name", @placeholder = "Họ và tên" })
-                    </div>
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white">Email<sup>*</sup></p>
-                        @Html.TextBoxFor(a => a.Email, new { @name = "email", @id = "email", @placeholder = "Email" })
-                    </div>
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white">Số nhà, đường<sup>*</sup></p>
-                        @Html.TextBoxFor(a => a.soNha, new { @name = "address", @id = "address", @placeholder = "Số nhà, đường" })
-                    </div>
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white"> Xã/ Phường<sup>*</sup></p>
-                        @Html.TextBoxFor(a => a.xaP, new { @name = "address", @id = "address", @placeholder = "Xã/ Phường" })
-                    </div>
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white"> Quận/ Huyện<sup>*</sup></p>
-                        @Html.TextBoxFor(a => a.quanH, new { @name = "address", @id = "address", @placeholder = "Quận/ Huyện" })
-                    </div>
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white">Tỉnh/ Thành phố<sup>*</sup></p>
-                        @Html.TextBoxFor(a => a.tinhTP, new { @name = "address", @id = "address", @placeholder = "Tỉnh/ Thành phố" })
-                    </div>
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white">Số điện thoại<sup>*</sup></p>
-                        @Html.TextBoxFor(a => a.Sdt, new { @name = "address", @id = "address", @placeholder = "Số điện thoại" })
-                    </div>
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white"> Mật khẩu<sup>*</sup></p>
-                        @Html.PasswordFor(a => a.MatKhau, new { @name = "phone", @id = "phone", @placeholder = "Mật khẩu" })
-                    </div>
-                    <div class="form-group">
-                        <p style="font-size:20px;color:white"> Nhập lại mật khẩu<sup>*</sup></p>
-                        @Html.PasswordFor(a => a.reMatKhau, new { @name = "re-pass", @id = "re-pass", @placeholder = "Nhập lại mật khẩu" })
-                    </div>
+                    <div class="row" style="display:flex">
+                        <div class="col" style="padding:20px;width:40%">
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white;width"> Họ và tên<sup>*</sup></p>
+                                @Html.TextBoxFor(a => a.TenKh, new { @name = "name", @id = "name", @placeholder = "Họ và tên" })
+                            </div>
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white">Email<sup>*</sup></p>
+                                @Html.TextBoxFor(a => a.Email, new { @name = "email", @id = "email", @placeholder = "Email" })
+                            </div>
 
-                    <div class="form-group">
-                        @Html.CheckBoxFor(a => a.Check, new { @name = "agree-term", @id = "agree-term" })
-                        <label for="agree-term" class="label-agree-term"><span><span></span></span><sup>*</sup>Tôi đồng ý với các <a href="#" class="term-service">điều khoản của nhóm phát triển</a></label>
-                    </div>
-                    <div class="form-group form-button">
-                        <input type="submit" name="signup" id="signup" class="form-submit" value="Đăng kí" />
-                    </div>
-                </form>
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white"> Mật khẩu<sup>*</sup></p>
+                                @Html.PasswordFor(a => a.MatKhau, new { @name = "phone", @id = "phone", @placeholder = "Mật khẩu" })
+                            </div>
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white"> Nhập lại mật khẩu<sup>*</sup></p>
+                                @Html.PasswordFor(a => a.reMatKhau, new { @name = "re-pass", @id = "re-pass", @placeholder = "Nhập lại mật khẩu" })
+                            </div>
+
+                            <div class="form-group">
+                                @Html.CheckBoxFor(a => a.Check, new { @name = "agree-term", @id = "agree-term" })
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span><sup>*</sup>Tôi đồng ý với các <a href="#" class="term-service">điều khoản của nhóm phát triển</a></label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Đăng kí" />
+                            </div>
+                        </div>
+                        <div class="col" style="padding:20px;width:40%">
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white">Số nhà, đường<sup>*</sup></p>
+                                @Html.TextBoxFor(a => a.soNha, new { @name = "address", @id = "address", @placeholder = "Số nhà, đường" })
+                            </div>
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white"> Xã/ Phường<sup>*</sup></p>
+                                @Html.TextBoxFor(a => a.xaP, new { @name = "address", @id = "address", @placeholder = "Xã/ Phường" })
+                            </div>
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white"> Quận/ Huyện<sup>*</sup></p>
+                                @Html.TextBoxFor(a => a.quanH, new { @name = "address", @id = "address", @placeholder = "Quận/ Huyện" })
+                            </div>
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white">Tỉnh/ Thành phố<sup>*</sup></p>
+                                @Html.TextBoxFor(a => a.tinhTP, new { @name = "address", @id = "address", @placeholder = "Tỉnh/ Thành phố" })
+                            </div>
+                            <div class="form-group">
+                                <p style="font-size:20px;color:white">Số điện thoại<sup>*</sup></p>
+                                @Html.TextBoxFor(a => a.Sdt, new { @name = "address", @id = "address", @placeholder = "Số điện thoại" })
+                            </div>
+
+                        </div>
+                        </div>
+                    </form>
                     }
                 </div>
-                <div class="signup-image">
+                <div class="signup-image"style="width:20%;margin:0px;margin-top:45px">
                     <figure><img src="~/img/signup-image.jpg" alt="sing up image"></figure>
                     <a asp-area="" asp-controller="Home" asp-action="Login" class="signup-image-link">Tôi đã có tài khoản</a>
                 </div>

@@ -69,13 +69,13 @@
                             <div class="col-sm-6">
                                 <div class="product-images">
                                     <div class="product-main-img">
-                                        <img src="@("/img/"+ViewBag.Anh.MaAnh+".png")" alt="">
+                                        <img id="BGimg" src="@("/img/"+ViewBag.Anh.MaAnh+".png")" alt="">
                                     </div>
 
                                     <div class="product-gallery">
-                                        <img src="@("/img/1-"+ViewBag.Anh.MaAnh+".png")" alt="">
-                                        <img src="@("/img/2-"+ViewBag.Anh.MaAnh+".png")" alt="">
-                                        <img src="@("/img/3-"+ViewBag.Anh.MaAnh+".png")" alt="">
+                                        <img  id="conner1" src="@("/img/1-"+ViewBag.Anh.MaAnh+".png")" alt=""  onclick="changeImg1()">
+                                        <img  id="conner2" src="@("/img/2-"+ViewBag.Anh.MaAnh+".png")" alt=""  onclick="changeImg2()">
+                                        <img  id="conner3" src="@("/img/3-"+ViewBag.Anh.MaAnh+".png")" alt=""  onclick="changeImg3()">
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                                                     <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSp" name="MaSp">
                                                     <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSpNavigation.DonGia" name="DonGia">
                                                     <input type="text" style="display:none" size="4" value="@ViewBag.Anh.MaSpNavigation.TenSp" name="TenSP">
-                                                    <input type="text" size="4" class="input-text qty text" title="Qty" value="1" name="Sl">
+                                                    <input type="number" style="width:75px" size="4" min="1" class="input-text qty text" title="Qty" value="1" name="Sl">
                                                 </div>
                                                 <button class="add_to_cart_button" type="submit"><i class="fa fa-shopping-cart"></i></button>
                                             </form>

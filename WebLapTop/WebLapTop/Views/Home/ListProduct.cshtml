@@ -1,14 +1,15 @@
 ﻿@{
     ViewData["Title"] = "ListProduct";
+    int max = Convert.ToInt32(ViewData["MaxPage"]);
+    int pagePr = Convert.ToInt32(ViewData["Page"]);
 }
-@using PagedList.Mvc
-@model PagedList.IPagedList<WebLapTop.Models.Anh>
+@model WebLapTop.Models.Anh 
     <div class="maincontent-area">
         <div class="zigzag-bottom"></div>
         <div class="container">
             <h2>Kết quả cho @ViewData["key"] </h2>
             <div class="row"  style="background-color:white; display:flex ; flex-wrap:wrap">
-                @foreach (var item in Model)
+                @foreach (var item in ViewBag.Anh)
                 {
                     <div class="col-md-3" >
                     <div class="single-product">
@@ -29,23 +30,23 @@
                 }
             </div>
             <div class="row" style="font-size:18px;text-align:right;padding:20px;margin-top:20px">
-                Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                Trang @pagePr/@max
                 <div class="PageOptions">
                     @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = 1 }, new { @class = "fa fa-angle-double-left", Title = "Trang đầu" })
 
-                    @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageNumber - 1 }, new { @class = "fa fa-angle-left", Title = "Trang trước" })
+                    @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = pagePr - 1 }, new { @class = "fa fa-angle-left", Title = "Trang trước" })
 
-                    @Html.ActionLink(Model.PageNumber + "", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageNumber }, new { @class = "PageChoose" })
-                    @if (Model.PageCount == Model.PageNumber)
+                    @Html.ActionLink(pagePr.ToString(), "ListProduct", "Home", new { keyword = ViewData["key"], page = pagePr }, new { @class = "PageChoose" })
+                    @if (pagePr == max)
                     {
-                        @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageNumber }, new { @class = "fa fa-angle-right", Title = "Trang sau" })
+                        @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = pagePr }, new { @class = "fa fa-angle-right", Title = "Trang sau" })
                     }
                     else
                     {
-                        @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageNumber + 1 }, new { @class = "fa fa-angle-right", Title = "Trang sau" })
+                        @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = pagePr + 1 }, new { @class = "fa fa-angle-right", Title = "Trang sau" })
                     }
 
-                    @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = Model.PageCount }, new { @class = "fa fa-angle-double-right", Title = "Trang cuối" })
+                    @Html.ActionLink("", "ListProduct", "Home", new { keyword = ViewData["key"], page = max }, new { @class = "fa fa-angle-double-right", Title = "Trang cuối" })
                 </div>
             </div>
         </div>
