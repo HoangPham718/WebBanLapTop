@@ -72,118 +72,123 @@
             <div class="col-md-8">
                 <div class="product-content-right">
                     <div class="woocommerce">
-                        @using (Html.BeginForm("AddCoupon", "Home", FormMethod.Post))
+                        @using (Html.BeginForm("UpdateCart", "Home", FormMethod.Post))
                         {
-                        <form method="post" action="#">
-                            <table cellspacing="0" class="shop_table cart">
-                                <thead>
-                                    <tr>
-                                        <th class="product-remove">&nbsp;</th>
-                                        <th class="product-thumbnail">Hình ảnh sản phẩm</th>
-                                        <th class="product-name">Tên sản phẩm</th>
-                                        <th class="product-price">Giá</th>
-                                        <th class="product-quantity">Số lượng</th>
-                                        <th class="product-subtotal">Tổng tiền</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <form method="post" action="#">
+                                <table cellspacing="0" class="shop_table cart">
+                                    <thead>
+                                        <tr>
+                                            <th class="product-remove">&nbsp;</th>
+                                            <th class="product-thumbnail">Hình ảnh sản phẩm</th>
+                                            <th class="product-name">Tên sản phẩm</th>
+                                            <th class="product-price">Giá</th>
+                                            <th class="product-quantity">Số lượng</th>
+                                            <th class="product-subtotal">Tổng tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                    @if (ViewBag.OrderCart != null)
-                                    {
-                                        @foreach (var item in ViewBag.OrderCart)
+                                        @if (ViewBag.OrderCart != null)
+                                        {
+                                            @foreach (var item in ViewBag.OrderCart)
+                                            {
+                                                <tr class="cart_item">
+                                                    <td class="product-remove">
+                                                        <a asp-area="" asp-controller="Home" asp-action="RemovefromCart" asp-route-MaSp="@item.MaSp" title="Remove this item" class="remove">×</a>
+                                                    </td>
+
+                                                    <td class="product-thumbnail">
+                                                        <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="@("/img/" + item.MaAnh + ".png")"></a>
+                                                    </td>
+
+                                                    <td class="product-name">
+                                                        <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.TenSP</a>
+                                                    </td>
+
+                                                    <td class="product-price">
+                                                        <span class="amount">@(String.Format("{0:0,0}", item.DonGia).Replace(',', '.')) VNĐ</span>
+                                                    </td>
+
+                                                    <td class="product-quantity">
+                                                        <div class="quantity buttons_added">
+                                                            <input name="MaSp" type="text" value="@item.MaSp" min="1" style="display:none">
+                                                            <input name="SL" type="number" size="4" class="input-text qty text" title="Qty" value="@item.SL" min="1" style="width:80px">
+                                                            @if (ViewData["ErrorUpdate"] != null && item.MaSp.Equals(ViewData["ErrorUpdate"].ToString()))
+                                                            {
+                                                                <span>Không đủ số lượng</span>
+                                                            }
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="product-subtotal">
+                                                        <span class="amount">@(String.Format("{0:0,0}", item.DonGia * item.SL).Replace(',', '.')) VNĐ</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                        else
                                         {
                                             <tr class="cart_item">
                                                 <td class="product-remove">
-                                                    <a asp-area="" asp-controller="Home" asp-action="RemovefromCart" asp-route-MaSp="@item.MaSp" title="Remove this item" class="remove">×</a>
+                                                    @*<a title="Remove this item" class="remove" href="#">×</a>*@
                                                 </td>
 
                                                 <td class="product-thumbnail">
-                                                    <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="@("/img/"+item.MaAnh+".png")"></a>
+                                                    @*<a href=""><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src=""></a>*@
                                                 </td>
 
                                                 <td class="product-name">
-                                                    <a asp-area="" asp-controller="Home" asp-action="Detail" asp-route-MaSp="@item.MaSp">@item.TenSP</a>
+                                                    @*<a href=""></a>*@
                                                 </td>
 
                                                 <td class="product-price">
-                                                    <span class="amount">@(String.Format("{0:0,0}", item.DonGia).Replace(',', '.')) VNĐ</span>
+                                                    @*<span class="amount"></span>*@
                                                 </td>
 
                                                 <td class="product-quantity">
                                                     <div class="quantity buttons_added">
-                                                        <input readonly="readonly" type="text" size="4" class="input-text qty text" title="Qty" value="@item.SL" min="0" step="1">
+                                                        <input type="number" size="4" class="input-text qty text" title="Qty" value="" min="0" step="1">
                                                     </div>
                                                 </td>
 
                                                 <td class="product-subtotal">
-                                                    <span class="amount">@(String.Format("{0:0,0}", item.DonGia * item.SL).Replace(',', '.')) VNĐ</span>
+                                                    @*<span class="amount"></span>*@
                                                 </td>
                                             </tr>
                                         }
-                                    }
-                                    else
-                                    {
-                                        <tr class="cart_item">
-                                            <td class="product-remove">
-                                                @*<a title="Remove this item" class="remove" href="#">×</a>*@
-                                            </td>
-
-                                            <td class="product-thumbnail">
-                                                @*<a href=""><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src=""></a>*@
-                                            </td>
-
-                                            <td class="product-name">
-                                                @*<a href=""></a>*@
-                                            </td>
-
-                                            <td class="product-price">
-                                                @*<span class="amount"></span>*@
-                                            </td>
-
-                                            <td class="product-quantity">
-                                                <div class="quantity buttons_added">
-                                                    <input type="button" class="minus" value="-">
-                                                    <input type="number" size="4" class="input-text qty text" title="Qty" value="" min="0" step="1">
-                                                    <input type="button" class="plus" value="+">
-                                                </div>
-                                            </td>
-
-                                            <td class="product-subtotal">
-                                                @*<span class="amount"></span>*@
+                                        <tr>
+                                            <td class="actions" colspan="6">
+                                                <input type="submit" class="button" value="Cập nhật giỏ" />
+                                                <button name="proceed" class="checkout-btn" asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</button>
                                             </td>
                                         </tr>
-                                    }
-                                    <tr>
-                                        <td class="actions" colspan="6">
-                                            <div class="coupon">
+                                    </tbody>
+                                </table>
+                            </form>
+                        }
+                        @if (coupon != "" && khuyenmai.TenKm != null)
+                        {
+                            <p style="padding:10px;color:yellow;font-size:20px;">
+                                Khuyến mãi: @khuyenmai.TenKm - @(khuyenmai.LoaiKm.ToString()+"%")
+                            </p>
+                        }
+                        else if (coupon.Equals("ErrorCoupon"))
+                        {
+                            <p style="padding:10px;color:red;font-size:20px;">
+                                Sai mã khuyến mãi
+                            </p>
+                        }
+                        @using (Html.BeginForm("AddCoupon", "Home", FormMethod.Post))
+                        {
+                            <div class="coupon" style="margin-bottom:20px">
 
-                                                @if ((String.IsNullOrEmpty(coupon) || coupon.Equals("ErrorCoupon")) && ViewBag.OrderCart != null)
-                                                {
-                                                    <label for="coupon_code">Khuyến mãi:</label>
-                                                    <input type="text" placeholder="Mã khuyến mãi" value="" id="coupon_code" class="input-text" name="code">
-                                                    <input type="submit" value="Xác nhận mã" name="apply_coupon" class="button">
-                                                }
-
-                                            </div>
-
-                                            <button name="proceed" class="checkout-btn" asp-area="" asp-controller="Home" asp-action="Checkout">Thanh toán</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            @if (coupon != "" && khuyenmai.TenKm != null)
-                            {
-                                <p style="padding:10px;color:yellow;font-size:20px;">
-                                    Khuyến mãi: @khuyenmai.TenKm - @(khuyenmai.LoaiKm.ToString()+"%")
-                                </p>
-                            }
-                            else if (coupon.Equals("ErrorCoupon"))
-                            {
-                                <p style="padding:10px;color:red;font-size:20px;">
-                                     Sai mã khuyến mãi
-                                </p>
-                            }
-                        </form>
+                                @if ((String.IsNullOrEmpty(coupon) || coupon.Equals("ErrorCoupon")) && ViewBag.OrderCart != null)
+                                {
+                                    <label for="coupon_code" style="color:yellow">Khuyến mãi:</label>
+                                    <input type="text" placeholder="Mã khuyến mãi" value="" id="coupon_code" class="input-text" name="code">
+                                    <input type="submit" value="Xác nhận mã" name="apply_coupon" class="button">
+                                }
+                            </div>
                         }
                         <div class="cart-collaterals">
 

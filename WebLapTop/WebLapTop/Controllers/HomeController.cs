@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
-using PagedList;
+
 
 namespace WebLapTop.Controllers
 {
@@ -34,6 +34,7 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Index()
         {
+            TempData["Coupon"] = null;
             HttpContext.Session.SetInt32("CountCart", countCart());
             TempData["Route"] = "Index";
 
@@ -174,8 +175,14 @@ namespace WebLapTop.Controllers
                     ViewData["AlertOrder"] = TempData["AlertOrder"];
                     TempData["AlertOrder"] = null;
                 }
-                //get data
+                //het hang
+                if(TempData["ErrorUpdate"]!=null)
+                {
+                    ViewData["ErrorUpdate"] = TempData["ErrorUpdate"];
+                    TempData["ErrorUpdate"] = null;
+                }
 
+                //get data
                 var product = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(Masp));
 
                 var BrandPros = from anh in _context.Anhs
@@ -327,23 +334,23 @@ namespace WebLapTop.Controllers
 
                 _context.Chitiethoadons.Add(chitiethoadon);
 
-                //remove soluong tu kho
-                var kho = _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).Sum(u => u.SoLuong);
-                kho = kho - chitiethoadon.SoLuong;
+                ////remove soluong tu kho
+                //var kho = _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).Sum(u => u.SoLuong);
+                //kho = kho - chitiethoadon.SoLuong;
 
-                var updateKho = _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).ToList();
+                //var updateKho = _context.KhoSanphams.Where(u => u.MaSp == chitiethoadon.MaSp).ToList();
 
-                double total = 0;
-                foreach (KhoSanpham sanpham in updateKho)
-                {
-                    total = total + sanpham.SoLuong.Value;
-                    if (total >= chitiethoadon.SoLuong)
-                    {
-                        sanpham.SoLuong = kho;
-                        break;
-                    }
-                    sanpham.SoLuong = 0;
-                }
+                //double total = 0;
+                //foreach (KhoSanpham sanpham in updateKho)
+                //{
+                //    total = total + sanpham.SoLuong.Value;
+                //    if (total >= chitiethoadon.SoLuong)
+                //    {
+                //        sanpham.SoLuong = kho;
+                //        break;
+                //    }
+                //    sanpham.SoLuong = 0;
+                //}
 
             }
             _context.OrderCarts.RemoveRange(listOrder);
@@ -563,8 +570,6 @@ namespace WebLapTop.Controllers
 
             int pageSize = 12;
             int pageNumber = page.Value;
-            IPagedList<Anh> listPro = null;
-
 
             if (String.IsNullOrEmpty(keyword))
             {
@@ -581,7 +586,8 @@ namespace WebLapTop.Controllers
                                join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
                                where anh.MaSpNavigation.LoaiSp.Trim().ToLower().Contains(keyquery + "")
                                || anh.MaSpNavigation.ThuongHieu.Trim().ToLower().Contains(keyquery) || keyquery.Contains(anh.MaSpNavigation.ThuongHieu.Trim().ToLower() + "")
-                               || keyquery.Contains(anh.MaSpNavigation.LoaiSp.Trim().ToLower())
+                               || keyquery.Contains(anh.MaSpNavigation.LoaiSp.Trim().ToLower()) || keyquery.Contains(anh.MaSpNavigation.TenSp.Trim().ToLower())
+                                || anh.MaSpNavigation.TenSp.Trim().ToLower().Contains(keyquery)
                                select new Anh
                                {
                                    MaAnh = "/img/" + anh.MaAnh + ".png",
@@ -590,8 +596,11 @@ namespace WebLapTop.Controllers
                                };
                 ViewData["key"] = keyword;
                 products = products.OrderByDescending(u => u.MaSpNavigation.NgayTao);
-                listPro = products.ToPagedList(pageNumber, pageSize);
 
+                ViewData["Page"] = page;
+                ViewData["MaxPage"] = products.Count() / pageSize;
+                int skip = (page.Value - 1) * pageSize;
+                ViewBag.Anh = products.Skip(skip).Take(pageSize);
 
             }
             catch (Exception)
@@ -599,7 +608,7 @@ namespace WebLapTop.Controllers
                 throw;
             }
 
-            return View(listPro);
+            return View();
         }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -623,6 +632,7 @@ namespace WebLapTop.Controllers
         [HttpPost]
         public IActionResult AddToCart(OrderCart order)
         {
+            
             //check sp in order ?
             var checkOrder = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(order.MaSp));
             //check sl con lai
@@ -759,6 +769,25 @@ namespace WebLapTop.Controllers
             _context.SaveChanges();
             HttpContext.Session.SetInt32("CountCart", countCart());
             return RedirectToAction("Cart");
+        }
+        [HttpPost]
+        public IActionResult UpdateCart(List<int> SL,List<String> MaSp)
+        {
+            for(int i=0;i<MaSp.Count();i++)
+            {
+                var update = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(MaSp[i]));
+                //check sl
+                var kho = _context.KhoSanphams.FirstOrDefault(u => u.MaSp.Equals(MaSp[i]));
+                if(kho.SoLuong<SL[i])
+                {
+                    TempData["ErrorUpdate"] = MaSp[i];
+                    break;
+                }
+
+                update.SL = SL[i];
+                _context.SaveChanges();
+            }
+            return RedirectToAction(TempData["Route"].ToString());
         }
 
         [HttpPost]
