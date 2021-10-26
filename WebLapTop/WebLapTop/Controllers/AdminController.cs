@@ -807,10 +807,10 @@ namespace WebLapTop.Controllers
         {
             ViewData["Log"] = "";
             AccountLogin account = new AccountLogin();
-            if (!String.IsNullOrEmpty(Request.Cookies["userName"]))
+            if (!String.IsNullOrEmpty(Request.Cookies["adName"]))
             {
-                account.Email = Request.Cookies["userName"].ToString();
-                account.MatKhau = !String.IsNullOrEmpty(Request.Cookies["userPass"].ToString()) ? Request.Cookies["userPass"].ToString() : null;
+                account.Email = Request.Cookies["adName"].ToString();
+                account.MatKhau = !String.IsNullOrEmpty(Request.Cookies["adPass"].ToString()) ? Request.Cookies["adPass"].ToString() : null;
                 account.Remember = !String.IsNullOrEmpty(Request.Cookies["remember"].ToString()) ? true : false;
             }
             ViewData["Account"] = account;
@@ -844,13 +844,14 @@ namespace WebLapTop.Controllers
                         var PassCheck = _context.Nhanviens.Where(u => u.Email.Equals(log.Email) && u.MatKhau.Equals(log.MatKhau));
                         if (PassCheck.Count() > 0)
                         {
-                            Response.Cookies.Append("userName", log.Email);
-                            HttpContext.Session.SetString("EmailUser", log.Email);
-                            HttpContext.Session.SetString("PassWord", log.MatKhau);
-                            HttpContext.Session.SetString("UserName", findNameUser(log.Email));
-                            //return RedirectToAction(TempData["Route"].ToString());
-                            return RedirectToAction("HoaDon");
 
+                            Response.Cookies.Append("adPass", log.MatKhau);
+                            Response.Cookies.Append("remember", "y");
+                            Response.Cookies.Append("adName", log.Email);
+                            HttpContext.Session.SetString("EmailAd", log.Email);
+                            HttpContext.Session.SetString("PassWordAd", log.MatKhau);
+                            HttpContext.Session.SetString("AdName", findNameUser(log.Email));
+                            return RedirectToAction("HoaDon");
                         }
                         else
                         {
