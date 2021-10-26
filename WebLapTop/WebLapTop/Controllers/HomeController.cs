@@ -24,28 +24,28 @@ namespace WebLapTop.Controllers
 
         public String findNameUser(string email)
         {
-            var user = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
+            var user = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));//truy vấn tìm tên user
             return user.TenKh.Split(" ").Last();
         }
         public int countCart()
         {
-            var countC = _context.OrderCarts.Sum(u => u.SL);
+            var countC = _context.OrderCarts.Sum(u => u.SL);// truy vấn tìm số lượng hàng hóa có trong giỏ
             return countC;
         }
         public IActionResult Index()
         {
             TempData["Coupon"] = null;
-            HttpContext.Session.SetInt32("CountCart", countCart());
-            TempData["Route"] = "Index";
+            HttpContext.Session.SetInt32("CountCart", countCart());// lưu số hàng hóa đã đặt bỏ vào view
+            TempData["Route"] = "Index";//dùng để lưu lại trang người dùng đang sử dụng
 
-            ViewData["AlertBill"] = "";
+            ViewData["AlertBill"] = "";//khởi tạo dử liệu để hiện thông báo phần thanh toán
             if (TempData["AlertBill"] != null)
             {
                 ViewData["AlertBill"] = TempData["AlertBill"];
                 TempData["AlertBill"] = null;
             }
 
-            String email = LogCheck();
+            String email = LogCheck();//kiểm tra đăng nhập , lấy thông tin tài khoản
             ViewData["Log"] = email;
             if (!String.IsNullOrEmpty(email))
             {
@@ -55,6 +55,7 @@ namespace WebLapTop.Controllers
 
             try
             {
+                //truy vấn dử liệu đổ lên các danh mục cần thiết
                 var slide = from anh in _context.Anhs
                             join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
                             where anh.TenAnh.Contains("slider")
@@ -64,7 +65,7 @@ namespace WebLapTop.Controllers
                                 MaSp = sp.MaSp,
                                 MaSpNavigation = sp,
                             };
-                ViewBag.Anh = slide.Take(4).ToList();
+                ViewBag.Anh = slide.Take(4).ToList();// ds sản phẩm trên slide
 
                 var dsproduct = from anh in _context.Anhs
                                 join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
@@ -75,7 +76,7 @@ namespace WebLapTop.Controllers
                                     MaSp = sp.MaSp,
                                     MaSpNavigation = sp,
                                 };
-                ViewData["DSnew"] = dsproduct.Take(10).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
+                ViewData["DSnew"] = dsproduct.Take(10).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();//ds sản phẩm mới
                 var dsproduct2 = from anh in _context.Anhs
                                  join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
                                  where anh.TenAnh.Contains("ảnh sp")
@@ -85,7 +86,7 @@ namespace WebLapTop.Controllers
                                      MaSp = sp.MaSp,
                                      MaSpNavigation = sp,
                                  };
-                ViewData["DSprice"] = dsproduct2.Take(10).OrderByDescending(u => u.MaSpNavigation.DonGia).ToList();
+                ViewData["DSprice"] = dsproduct2.Take(10).OrderByDescending(u => u.MaSpNavigation.DonGia).ToList();//ds sản phẩm theo giá giảm dần
             }
             catch (Exception)
             {
@@ -96,24 +97,25 @@ namespace WebLapTop.Controllers
 
         public IActionResult InfoAccount()
         {
-            string email = LogCheck();
+            string email = LogCheck();//lấy thông tin tài khoản đang đăng nhập
             ViewData["Log"] = email;
 
 
-
+            //kiểm tra xem cho phép cập nhập chưa
             if (TempData["RemoveReadonly"] != null)
             {
                 ViewData["RemoveReadonly"] = true;
                 TempData["RemoveReadonly"] = null;
             }
+            //kiểm tra sdt
             if (TempData["ValidPhone"] != null)
             {
                 ViewData["ValidPhone"] = TempData["ValidPhone"];
                 TempData["ValidPhone"] = null;
             }
-            var info = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));
+            var info = _context.Khachhangs.FirstOrDefault(u => u.Email.Equals(email));// lấy thông tin tài khoản
 
-            var mota = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == info.MaKm).MoTa;
+            var mota = _context.Khuyenmais.FirstOrDefault(u => u.MaKm == info.MaKm).MoTa;//lấy thông tin của khuyển mãi
             if (mota != null)
                 ViewData["mota"] = mota;
             else
@@ -360,13 +362,15 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Login()
         {
+            
+
             ViewData["Log"] = "";
             AccountLogin account = new AccountLogin();
-            if (!String.IsNullOrEmpty(Request.Cookies["userName"]))
+            if (!string.IsNullOrEmpty(Request.Cookies["userName"]))
             {
                 account.Email = Request.Cookies["userName"].ToString();
-                account.MatKhau = !String.IsNullOrEmpty(Request.Cookies["userPass"].ToString()) ? Request.Cookies["userPass"].ToString() : null;
-                account.Remember = !String.IsNullOrEmpty(Request.Cookies["remember"].ToString()) ? true : false;
+                account.MatKhau = Request.Cookies["userPass"].ToString() == "none" ? null : Request.Cookies["userPass"].ToString();
+                account.Remember = Request.Cookies["remember"].ToString() != "none";
             }
             ViewData["Account"] = account;
             return View();
@@ -403,8 +407,8 @@ namespace WebLapTop.Controllers
                             }
                             else
                             {
-                                Response.Cookies.Append("userPass", "");
-                                Response.Cookies.Append("remember", "");
+                                Response.Cookies.Append("userPass", "none");
+                                Response.Cookies.Append("remember", "none");
                             }
                             Response.Cookies.Append("userName", log.Email);
                             HttpContext.Session.SetString("EmailUser", log.Email);
