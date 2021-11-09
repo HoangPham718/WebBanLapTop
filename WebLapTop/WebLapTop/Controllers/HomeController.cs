@@ -602,7 +602,8 @@ namespace WebLapTop.Controllers
                 products = products.OrderByDescending(u => u.MaSpNavigation.NgayTao);
 
                 ViewData["Page"] = page;
-                ViewData["MaxPage"] = products.Count() / pageSize;
+               int countPage= products.Count() / pageSize;
+                ViewData["MaxPage"] = countPage>0? countPage:1;
                 int skip = (page.Value - 1) * pageSize;
                 ViewBag.Anh = products.Skip(skip).Take(pageSize);
 
