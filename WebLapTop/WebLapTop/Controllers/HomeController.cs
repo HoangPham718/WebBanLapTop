@@ -236,9 +236,11 @@ namespace WebLapTop.Controllers
 
             if (String.IsNullOrEmpty(email))
             {
+                var reset = _context.OrderCarts.FirstOrDefault();
+                reset.MaKm = 0;
+                _context.SaveChanges();
                 return RedirectToAction("Login");
             }
-
             //coupon check
             var checkCoupon = _context.OrderCarts.FirstOrDefault();
 
@@ -380,6 +382,12 @@ namespace WebLapTop.Controllers
             HttpContext.Session.Clear();
             HttpContext.Session.SetInt32("CountCart", countCart());
             TempData["Coupon"] = null;
+            var resetCoupon = _context.OrderCarts.FirstOrDefault();
+            if (resetCoupon! != null)
+            {
+                resetCoupon.MaKm = 0;
+                _context.SaveChanges();
+            }
             return RedirectToAction("Login");
         }
         [HttpPost]
@@ -844,7 +852,7 @@ namespace WebLapTop.Controllers
 
             String email = LogCheck();
             ViewData["Log"] = email;
-            if (kh.MatKhau.Count() < 6 || kh.MatKhau.Count() > 24)
+            if (kh.MatKhau.Count() < 6 || kh.MatKhau.Count() > 12)
             {
                 ViewData["InValidPass"] = "Độ dài mật khẩu sai";
                 return View();

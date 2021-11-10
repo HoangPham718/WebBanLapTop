@@ -846,7 +846,7 @@ namespace WebLapTop.Controllers
                         {
 
                             Response.Cookies.Append("adPass", log.MatKhau);
-                            Response.Cookies.Append("remember", "y");
+                            Response.Cookies.Append("remember", "");
                             Response.Cookies.Append("adName", log.Email);
                             HttpContext.Session.SetString("EmailAd", log.Email);
                             HttpContext.Session.SetString("PassWordAd", log.MatKhau);

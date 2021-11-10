@@ -16,8 +16,8 @@
     double total = Convert.ToDouble(ViewData["Total"].ToString());
 
     double finalTotal = 0;
-    if (makm != -1)
-    { finalTotal = total * (100 - makm) / 100; }
+    if (makm != -1 && makm!=0)
+    { finalTotal = total * (100 - khuyenmai.LoaiKm.Value) / 100; }
 
     var RelativePros = ViewData["RelativePros"] as List<Anh>;
 
