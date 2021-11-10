@@ -282,6 +282,7 @@ namespace WebLapTop.Controllers
             try
             {
                 var HDmodel = from hd in _context.Hoadons
+                              where hd.shipping==null
                               select new Hoadon
                               {
                                   MaHd = hd.MaHd,
@@ -315,7 +316,7 @@ namespace WebLapTop.Controllers
             update.shipping = 2;
             update.NgayGiao = DateTime.Now;
             _context.SaveChanges();
-            return RedirectToAction("HoaDon");
+            return RedirectToAction("HoaDonDaDuyet");
         }
         // hủy hóa đơn
         [HttpGet]
@@ -325,7 +326,7 @@ namespace WebLapTop.Controllers
             var update = _context.Hoadons.FirstOrDefault(u => u.MaHd.Equals(id));
             update.shipping = -1;
             _context.SaveChanges();
-            return RedirectToAction("HoaDon");
+            return RedirectToAction("HoaDonDaDuyet");
         }
         // Đã giao
         [HttpGet]
