@@ -29,7 +29,12 @@ namespace WebLapTop.Controllers
         }
         public int countCart()
         {
-            var countC = _context.OrderCarts.Sum(u => u.SL);// truy vấn tìm số lượng hàng hóa có trong giỏ
+            string email = LogCheck();
+            if (string.IsNullOrEmpty(email))
+            {
+                return 0;
+            }
+            var countC = _context.OrderCarts.Where(u=>u.email.Equals(email)).Sum(u => u.SL);// truy vấn tìm số lượng hàng hóa có trong giỏ
             return countC;
         }
         public IActionResult Index()
@@ -127,6 +132,10 @@ namespace WebLapTop.Controllers
         {
             TempData["Route"] = "Cart";
             String email = LogCheck();
+            if(string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Login");
+            }
             ViewData["Log"] = email;
 
 
@@ -134,7 +143,7 @@ namespace WebLapTop.Controllers
             try
             {
 
-                var cart = _context.OrderCarts.ToList();
+                var cart = _context.OrderCarts.Where(u => u.email.Equals(email)).ToList();
 
                 String Masp;
                 //check order
@@ -148,7 +157,7 @@ namespace WebLapTop.Controllers
                 }
 
                 //check km, get data khuyenmai
-                var checkKM = _context.OrderCarts.FirstOrDefault();
+                var checkKM = _context.OrderCarts.Where(u=>u.email.Equals(email)).FirstOrDefault();
                 if (checkKM != null)
                 {
                     if (checkKM.MaKm != 0 && !String.IsNullOrEmpty(email))
@@ -210,7 +219,7 @@ namespace WebLapTop.Controllers
                 ViewData["RelativePros"] = RelativeProducts.Take(8).OrderByDescending(u => u.MaSpNavigation.NgayTao).ToList();
 
                 //get total order
-                var totalOrder = _context.OrderCarts.Sum(u => u.DonGia * u.SL);
+                var totalOrder = _context.OrderCarts.Where(u => u.email.Equals(email)).Sum(u => u.DonGia * u.SL);
 
 
                 ViewData["Total"] = totalOrder;
@@ -236,13 +245,13 @@ namespace WebLapTop.Controllers
 
             if (String.IsNullOrEmpty(email))
             {
-                var reset = _context.OrderCarts.FirstOrDefault();
+                var reset = _context.OrderCarts.Where(u => u.email.Equals(email)).FirstOrDefault();
                 reset.MaKm = 0;
                 _context.SaveChanges();
                 return RedirectToAction("Login");
             }
             //coupon check
-            var checkCoupon = _context.OrderCarts.FirstOrDefault();
+            var checkCoupon = _context.OrderCarts.Where(u => u.email.Equals(email)).FirstOrDefault();
 
             if (checkCoupon != null)
             {
@@ -263,11 +272,11 @@ namespace WebLapTop.Controllers
 
             //get cart,total ; check cart before
 
-            var cart = _context.OrderCarts.ToList();
+            var cart = _context.OrderCarts.Where(u => u.email.Equals(email)).ToList();
 
 
             ViewBag.OrderCart = cart;
-            ViewData["Total"] = _context.OrderCarts.Sum(u => u.DonGia * u.SL);
+            ViewData["Total"] = _context.OrderCarts.Where(u => u.email.Equals(email)).Sum(u => u.DonGia * u.SL);
 
             //get data sidebar
             var product = _context.Sanphams.FirstOrDefault(u => u.MaSp.Equals(checkCoupon.MaSp));
@@ -310,7 +319,7 @@ namespace WebLapTop.Controllers
             _context.Hoadons.Add(bill);
 
             //get data order
-            var listOrder = _context.OrderCarts.ToList();
+            var listOrder = _context.OrderCarts.Where(u => u.email.Equals(email)).ToList();
             int checkKm = listOrder.FirstOrDefault().MaKm;
             int LoaiKm;
             if (checkKm == 0)
@@ -379,10 +388,11 @@ namespace WebLapTop.Controllers
         }
         public IActionResult Logout()
         {
+            string email = LogCheck();
             HttpContext.Session.Clear();
             HttpContext.Session.SetInt32("CountCart", countCart());
             TempData["Coupon"] = null;
-            var resetCoupon = _context.OrderCarts.FirstOrDefault();
+            var resetCoupon = _context.OrderCarts.Where(u => u.email.Equals(email)).FirstOrDefault();
             if (resetCoupon! != null)
             {
                 resetCoupon.MaKm = 0;
@@ -422,6 +432,8 @@ namespace WebLapTop.Controllers
                             HttpContext.Session.SetString("EmailUser", log.Email);
                             HttpContext.Session.SetString("PassWord", log.MatKhau);
                             HttpContext.Session.SetString("UserName", findNameUser(log.Email));
+
+                            HttpContext.Session.SetInt32("CountCart", countCart());
                             return RedirectToAction(TempData["Route"].ToString());
                         }
                         else
@@ -645,9 +657,16 @@ namespace WebLapTop.Controllers
         [HttpPost]
         public IActionResult AddToCart(OrderCart order)
         {
-            
+            string email = LogCheck();        
+            if (string.IsNullOrEmpty(email))
+            {
+                TempData["RouteDetail"] = order.MaSp;
+                return RedirectToAction("Login");
+            }
+
+            order.email = email;
             //check sp in order ?
-            var checkOrder = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(order.MaSp));
+            var checkOrder = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(order.MaSp)&&u.email.Equals(email));
             //check sl con lai
             var checkPro = _context.KhoSanphams.Where(u => u.MaSp == order.MaSp).Sum(u => u.SoLuong);
 
@@ -679,6 +698,11 @@ namespace WebLapTop.Controllers
         [HttpGet]
         public IActionResult AddOneToCart(String maSp)
         {
+            string email = LogCheck();
+            if (string.IsNullOrEmpty(email))
+            {
+                return RedirectToAction("Login");
+            }
             var products = from anh in _context.Anhs
                            join sp in _context.Sanphams on anh.MaSp equals sp.MaSp
                            where anh.MaSp.Equals(maSp)
@@ -697,10 +721,11 @@ namespace WebLapTop.Controllers
                 MaKm = 0,
                 DonGia = product.MaSpNavigation.DonGia.Value,
                 TenSP = product.MaSpNavigation.TenSp,
-                MaAnh = product.MaAnh
+                MaAnh = product.MaAnh,
+                email=email
             };
             //check sp in order ?
-            var checkOrder = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(order.MaSp));
+            var checkOrder = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(order.MaSp)&&u.email.Equals(email));
             //check sl con lai
             var checkPro = _context.KhoSanphams.Where(u => u.MaSp == order.MaSp).Sum(u => u.SoLuong);
             if (TempData["Route"].Equals("Detail"))
@@ -745,7 +770,7 @@ namespace WebLapTop.Controllers
             catch (Exception)
             { throw; }
 
-            var order = _context.OrderCarts.FirstOrDefault();
+            var order = _context.OrderCarts.Where(u => u.email.Equals(email)).FirstOrDefault();
             if (order == null)
             {
                 TempData["AlertOrder"] = "None";
@@ -777,7 +802,8 @@ namespace WebLapTop.Controllers
         [HttpGet]
         public IActionResult RemovefromCart(String MaSp)
         {
-            var itemRemove = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(MaSp));
+            string email = LogCheck();
+            var itemRemove = _context.OrderCarts.Where(u => u.email.Equals(email)).FirstOrDefault(u => u.MaSp.Equals(MaSp));
             _context.OrderCarts.Remove(itemRemove);
             _context.SaveChanges();
             HttpContext.Session.SetInt32("CountCart", countCart());
@@ -786,9 +812,10 @@ namespace WebLapTop.Controllers
         [HttpPost]
         public IActionResult UpdateCart(List<int> SL,List<String> MaSp)
         {
+            string email = LogCheck();
             for(int i=0;i<MaSp.Count();i++)
             {
-                var update = _context.OrderCarts.FirstOrDefault(u => u.MaSp.Equals(MaSp[i]));
+                var update = _context.OrderCarts.Where(u => u.email.Equals(email)).FirstOrDefault(u => u.MaSp.Equals(MaSp[i]));
                 //check sl
                 var kho = _context.KhoSanphams.FirstOrDefault(u => u.MaSp.Equals(MaSp[i]));
                 if(kho.SoLuong<SL[i])

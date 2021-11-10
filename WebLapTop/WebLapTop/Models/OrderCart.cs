@@ -13,6 +13,7 @@ namespace WebLapTop.Models
         public String MaSp { get; set; }
         public String MaAnh { get; set; }
         public String TenSP { get; set; }
+        public String email { get; set; }
         public double DonGia { get; set; }
         public int SL { get; set; }
         public int MaKm { get; set; }
