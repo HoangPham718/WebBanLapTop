@@ -37,8 +37,7 @@
     <tbody>
         @foreach (var item in lstHD)
         {
-            if (item.shipping == 1)
-            {
+
                 <tr>
                     <td>@item.MaHd</td>
                     @*<td>@item.MaNv</td>*@
@@ -55,7 +54,7 @@
                     <td><button><a asp-area="" asp-controller="Admin" asp-action="DuyetHoaDon" asp-route-id="@item.MaHd">Duyệt</a></button></td>
                     <td><button><a asp-area="" asp-controller="Admin" asp-action="HuyHoaDon" asp-route-id="@item.MaHd">Hủy</a></button></td>
                 </tr>
-            }
+
 
         }
     </tbody>
